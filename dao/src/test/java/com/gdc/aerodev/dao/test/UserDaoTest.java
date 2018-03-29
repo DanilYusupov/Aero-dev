@@ -9,6 +9,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class UserDaoTest {
@@ -32,6 +34,13 @@ public class UserDaoTest {
         User user = dao.getByName("Petr");
         assertEquals("velikii@spb.ru", user.getUserEmail());
         assertEquals(0, user.getUserLevel());
+    }
+
+    @Test
+    public void testGetAll(){
+        UserDao dao = new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+        List<User> list = dao.getAll();
+        assertEquals(3, list.size());
     }
 
 }

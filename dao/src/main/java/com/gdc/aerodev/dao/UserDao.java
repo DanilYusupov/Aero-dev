@@ -37,7 +37,11 @@ public class UserDao implements GenericDao<User, Long> {
 
     @Override
     public List<User> getAll() {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM " + tableName + " ;",
+                (rs, rowNum) -> {
+                    return buildUser(rs);
+                }
+        );
     }
 
     @Override
