@@ -45,4 +45,24 @@ public class User {
     public short getUserLevel() {
         return userLevel;
     }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setUserLevel(short userLevel) {
+        this.userLevel = userLevel;
+    }
 }
