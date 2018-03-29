@@ -4,6 +4,8 @@ import com.gdc.aerodev.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -21,19 +23,16 @@ public class UserDao implements GenericDao<User, Long> {
     public User getById(Long id) {
         return jdbcTemplate.queryForObject("SELECT * FROM " + tableName + " WHERE userId = ?;",
                 (rs, rowNum) -> {
-                    User user = new User();
-                    user.setUserId(rs.getLong("userId"));
-                    user.setUserName(rs.getString("userName"));
-                    user.setUserPassword(rs.getString("userPassword"));
-                    user.setUserEmail(rs.getString("userEmail"));
-                    user.setUserLevel(rs.getShort("userLevel"));
-                    return user;
+                    return buildUser(rs);
                 }, id);
     }
 
     @Override
     public User getByName(String name) {
-        return null;
+        return jdbcTemplate.queryForObject("SELECT * FROM " + tableName + " WHERE userName = ?;",
+                (rs, rowNum) -> {
+                    return buildUser(rs);
+                }, name);
     }
 
     @Override
@@ -49,5 +48,15 @@ public class UserDao implements GenericDao<User, Long> {
     @Override
     public boolean delete(Long id) {
         return false;
+    }
+
+    private User buildUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getLong("userId"));
+        user.setUserName(rs.getString("userName"));
+        user.setUserPassword(rs.getString("userPassword"));
+        user.setUserEmail(rs.getString("userEmail"));
+        user.setUserLevel(rs.getShort("userLevel"));
+        return user;
     }
 }

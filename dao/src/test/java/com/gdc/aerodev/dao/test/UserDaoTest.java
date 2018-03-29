@@ -26,5 +26,12 @@ public class UserDaoTest {
         assertEquals("velikii@spb.ru", user.getUserEmail());
         assertEquals(0, user.getUserLevel());
     }
+    @Test
+    public void testGetByName(){
+        UserDao dao = new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+        User user = dao.getByName("Petr");
+        assertEquals("velikii@spb.ru", user.getUserEmail());
+        assertEquals(0, user.getUserLevel());
+    }
 
 }
