@@ -44,4 +44,24 @@ public class Project {
     public String getProjectDescription() {
         return projectDescription;
     }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public void setProjectOwner(Long projectOwner) {
+        this.projectOwner = projectOwner;
+    }
+
+    public void setProjectType(ProjectType projectType) {
+        this.projectType = projectType;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
 }
