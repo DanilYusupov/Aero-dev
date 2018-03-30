@@ -87,7 +87,7 @@ public class UserDao implements GenericDao<User, Long> {
             try {
                 return insert(entity);
             } catch (DuplicateKeyException e){
-                throw new DaoException("User " + entity.getUserName() + " is already registered with email: '"
+                throw new DaoException("User '" + entity.getUserName() + "' is already registered with email: '"
                         + entity.getUserEmail() + "'.", e);
             }
         } else {
