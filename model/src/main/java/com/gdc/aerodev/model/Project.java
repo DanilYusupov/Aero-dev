@@ -25,6 +25,13 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
+    public Project(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
+        this.projectName = projectName;
+        this.projectOwner = projectOwner;
+        this.projectType = projectType;
+        this.projectDescription = projectDescription;
+    }
+
     public Long getProjectId() {
         return projectId;
     }
