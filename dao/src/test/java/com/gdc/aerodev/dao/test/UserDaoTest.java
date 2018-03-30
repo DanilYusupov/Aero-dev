@@ -1,6 +1,7 @@
 package com.gdc.aerodev.dao.test;
 
 import com.gdc.aerodev.dao.UserDao;
+import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
@@ -97,7 +98,7 @@ public class UserDaoTest {
         assertNull(dao.getByName("!!!"));
     }
 
-    @Test(expected = DuplicateKeyException.class)
+    @Test(expected = DaoException.class)
     public void testInsertExistentUserException() {
         UserDao dao = getDao();
         String newName = "Petr";
@@ -113,7 +114,7 @@ public class UserDaoTest {
         int size = dao.getAll().size();
         try {
             assertNull(dao.save(user));
-        } catch (DuplicateKeyException e) {
+        } catch (DaoException e) {
             assertEquals(size, dao.getAll().size());
         }
     }

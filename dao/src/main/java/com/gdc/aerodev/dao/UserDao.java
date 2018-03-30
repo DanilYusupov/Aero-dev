@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao;
 
+import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -78,12 +79,17 @@ public class UserDao implements GenericDao<User, Long> {
      * Inserts new {@code User} if {@param userId} is {@code null} or updates it if {@param userId} is {@code !null}
      * @param entity target {@code User} to insert or update in database
      * @return {@param userId} of inserted or updated {@code User}
-     * @throws DuplicateKeyException if {@param userName} or {@param userEmail} is already registered in database
+     * @throws DaoException if {@param userName} or {@param userEmail} is already registered in database
      */
     @Override
     public Long save(User entity) {
         if (entity.getUserId() == null) {
-            return insert(entity);
+            try {
+                return insert(entity);
+            } catch (DuplicateKeyException e){
+                throw new DaoException("User " + entity.getUserName() + " is already registered with email: '"
+                        + entity.getUserEmail() + "'.", e);
+            }
         } else {
             return update(entity);
         }
