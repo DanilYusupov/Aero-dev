@@ -7,18 +7,27 @@ import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class UserDaoTest {
 
     private String tableName = "user_test";
+    private String name = "Novichok";
+    private String password = "p@ssw0rd";
+    private String email = "email";
+    private User user = new User(name, password, email);
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("db"));
+
+    //Standard tests
 
     @Test
     public void testGetById() {
@@ -47,10 +56,6 @@ public class UserDaoTest {
     @Test
     public void testInsert() {
         UserDao dao = getDao();
-        String name = "Novichok";
-        String password = "p@ssw0rd";
-        String email = "email";
-        User user = new User(name, password, email);
         Long id = dao.save(user);
         assertEquals(name, dao.getById(id).getUserName());
     }
@@ -71,11 +76,52 @@ public class UserDaoTest {
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         UserDao dao = getDao();
         int size = dao.getAll().size();
         dao.delete(2L);
         assertEquals(size - 1, dao.getAll().size());
+    }
+
+    //Abnormal tests
+
+    @Test
+    public void testGetByIdNonExistent() {
+        UserDao dao = getDao();
+        assertNull(dao.getById(-1L));
+    }
+
+    @Test
+    public void testGetByNameNonExistent() {
+        UserDao dao = getDao();
+        assertNull(dao.getByName("!!!"));
+    }
+
+    @Test(expected = DuplicateKeyException.class)
+    public void testInsertExistentUserException() {
+        UserDao dao = getDao();
+        String newName = "Petr";
+        user.setUserName(newName);
+        assertNull(dao.save(user));
+    }
+
+    @Test
+    public void testInsertExistentUserDbSize() {
+        UserDao dao = getDao();
+        String newName = "Petr";
+        user.setUserName(newName);
+        int size = dao.getAll().size();
+        try {
+            assertNull(dao.save(user));
+        } catch (DuplicateKeyException e) {
+            assertEquals(size, dao.getAll().size());
+        }
+    }
+
+    @Test
+    public void testDeleteNonExistentUser(){
+        UserDao dao = getDao();
+        assertFalse(dao.delete(-1L));
     }
 
     private UserDao getDao() {
