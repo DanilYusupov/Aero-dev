@@ -13,6 +13,14 @@
         <version>2.0.0.RELEASE</version>
     </parent>
 
+    <properties>
+
+        <!-- dao dependencies -->
+        <postgresql.version>42.2.1.jre7</postgresql.version>
+        <otj.vesrion>0.11.3</otj.vesrion>
+        <flyway.version>5.0.7</flyway.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -24,6 +32,22 @@
                 <groupId>com.gdc.aero-dev</groupId>
                 <artifactId>model</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.opentable.components</groupId>
+                <artifactId>otj-pg-embedded</artifactId>
+                <version>${otj.vesrion}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
