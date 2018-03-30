@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao.specific;
 
+import com.gdc.aerodev.dao.AbstractDao;
 import com.gdc.aerodev.dao.GenericDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Yusupov Danil
  */
 @Repository
-public class UserDao implements GenericDao<User, Long> {
+public class UserDao extends AbstractDao<User, Long> {
 
     private final JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -66,22 +67,7 @@ public class UserDao implements GenericDao<User, Long> {
         );
     }
 
-
-    @Override
-    public Long save(User entity) {
-        if (entity.getUserId() == null) {
-            try {
-                return insert(entity);
-            } catch (DuplicateKeyException e){
-                throw new DaoException("User '" + entity.getUserName() + "' is already registered with email: '"
-                        + entity.getUserEmail() + "'.", e);
-            }
-        } else {
-            return update(entity);
-        }
-    }
-
-    private Long insert(User entity) {
+    protected Long insert(User entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (userName, userPassword, userEmail) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -97,7 +83,7 @@ public class UserDao implements GenericDao<User, Long> {
         return keyHolder.getKey().longValue();
     }
 
-    private Long update(User entity) {
+    protected Long update(User entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET userName=?, userPassword=?, userEmail=?, userLevel=? WHERE userId = "
                         + entity.getUserId() + ";",
@@ -113,6 +99,11 @@ public class UserDao implements GenericDao<User, Long> {
     public boolean delete(Long id) {
         int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE userId = ?;", id);
         return rows > 0;
+    }
+
+    @Override
+    protected boolean isNew(User entity) {
+        return entity.getUserId() == null;
     }
 
     /**

@@ -43,7 +43,7 @@ public interface GenericDao<T, V> {
      * @return {@param id} of inserted or updated {@code T}
      * @throws DaoException if {@param name} or another params is already registered in database
      */
-    Long save(T entity);
+    V save(T entity);
 
     /**
      * Deletes {@code T} entity from connected database by inserted {@param id}
@@ -51,6 +51,6 @@ public interface GenericDao<T, V> {
      * @return (0) {@code true} if deleting was performed or
      *         (1) {@code false} if nothing was deleted
      */
-    boolean delete(Long id);
+    boolean delete(V id);
 
 }
