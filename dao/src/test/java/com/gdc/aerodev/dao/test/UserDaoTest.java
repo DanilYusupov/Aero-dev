@@ -22,7 +22,7 @@ public class UserDaoTest {
 
     @Test
     public void testGetById(){
-        UserDao dao = new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+        UserDao dao = getDao();
         User user = dao.getById(1L);
         assertEquals("Petr", user.getUserName());
         assertEquals("velikii@spb.ru", user.getUserEmail());
@@ -30,7 +30,7 @@ public class UserDaoTest {
     }
     @Test
     public void testGetByName(){
-        UserDao dao = new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+        UserDao dao = getDao();
         User user = dao.getByName("Petr");
         assertEquals("velikii@spb.ru", user.getUserEmail());
         assertEquals(0, user.getUserLevel());
@@ -38,9 +38,24 @@ public class UserDaoTest {
 
     @Test
     public void testGetAll(){
-        UserDao dao = new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+        UserDao dao = getDao();
         List<User> list = dao.getAll();
         assertEquals(3, list.size());
+    }
+
+    @Test
+    public void testInsert(){
+        UserDao dao = getDao();
+        String name = "Novichok";
+        String password = "p@ssw0rd";
+        String email = "email";
+        User user = new User(name, password, email);
+        Long id = dao.save(user);
+        assertEquals(name, dao.getById(id).getUserName());
+    }
+
+    private UserDao getDao(){
+        return new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 
 }

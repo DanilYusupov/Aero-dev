@@ -2,8 +2,13 @@ package com.gdc.aerodev.dao;
 
 import com.gdc.aerodev.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -46,6 +51,32 @@ public class UserDao implements GenericDao<User, Long> {
 
     @Override
     public Long save(User entity) {
+        if (entity.getUserId() == null){
+            return insert(entity);
+        } else {
+            return update(entity);
+        }
+    }
+
+    private Long insert(User entity) {
+        final String INSERT_SQL = "INSERT INTO " + tableName + " (userName, userPassword, userEmail) VALUES (?, ?, ?);";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(
+                new PreparedStatementCreator() {
+                    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                        PreparedStatement ps = con.prepareStatement(INSERT_SQL, new String[] {"userid"});
+                        ps.setString(1, entity.getUserName());
+                        ps.setString(2, entity.getUserPassword());
+                        ps.setString(3, entity.getUserEmail());
+                        return ps;
+                    }
+                },
+                keyHolder
+        );
+        return keyHolder.getKey().longValue();
+    }
+
+    private Long update(User entity) {
         return null;
     }
 

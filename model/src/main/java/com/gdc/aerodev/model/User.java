@@ -26,6 +26,12 @@ public class User {
         this.userLevel = userLevel;
     }
 
+    public User(String userName, String userPassword, String userEmail) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+    }
+
     public Long getUserId() {
         return userId;
     }
