@@ -1,6 +1,6 @@
 package com.gdc.aerodev.dao.test;
 
-import com.gdc.aerodev.dao.UserDao;
+import com.gdc.aerodev.dao.specific.UserDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -8,7 +8,6 @@ import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;

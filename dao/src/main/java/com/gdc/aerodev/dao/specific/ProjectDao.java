@@ -1,5 +1,6 @@
-package com.gdc.aerodev.dao;
+package com.gdc.aerodev.dao.specific;
 
+import com.gdc.aerodev.dao.GenericDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
