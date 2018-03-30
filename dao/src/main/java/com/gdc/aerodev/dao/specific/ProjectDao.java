@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Realization of data access object for working with {@code Project} instance
  *
+ * @see Project
  * @author Yusupov Danil
  */
 @Repository
