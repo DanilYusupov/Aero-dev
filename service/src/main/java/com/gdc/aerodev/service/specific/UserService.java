@@ -14,5 +14,11 @@ public class UserService extends GenericService{
         this.dao = new UserDao(new JdbcTemplate(), getTableName("user.table"));
     }
 
+    public String createUser(String userName, String userPassword, String userEmail){
+        if (dao.getByName(userName) != null){
+            return "User with name '" + userName + "' is already exists.";
+        }
+        return null;
+    }
 
 }
