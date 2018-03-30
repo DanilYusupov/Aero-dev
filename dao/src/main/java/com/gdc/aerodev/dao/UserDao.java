@@ -51,7 +51,7 @@ public class UserDao implements GenericDao<User, Long> {
 
     @Override
     public Long save(User entity) {
-        if (entity.getUserId() == null){
+        if (entity.getUserId() == null) {
             return insert(entity);
         } else {
             return update(entity);
@@ -62,14 +62,12 @@ public class UserDao implements GenericDao<User, Long> {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (userName, userPassword, userEmail) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
-                new PreparedStatementCreator() {
-                    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                        PreparedStatement ps = con.prepareStatement(INSERT_SQL, new String[] {"userid"});
-                        ps.setString(1, entity.getUserName());
-                        ps.setString(2, entity.getUserPassword());
-                        ps.setString(3, entity.getUserEmail());
-                        return ps;
-                    }
+                con -> {
+                    PreparedStatement ps = con.prepareStatement(INSERT_SQL, new String[]{"userid"});
+                    ps.setString(1, entity.getUserName());
+                    ps.setString(2, entity.getUserPassword());
+                    ps.setString(3, entity.getUserEmail());
+                    return ps;
                 },
                 keyHolder
         );
@@ -77,7 +75,14 @@ public class UserDao implements GenericDao<User, Long> {
     }
 
     private Long update(User entity) {
-        return null;
+        int rows = jdbcTemplate.update("UPDATE " + tableName +
+                        " SET userName=?, userPassword=?, userEmail=?, userLevel=? WHERE userId = "
+                        + entity.getUserId() + ";",
+                entity.getUserName(),
+                entity.getUserPassword(),
+                entity.getUserEmail(),
+                entity.getUserLevel());
+        return (rows > 0) ? entity.getUserId() : null;
     }
 
     @Override

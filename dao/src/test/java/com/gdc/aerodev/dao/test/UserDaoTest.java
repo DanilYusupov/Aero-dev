@@ -21,15 +21,16 @@ public class UserDaoTest {
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("db"));
 
     @Test
-    public void testGetById(){
+    public void testGetById() {
         UserDao dao = getDao();
         User user = dao.getById(1L);
         assertEquals("Petr", user.getUserName());
         assertEquals("velikii@spb.ru", user.getUserEmail());
         assertEquals(0, user.getUserLevel());
     }
+
     @Test
-    public void testGetByName(){
+    public void testGetByName() {
         UserDao dao = getDao();
         User user = dao.getByName("Petr");
         assertEquals("velikii@spb.ru", user.getUserEmail());
@@ -37,14 +38,14 @@ public class UserDaoTest {
     }
 
     @Test
-    public void testGetAll(){
+    public void testGetAll() {
         UserDao dao = getDao();
         List<User> list = dao.getAll();
         assertEquals(3, list.size());
     }
 
     @Test
-    public void testInsert(){
+    public void testInsert() {
         UserDao dao = getDao();
         String name = "Novichok";
         String password = "p@ssw0rd";
@@ -54,7 +55,22 @@ public class UserDaoTest {
         assertEquals(name, dao.getById(id).getUserName());
     }
 
-    private UserDao getDao(){
+    @Test
+    public void testUpdate() {
+        UserDao dao = getDao();
+        Long id = 1L;
+        String name = "Denis";
+        short level = 1;
+        User user = dao.getById(id);
+        assertEquals("Petr", user.getUserName());
+        user.setUserName(name);
+        user.setUserLevel(level);
+        dao.save(user);
+        assertEquals(name, dao.getById(id).getUserName());
+        assertEquals(level, dao.getById(id).getUserLevel());
+    }
+
+    private UserDao getDao() {
         return new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 
