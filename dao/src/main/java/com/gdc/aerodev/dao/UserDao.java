@@ -87,7 +87,8 @@ public class UserDao implements GenericDao<User, Long> {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE userId = ?;", id);
+        return rows > 0;
     }
 
     private User buildUser(ResultSet rs) throws SQLException {

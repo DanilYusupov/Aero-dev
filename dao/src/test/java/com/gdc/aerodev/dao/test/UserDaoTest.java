@@ -70,6 +70,14 @@ public class UserDaoTest {
         assertEquals(level, dao.getById(id).getUserLevel());
     }
 
+    @Test
+    public void testDelete(){
+        UserDao dao = getDao();
+        int size = dao.getAll().size();
+        dao.delete(2L);
+        assertEquals(size - 1, dao.getAll().size());
+    }
+
     private UserDao getDao() {
         return new UserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
