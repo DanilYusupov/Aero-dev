@@ -1,6 +1,8 @@
 package com.gdc.aerodev.dao.test;
 
 import com.gdc.aerodev.dao.ProjectDao;
+import com.gdc.aerodev.dao.UserDao;
+import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -12,7 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class ProjectDaoTest {
 
@@ -82,6 +86,46 @@ public class ProjectDaoTest {
         assertEquals(size - 1, dao.getAll().size());
     }
 
+    //Abnormal tests
+
+    @Test
+    public void testGetByIdNonExistent() {
+        ProjectDao dao = getDao();
+        assertNull(dao.getById(-1L));
+    }
+
+    @Test
+    public void testGetByNameNonExistent() {
+        ProjectDao dao = getDao();
+        assertNull(dao.getByName("!!!"));
+    }
+
+    @Test(expected = DaoException.class)
+    public void testInsertExistentProjectException() {
+        ProjectDao dao = getDao();
+        String newName = "3D test";
+        project.setProjectName(newName);
+        assertNull(dao.save(project));
+    }
+
+    @Test
+    public void testInsertExistentUserDbSize() {
+        ProjectDao dao = getDao();
+        String newName = "3D test";
+        project.setProjectName(newName);
+        int size = dao.getAll().size();
+        try {
+            assertNull(dao.save(project));
+        } catch (DaoException e) {
+            assertEquals(size, dao.getAll().size());
+        }
+    }
+
+    @Test
+    public void testDeleteNonExistentUser(){
+        ProjectDao dao = getDao();
+        assertFalse(dao.delete(-1L));
+    }
 
     private ProjectDao getDao() {
         return new ProjectDao(new JdbcTemplate(db.getTestDatabase()), tableName);
