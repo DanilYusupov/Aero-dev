@@ -1,7 +1,6 @@
 package com.gdc.aerodev.dao.test;
 
-import com.gdc.aerodev.dao.ProjectDao;
-import com.gdc.aerodev.dao.UserDao;
+import com.gdc.aerodev.dao.specific.ProjectDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;

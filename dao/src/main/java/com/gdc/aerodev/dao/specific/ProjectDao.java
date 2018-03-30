@@ -1,5 +1,7 @@
-package com.gdc.aerodev.dao;
+package com.gdc.aerodev.dao.specific;
 
+import com.gdc.aerodev.dao.AbstractDao;
+import com.gdc.aerodev.dao.GenericDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
@@ -19,7 +21,7 @@ import java.util.List;
  *
  * @author Yusupov Danil
  */
-public class ProjectDao implements GenericDao<Project, Long> {
+public class ProjectDao extends AbstractDao<Project, Long> {
 
     private final JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -62,20 +64,7 @@ public class ProjectDao implements GenericDao<Project, Long> {
         );
     }
 
-    @Override
-    public Long save(Project entity) {
-        if (entity.getProjectId() == null) {
-            try {
-                return insert(entity);
-            } catch (DuplicateKeyException e){
-                throw new DaoException("Project '" + entity.getProjectName() + "' is already registered.", e);
-            }
-        } else {
-            return update(entity);
-        }
-    }
-
-    private Long insert(Project entity) {
+    protected Long insert(Project entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (projectName, projectOwner, projectType, projectDescription) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -92,7 +81,7 @@ public class ProjectDao implements GenericDao<Project, Long> {
         return keyHolder.getKey().longValue();
     }
 
-    private Long update(Project entity) {
+    protected Long update(Project entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET projectName=?, projectOwner=?, projectType=?, projectDescription=? WHERE projectId = "
                         + entity.getProjectId() + ";",
@@ -107,6 +96,11 @@ public class ProjectDao implements GenericDao<Project, Long> {
     public boolean delete(Long id) {
         int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE projectId = ?;", id);
         return rows > 0;
+    }
+
+    @Override
+    protected boolean isNew(Project entity) {
+        return entity.getProjectId() == null;
     }
 
     private Project buildProject(ResultSet rs) throws SQLException {

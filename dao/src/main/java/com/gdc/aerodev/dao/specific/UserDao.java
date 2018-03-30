@@ -1,5 +1,7 @@
-package com.gdc.aerodev.dao;
+package com.gdc.aerodev.dao.specific;
 
+import com.gdc.aerodev.dao.AbstractDao;
+import com.gdc.aerodev.dao.GenericDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,7 +22,7 @@ import java.util.List;
  * @author Yusupov Danil
  */
 @Repository
-public class UserDao implements GenericDao<User, Long> {
+public class UserDao extends AbstractDao<User, Long> {
 
     private final JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -30,12 +32,7 @@ public class UserDao implements GenericDao<User, Long> {
         this.tableName = tableName;
     }
 
-    /**
-     * Gets {@code User} entity from connected database with inserted {@param userId}
-     * @param id identifier of target {@code User}
-     * @return (0) found {@code User} with matched {@param id}
-     *         (1) null if there is no such {@code User}
-     */
+
     @Override
     public User getById(Long id) {
         try {
@@ -48,12 +45,7 @@ public class UserDao implements GenericDao<User, Long> {
         }
     }
 
-    /**
-     * Gets {@code User} entity from connected database with inserted {@param userName}
-     * @param name name of target {@code User}
-     * @return (0) found {@code User} with matched {@param userName}
-     *         (1) null if there is no such {@code User}
-     */
+
     @Override
     public User getByName(String name) {
         try {
@@ -75,27 +67,7 @@ public class UserDao implements GenericDao<User, Long> {
         );
     }
 
-    /**
-     * Inserts new {@code User} if {@param userId} is {@code null} or updates it if {@param userId} is {@code !null}
-     * @param entity target {@code User} to insert or update in database
-     * @return {@param userId} of inserted or updated {@code User}
-     * @throws DaoException if {@param userName} or {@param userEmail} is already registered in database
-     */
-    @Override
-    public Long save(User entity) {
-        if (entity.getUserId() == null) {
-            try {
-                return insert(entity);
-            } catch (DuplicateKeyException e){
-                throw new DaoException("User '" + entity.getUserName() + "' is already registered with email: '"
-                        + entity.getUserEmail() + "'.", e);
-            }
-        } else {
-            return update(entity);
-        }
-    }
-
-    private Long insert(User entity) {
+    protected Long insert(User entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (userName, userPassword, userEmail) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -111,7 +83,7 @@ public class UserDao implements GenericDao<User, Long> {
         return keyHolder.getKey().longValue();
     }
 
-    private Long update(User entity) {
+    protected Long update(User entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET userName=?, userPassword=?, userEmail=?, userLevel=? WHERE userId = "
                         + entity.getUserId() + ";",
@@ -122,16 +94,16 @@ public class UserDao implements GenericDao<User, Long> {
         return (rows > 0) ? entity.getUserId() : null;
     }
 
-    /**
-     * Deletes {@code User} entity from connected database by inserted {@param userId}
-     * @param id identifier of target {@code User}
-     * @return (0) {@code true} if deleting was performed or
-     *         (1) {@code false} if nothing was deleted
-     */
+
     @Override
     public boolean delete(Long id) {
         int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE userId = ?;", id);
         return rows > 0;
+    }
+
+    @Override
+    protected boolean isNew(User entity) {
+        return entity.getUserId() == null;
     }
 
     /**
