@@ -10,4 +10,63 @@
         <artifactId>aero-dev</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.gdc.aero-dev</groupId>
+            <artifactId>dao</artifactId>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <database.url>jdbc:postgresql:5432//localhost/aerodev</database.url>
+                <database.user>cruder</database.user>
+                <database.password>p@ssw0rd</database.password>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <configuration>
+                            <driver>org.postgresql.Driver</driver>
+                            <sqlMigrationSeparator>__</sqlMigrationSeparator>
+                            <locations>
+                                <location>filesystem:src/main/resources/db/migration</location>
+                            </locations>
+                            <url>${database.url}</url>
+                            <user>${database.user}</user>
+                            <password>${database.password}</password>
+                            <schemas>
+                                <schema>aero</schema>
+                            </schemas>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>${postgresql.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>Migration</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>migrate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
