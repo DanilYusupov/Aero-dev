@@ -31,12 +31,7 @@ public class UserDao implements GenericDao<User, Long> {
         this.tableName = tableName;
     }
 
-    /**
-     * Gets {@code User} entity from connected database with inserted {@param userId}
-     * @param id identifier of target {@code User}
-     * @return (0) found {@code User} with matched {@param id}
-     *         (1) null if there is no such {@code User}
-     */
+
     @Override
     public User getById(Long id) {
         try {
@@ -49,12 +44,7 @@ public class UserDao implements GenericDao<User, Long> {
         }
     }
 
-    /**
-     * Gets {@code User} entity from connected database with inserted {@param userName}
-     * @param name name of target {@code User}
-     * @return (0) found {@code User} with matched {@param userName}
-     *         (1) null if there is no such {@code User}
-     */
+
     @Override
     public User getByName(String name) {
         try {
@@ -76,12 +66,7 @@ public class UserDao implements GenericDao<User, Long> {
         );
     }
 
-    /**
-     * Inserts new {@code User} if {@param userId} is {@code null} or updates it if {@param userId} is {@code !null}
-     * @param entity target {@code User} to insert or update in database
-     * @return {@param userId} of inserted or updated {@code User}
-     * @throws DaoException if {@param userName} or {@param userEmail} is already registered in database
-     */
+
     @Override
     public Long save(User entity) {
         if (entity.getUserId() == null) {
@@ -123,12 +108,7 @@ public class UserDao implements GenericDao<User, Long> {
         return (rows > 0) ? entity.getUserId() : null;
     }
 
-    /**
-     * Deletes {@code User} entity from connected database by inserted {@param userId}
-     * @param id identifier of target {@code User}
-     * @return (0) {@code true} if deleting was performed or
-     *         (1) {@code false} if nothing was deleted
-     */
+
     @Override
     public boolean delete(Long id) {
         int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE userId = ?;", id);
