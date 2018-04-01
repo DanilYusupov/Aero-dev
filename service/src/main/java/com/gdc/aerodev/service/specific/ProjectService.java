@@ -17,23 +17,47 @@ public class ProjectService extends GenericService {
         this.dao = new ProjectDao(new JdbcTemplate(), getTableName("project.table"));
     }
 
-    public String createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
+    /**
+     * Inserts {@code Project} into database configured by input parameters.
+     *
+     * @param projectName name of new {@code Project}
+     * @param projectOwner ID of {@code User}, who created this {@code Project}
+     * @param projectType {@code ProjectType} of current {@code Project}
+     * @param projectDescription text with description of {@code Project}
+     * @return (0) {@param projectId} of inserted {@code Project}
+     *         (1) or {@code null} in cause of problems
+     */
+    public Long createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
         if (isExistentName(projectName)) {
-            return "Project with name '" + projectName + "' is already exists.";
+            return null;
+            //TODO: plug in logger
+//            return "Project with name '" + projectName + "' is already exists.";
         }
         try {
-            Long id = dao.save(new Project(projectName, projectOwner, projectType, projectDescription));
-            return "Project '" + projectName + "' created with id " + id + ".";
+            return dao.save(new Project(projectName, projectOwner, projectType, projectDescription));
+//            return "Project '" + projectName + "' created with id " + id + ".";
         } catch (DaoException e) {
-            return e.getMessage();
+            return null;
         }
     }
 
-    public String updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription) {
+    /**
+     * Updates existent {@code Project} chosen by {@param projectId} with input parameters. If there is no need to
+     * change some parameter, it should be left as empty ones.
+     *
+     * @param projectId ID of updating {@code Project}
+     * @param projectName new name of updating {@code Project}
+     * @param projectType new {@code ProjectType} of updating {@code Project}
+     * @param projectDescription new description for {@code Project}
+     * @return (0) {@param projectId} of updated {@code Project}
+     *         (1) or {@code null} in cause of problems
+     */
+    public Long updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription) {
         Project project = dao.getById(projectId);
         if (!projectName.equals("")) {
             if (isExistentName(projectName)) {
-                return "Project with name '" + projectName + "' is already exists.";
+                return null;
+//                return "Project with name '" + projectName + "' is already exists.";
             }
             project.setProjectName(projectName);
         }
@@ -42,10 +66,10 @@ public class ProjectService extends GenericService {
         }
         project.setProjectType(projectType);
         try{
-            dao.save(project);
-            return "Project '" + projectName + "' successfully updated.";
+            return dao.save(project);
+//            return "Project '" + projectName + "' successfully updated.";
         } catch (DaoException e){
-            return e.getMessage();
+            return null;
         }
     }
 
