@@ -16,27 +16,52 @@ public class UserService extends GenericService{
         this.dao = new UserDao(new JdbcTemplate(), getTableName("user.table"));
     }
 
-    public String createUser(String userName, String userPassword, String userEmail){
+    /**
+     * Inserts {@code User} into database configured by input parameters.
+     *
+     * @param userName name of new {@code User}
+     * @param userPassword password of {@code User}
+     * @param userEmail email of current {@code Project}
+     * @return (0) {@param userId} of inserted {@code User}
+     *         (1) or {@code null} in cause of problems
+     */
+    public Long createUser(String userName, String userPassword, String userEmail){
         if (isExistentName(userName)){
-            return "User with name '" + userName + "' is already exists.";
+            return null;
+            //TODO: plug in logger
+//            return "User with name '" + userName + "' is already exists.";
         }
         String emailOwner = dao.existentEmail(userEmail);
         if (emailOwner != null){
-            return "This email is already used by '" + emailOwner + "'.";
+            return null;
+//            return "This email is already used by '" + emailOwner + "'.";
         }
         try {
-            Long id = dao.save(new User(userName, userPassword, userEmail));
-            return "Successful created user '" + userName + "' with id " + id + ".";
+            return dao.save(new User(userName, userPassword, userEmail));
+//            return "Successful created user '" + userName + "' with id " + id + ".";
         } catch (DaoException e){
-            return e.getMessage();
+            return null;
         }
     }
 
-    public String updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel){
+    /**
+     * Updates existent {@code User} chosen by {@param userId} with input parameters. If there is no need to
+     * change some parameter, it should be left as empty ones.
+     *
+     * @param userId ID of updating {@code User}
+     * @param userName new name of updating {@code User}
+     * @param userPassword new password of updating {@code User}
+     * @param userEmail new email for {@code User}
+     * @param userLevel new user level
+     * @return (0) {@param userId} of updated {@code User}
+     *         (1) or {@code null} in cause of problems
+     */
+    public Long updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel){
         User user = dao.getById(userId);
         if (!userName.equals("")){
             if (isExistentName(userName)){
-                return "User with name '" + userName + "' is already exists.";
+                return null;
+//                return "User with name '" + userName + "' is already exists.";
             }
             user.setUserName(userName);
         }
@@ -46,17 +71,17 @@ public class UserService extends GenericService{
         if (!userEmail.equals("")){
             String emailOwner = dao.existentEmail(userEmail);
             if (emailOwner != null){
-                return "This email is already used by '" + emailOwner + "'.";
+                return null;
+//                return "This email is already used by '" + emailOwner + "'.";
             }
             user.setUserEmail(userEmail);
         }
         user.setUserLevel(userLevel);
         try {
-            dao.save(user);
+             return dao.save(user);
         } catch (DaoException e){
-            return e.getMessage();
+            return null;
         }
-        return "Successfully updated user '" + userName + "'.";
     }
 
     private boolean isExistentName(String userName){
