@@ -32,7 +32,7 @@ public class UserService extends GenericService{
      *         (1) or {@code null} in cause of problems
      */
     public Long createUser(String userName, String userPassword, String userEmail){
-        if (userName.equals("")){
+        if (userName.equals("") || userPassword.equals("") || userEmail.equals("")){
             return null;
         }
         if (isExistentName(userName)){
@@ -73,6 +73,8 @@ public class UserService extends GenericService{
 //                return "User with name '" + userName + "' is already exists.";
             }
             user.setUserName(userName);
+        } else if (userPassword.equals("") && userEmail.equals("") && user.getUserLevel() == userLevel){
+            return null;
         }
         if (!userPassword.equals("")){
             user.setUserPassword(userPassword);
