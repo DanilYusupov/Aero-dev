@@ -7,6 +7,8 @@ import com.gdc.aerodev.service.GenericService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
+
 @Service
 public class UserService extends GenericService{
 
@@ -14,6 +16,10 @@ public class UserService extends GenericService{
 
     public UserService() {
         this.dao = new UserDao(new JdbcTemplate(), getTableName("user.table"));
+    }
+
+    public UserService(DataSource testDb, String tableName){
+        this.dao = new UserDao(new JdbcTemplate(testDb), tableName);
     }
 
     /**
@@ -26,6 +32,9 @@ public class UserService extends GenericService{
      *         (1) or {@code null} in cause of problems
      */
     public Long createUser(String userName, String userPassword, String userEmail){
+        if (userName.equals("")){
+            return null;
+        }
         if (isExistentName(userName)){
             return null;
             //TODO: plug in logger
@@ -82,6 +91,10 @@ public class UserService extends GenericService{
         } catch (DaoException e){
             return null;
         }
+    }
+
+    public UserDao getDao(){
+        return dao;
     }
 
     private boolean isExistentName(String userName){
