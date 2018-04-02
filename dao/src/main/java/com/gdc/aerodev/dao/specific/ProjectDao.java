@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,8 +21,10 @@ import java.util.List;
 /**
  * Realization of data access object for working with {@code Project} instance
  *
+ * @see Project
  * @author Yusupov Danil
  */
+@Repository
 public class ProjectDao extends AbstractDao<Project, Long> {
 
     private final JdbcTemplate jdbcTemplate;
@@ -101,6 +105,11 @@ public class ProjectDao extends AbstractDao<Project, Long> {
     @Override
     protected boolean isNew(Project entity) {
         return entity.getProjectId() == null;
+    }
+
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
 
     private Project buildProject(ResultSet rs) throws SQLException {

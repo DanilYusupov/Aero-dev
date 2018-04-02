@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * Realization of data access object for working with {@code User} instance
  *
+ * @see User
  * @author Yusupov Danil
  */
 @Repository
@@ -104,6 +105,28 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     protected boolean isNew(User entity) {
         return entity.getUserId() == null;
+    }
+
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
+    }
+
+    /**
+     * Checks inserted email on existence in database
+     * @param userEmail email to check
+     * @return (0) {@param userName} of {@code User} with existent email
+     *         (1) {@code null} if there is no such email
+     */
+    public String existentEmail(String userEmail){
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT userName FROM " + tableName + " WHERE userEmail = ?;",
+                    new Object[]{userEmail},
+                    String.class);
+        } catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     /**

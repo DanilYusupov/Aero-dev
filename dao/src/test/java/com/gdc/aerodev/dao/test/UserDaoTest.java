@@ -15,6 +15,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UserDaoTest {
 
@@ -81,6 +82,24 @@ public class UserDaoTest {
         int size = dao.getAll().size();
         dao.delete(2L);
         assertEquals(size - 1, dao.getAll().size());
+    }
+
+    @Test
+    public void testExistentEmail(){
+        UserDao dao = getDao();
+        assertEquals("Petr", dao.existentEmail("velikii@spb.ru"));
+    }
+
+    @Test
+    public void testNonExistentEmail(){
+        UserDao dao = getDao();
+        assertNull(dao.existentEmail("!!!"));
+    }
+
+    @Test
+    public void testCount(){
+        UserDao dao = getDao();
+        assertEquals(3, dao.count());
     }
 
     //Abnormal tests
