@@ -68,18 +68,8 @@ public class UserServiceTest {
         UserService service = getService();
         UserDao dao = service.getDao();
         User before = dao.getById(1L);
-        service.updateUser(1L, userName, userPassword, userEmail, level);
-        assertNotEquals(before, dao.getById(1L));
-    }
-
-    @Test
-    public void testUpdateExistentUser(){
-        UserService service = getService();
-        UserDao dao = service.getDao();
-        Long id = service.createUser(userName, userPassword, userEmail);
-        int size = dao.count();
-        assertNull(service.updateUser(id, userName, "", "", (short) 0));
-        assertEquals(size, dao.count());
+        assertNotNull(service.updateUser(1L, userName, userPassword, userEmail, level));
+        assertNotEquals(before.getUserName(), dao.getById(1L).getUserName());
     }
 
     @Test
@@ -95,9 +85,6 @@ public class UserServiceTest {
         assertEquals(before.getUserEmail(), after.getUserEmail());
         assertEquals(before.getUserLevel(), after.getUserLevel());
     }
-
-    @Test
-
 
     private UserService getService(){
         return new UserService(db.getTestDatabase(), tableName);
