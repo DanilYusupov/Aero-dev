@@ -96,6 +96,12 @@ public class UserDaoTest {
         assertNull(dao.existentEmail("!!!"));
     }
 
+    @Test
+    public void testCount(){
+        UserDao dao = getDao();
+        assertEquals(3, dao.count());
+    }
+
     //Abnormal tests
 
     @Test

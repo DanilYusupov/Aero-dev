@@ -8,6 +8,8 @@ import com.gdc.aerodev.service.GenericService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
+
 @Service
 public class ProjectService extends GenericService {
 
@@ -15,6 +17,10 @@ public class ProjectService extends GenericService {
 
     public ProjectService() {
         this.dao = new ProjectDao(new JdbcTemplate(), getTableName("project.table"));
+    }
+
+    public ProjectService(DataSource testDb, String tableName){
+        this.dao = new ProjectDao(new JdbcTemplate(testDb), tableName);
     }
 
     /**
@@ -28,6 +34,9 @@ public class ProjectService extends GenericService {
      *         (1) or {@code null} in cause of problems
      */
     public Long createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
+        if (projectName.equals("") || projectOwner == null || projectDescription.equals("")) {
+            return null;
+        }
         if (isExistentName(projectName)) {
             return null;
             //TODO: plug in logger
@@ -60,6 +69,8 @@ public class ProjectService extends GenericService {
 //                return "Project with name '" + projectName + "' is already exists.";
             }
             project.setProjectName(projectName);
+        } else if (projectDescription.equals("")){
+            return null;
         }
         if (!projectDescription.equals("")){
             project.setProjectDescription(projectDescription);
@@ -71,6 +82,10 @@ public class ProjectService extends GenericService {
         } catch (DaoException e){
             return null;
         }
+    }
+
+    public ProjectDao getDao(){
+        return dao;
     }
 
     private boolean isExistentName(String projectName) {

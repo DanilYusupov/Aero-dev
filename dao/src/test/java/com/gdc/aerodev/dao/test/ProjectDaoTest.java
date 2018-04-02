@@ -85,6 +85,12 @@ public class ProjectDaoTest {
         assertEquals(size - 1, dao.getAll().size());
     }
 
+    @Test
+    public void testCount(){
+        ProjectDao dao = getDao();
+        assertEquals(3, dao.count());
+    }
+
     //Abnormal tests
 
     @Test

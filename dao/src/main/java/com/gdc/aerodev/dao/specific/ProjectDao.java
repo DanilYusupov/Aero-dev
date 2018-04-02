@@ -107,6 +107,11 @@ public class ProjectDao extends AbstractDao<Project, Long> {
         return entity.getProjectId() == null;
     }
 
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
+    }
+
     private Project buildProject(ResultSet rs) throws SQLException {
         Project project = new Project();
         project.setProjectId(rs.getLong("projectId"));
