@@ -49,5 +49,6 @@ public abstract class AbstractDao<T, V> implements GenericDao<T, V> {
      */
     protected abstract boolean isNew(T entity);
 
+    public abstract int count();
 
 }
