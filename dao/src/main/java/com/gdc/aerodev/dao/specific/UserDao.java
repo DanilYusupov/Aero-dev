@@ -107,6 +107,11 @@ public class UserDao extends AbstractDao<User, Long> {
         return entity.getUserId() == null;
     }
 
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
+    }
+
     /**
      * Checks inserted email on existence in database
      * @param userEmail email to check
