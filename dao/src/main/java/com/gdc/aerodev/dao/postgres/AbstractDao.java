@@ -1,9 +1,9 @@
-package com.gdc.aerodev.dao;
+package com.gdc.aerodev.dao.postgres;
 
 import com.gdc.aerodev.dao.exception.DaoException;
 import org.springframework.dao.DuplicateKeyException;
 
-public abstract class AbstractDao<T, V> implements GenericDao<T, V> {
+public abstract class AbstractDao<T, V>{
 
     /**
      * Method inherited from {@code GenericDao} & checks which method needs to be invoked. If {@code entityId} is
@@ -13,7 +13,6 @@ public abstract class AbstractDao<T, V> implements GenericDao<T, V> {
      * @param entity {@code T} entity to save
      * @return id of saved or updated entity
      */
-    @Override
     public V save(T entity) {
         if (isNew(entity)){
             try {
@@ -49,6 +48,10 @@ public abstract class AbstractDao<T, V> implements GenericDao<T, V> {
      */
     protected abstract boolean isNew(T entity);
 
+    /**
+     * Counts all number of entities in table with simple query which returns {@code int}
+     * @return number of entities in table
+     */
     public abstract int count();
 
 }

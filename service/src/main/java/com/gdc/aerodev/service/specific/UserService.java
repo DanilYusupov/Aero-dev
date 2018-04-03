@@ -1,7 +1,7 @@
 package com.gdc.aerodev.service.specific;
 
 import com.gdc.aerodev.dao.exception.DaoException;
-import com.gdc.aerodev.dao.specific.UserDao;
+import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.GenericService;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,14 +12,14 @@ import javax.sql.DataSource;
 @Service
 public class UserService extends GenericService{
 
-    private final UserDao dao;
+    private final PostgresUserDao dao;
 
     public UserService() {
-        this.dao = new UserDao(new JdbcTemplate(), getTableName("user.table"));
+        this.dao = new PostgresUserDao(new JdbcTemplate(), getTableName("user.table"));
     }
 
     public UserService(DataSource testDb, String tableName){
-        this.dao = new UserDao(new JdbcTemplate(testDb), tableName);
+        this.dao = new PostgresUserDao(new JdbcTemplate(testDb), tableName);
     }
 
     /**
@@ -95,7 +95,7 @@ public class UserService extends GenericService{
         }
     }
 
-    public UserDao getDao(){
+    public PostgresUserDao getDao(){
         return dao;
     }
 

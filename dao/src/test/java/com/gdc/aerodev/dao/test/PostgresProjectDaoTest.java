@@ -1,6 +1,6 @@
 package com.gdc.aerodev.dao.test;
 
-import com.gdc.aerodev.dao.specific.ProjectDao;
+import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
@@ -17,7 +17,7 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class ProjectDaoTest {
+public class PostgresProjectDaoTest {
 
     private String tableName = "project_test";
     private String name = "start-up";
@@ -33,7 +33,7 @@ public class ProjectDaoTest {
 
     @Test
     public void testGetById() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         Project project = dao.getById(1L);
         assertEquals("3D test", project.getProjectName());
         assertEquals(ProjectType.Design, project.getProjectType());
@@ -42,7 +42,7 @@ public class ProjectDaoTest {
 
     @Test
     public void testGetByName() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         Project project = dao.getByName("3D test");
         assertEquals(ProjectType.Design, project.getProjectType());
         assertEquals(Long.valueOf(1), project.getProjectOwner());
@@ -50,21 +50,21 @@ public class ProjectDaoTest {
 
     @Test
     public void testGetAll() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         List<Project> list = dao.getAll();
         assertEquals(3, list.size());
     }
 
     @Test
     public void testInsert() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         Long id = dao.save(project);
         assertEquals(name, dao.getById(id).getProjectName());
     }
 
     @Test
     public void testUpdate() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         Long id = 1L;
         String name = "Thing";
         ProjectType type = ProjectType.Aerodynamics;
@@ -79,7 +79,7 @@ public class ProjectDaoTest {
 
     @Test
     public void testDelete() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         int size = dao.getAll().size();
         dao.delete(2L);
         assertEquals(size - 1, dao.getAll().size());
@@ -87,7 +87,7 @@ public class ProjectDaoTest {
 
     @Test
     public void testCount(){
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         assertEquals(3, dao.count());
     }
 
@@ -95,19 +95,19 @@ public class ProjectDaoTest {
 
     @Test
     public void testGetByIdNonExistent() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         assertNull(dao.getById(-1L));
     }
 
     @Test
     public void testGetByNameNonExistent() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         assertNull(dao.getByName("!!!"));
     }
 
     @Test(expected = DaoException.class)
     public void testInsertExistentProjectException() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         String newName = "3D test";
         project.setProjectName(newName);
         assertNull(dao.save(project));
@@ -115,7 +115,7 @@ public class ProjectDaoTest {
 
     @Test
     public void testInsertExistentUserDbSize() {
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         String newName = "3D test";
         project.setProjectName(newName);
         int size = dao.getAll().size();
@@ -128,11 +128,11 @@ public class ProjectDaoTest {
 
     @Test
     public void testDeleteNonExistentUser(){
-        ProjectDao dao = getDao();
+        PostgresProjectDao dao = getDao();
         assertFalse(dao.delete(-1L));
     }
 
-    private ProjectDao getDao() {
-        return new ProjectDao(new JdbcTemplate(db.getTestDatabase()), tableName);
+    private PostgresProjectDao getDao() {
+        return new PostgresProjectDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 }
