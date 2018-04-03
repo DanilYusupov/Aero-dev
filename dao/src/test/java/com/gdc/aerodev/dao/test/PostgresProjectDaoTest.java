@@ -22,7 +22,7 @@ public class PostgresProjectDaoTest {
     private String tableName = "project_test";
     private String name = "start-up";
     private Long owner = 1L;
-    private ProjectType type = ProjectType.Aerodynamics;
+    private ProjectType type = ProjectType.AERODYNAMICS;
     private String description = "This is a new project of...";
     private Project project = new Project(name, owner, type, description);
 
@@ -36,7 +36,7 @@ public class PostgresProjectDaoTest {
         PostgresProjectDao dao = getDao();
         Project project = dao.getById(1L);
         assertEquals("3D test", project.getProjectName());
-        assertEquals(ProjectType.Design, project.getProjectType());
+        assertEquals(ProjectType.DESIGN, project.getProjectType());
         assertEquals(Long.valueOf(1), project.getProjectOwner());
     }
 
@@ -44,7 +44,7 @@ public class PostgresProjectDaoTest {
     public void testGetByName() {
         PostgresProjectDao dao = getDao();
         Project project = dao.getByName("3D test");
-        assertEquals(ProjectType.Design, project.getProjectType());
+        assertEquals(ProjectType.DESIGN, project.getProjectType());
         assertEquals(Long.valueOf(1), project.getProjectOwner());
     }
 
@@ -67,7 +67,7 @@ public class PostgresProjectDaoTest {
         PostgresProjectDao dao = getDao();
         Long id = 1L;
         String name = "Thing";
-        ProjectType type = ProjectType.Aerodynamics;
+        ProjectType type = ProjectType.AERODYNAMICS;
         Project project = dao.getById(id);
         assertEquals("3D test", project.getProjectName());
         project.setProjectName(name);
