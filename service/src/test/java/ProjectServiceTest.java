@@ -15,7 +15,7 @@ public class ProjectServiceTest {
     private String tableName = "project_test";
     private String projectName = "Project";
     private Long projectOwner = 1L;
-    private ProjectType projectType = ProjectType.Aerodynamics;
+    private ProjectType projectType = ProjectType.AERODYNAMICS;
     private String projectDescription = "Description...";
 
     @Rule

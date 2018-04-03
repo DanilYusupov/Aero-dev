@@ -116,7 +116,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
             project.setProjectId(resultSet.getLong("prj_id"));
             project.setProjectName(resultSet.getString("prj_name"));
             project.setProjectOwner(resultSet.getLong("prj_owner"));
-            project.setProjectType(ProjectType.valueOf(resultSet.getString("prj_type")));
+            project.setProjectType(ProjectType.valueOf(resultSet.getString("prj_type").toUpperCase()));
             project.setProjectDescription(resultSet.getString("prj_description"));
             return project;
         }
