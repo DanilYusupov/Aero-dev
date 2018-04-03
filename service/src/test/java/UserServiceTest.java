@@ -1,4 +1,4 @@
-import com.gdc.aerodev.dao.specific.UserDao;
+import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.specific.UserService;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -25,7 +25,7 @@ public class UserServiceTest {
     @Test
     public void testCreateUser(){
         UserService service = getService();
-        UserDao dao = service.getDao();
+        PostgresUserDao dao = service.getDao();
         int size = dao.count();
         service.createUser(userName, userPassword, userEmail);
         assertNotNull(dao.getByName(userName));
@@ -35,7 +35,7 @@ public class UserServiceTest {
     @Test
     public void testCreateExistentUser(){
         UserService service = getService();
-        UserDao dao = service.getDao();
+        PostgresUserDao dao = service.getDao();
         assertNotNull(service.createUser(userName, userPassword, userEmail));
         int size = dao.count();
         assertNull(service.createUser(userName, userPassword, userEmail));
@@ -45,7 +45,7 @@ public class UserServiceTest {
     @Test
     public void testCreateEmptyName(){
         UserService service = getService();
-        UserDao dao = service.getDao();
+        PostgresUserDao dao = service.getDao();
         int size = dao.count();
         assertNull(service.createUser("", userPassword, userEmail));
         assertEquals(size, dao.count());
@@ -54,7 +54,7 @@ public class UserServiceTest {
     @Test
     public void testCreateExistentEmail(){
         UserService service = getService();
-        UserDao dao = service.getDao();
+        PostgresUserDao dao = service.getDao();
         assertNotNull(service.createUser(userName, userPassword, userEmail));
         int size = dao.count();
         assertNull(service.createUser("second", "new", userEmail));
@@ -66,7 +66,7 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser(){
         UserService service = getService();
-        UserDao dao = service.getDao();
+        PostgresUserDao dao = service.getDao();
         User before = dao.getById(1L);
         assertNotNull(service.updateUser(1L, userName, userPassword, userEmail, level));
         assertNotEquals(before.getUserName(), dao.getById(1L).getUserName());
@@ -75,7 +75,7 @@ public class UserServiceTest {
     @Test
     public void testUpdateWithEmptyParams(){
         UserService service = getService();
-        UserDao dao =service.getDao();
+        PostgresUserDao dao =service.getDao();
         Long id = service.createUser(userName, userPassword, userEmail);
         User before = dao.getById(id);
         assertNull(service.updateUser(id, "", "", "", (short) 0));

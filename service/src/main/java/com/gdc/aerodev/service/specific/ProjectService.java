@@ -1,7 +1,7 @@
 package com.gdc.aerodev.service.specific;
 
 import com.gdc.aerodev.dao.exception.DaoException;
-import com.gdc.aerodev.dao.specific.ProjectDao;
+import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.service.GenericService;
@@ -13,14 +13,14 @@ import javax.sql.DataSource;
 @Service
 public class ProjectService extends GenericService {
 
-    private final ProjectDao dao;
+    private final PostgresProjectDao dao;
 
     public ProjectService() {
-        this.dao = new ProjectDao(new JdbcTemplate(), getTableName("project.table"));
+        this.dao = new PostgresProjectDao(new JdbcTemplate(), getTableName("project.table"));
     }
 
     public ProjectService(DataSource testDb, String tableName){
-        this.dao = new ProjectDao(new JdbcTemplate(testDb), tableName);
+        this.dao = new PostgresProjectDao(new JdbcTemplate(testDb), tableName);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ProjectService extends GenericService {
         }
     }
 
-    public ProjectDao getDao(){
+    public PostgresProjectDao getDao(){
         return dao;
     }
 
