@@ -25,7 +25,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
 
     private final JdbcTemplate jdbcTemplate;
     private final String TABLE_NAME;
-    //TODO: make table_name static.
+    //TODO: make table_name public.
     private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level FROM ";
 
     public PostgresUserDao(JdbcTemplate jdbcTemplate, String TABLE_NAME) {
