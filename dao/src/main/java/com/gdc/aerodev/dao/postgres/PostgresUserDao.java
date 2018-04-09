@@ -2,6 +2,7 @@ package com.gdc.aerodev.dao.postgres;
 
 import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,19 +25,23 @@ import java.util.List;
 public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String TABLE_NAME;
-    //TODO: make table_name public.
+    private  String tableName = "user_test";
     private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level FROM ";
 
-    public PostgresUserDao(JdbcTemplate jdbcTemplate, String TABLE_NAME) {
+    @Autowired
+    public PostgresUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.TABLE_NAME = TABLE_NAME;
+    }
+
+    public PostgresUserDao(JdbcTemplate jdbcTemplate, String tableName) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.tableName = tableName;
     }
 
     @Override
     public User getById(Long id) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + TABLE_NAME + " WHERE usr_id = ?;",
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE usr_id = ?;",
                     new UserRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -47,7 +52,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     @Override
     public User getByName(String name) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + TABLE_NAME + " WHERE usr_name = ?;",
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE usr_name = ?;",
                     new UserRowMapper(), name);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -56,11 +61,11 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query(SELECT_QUERY + TABLE_NAME + ";", new UserRowMapper());
+        return jdbcTemplate.query(SELECT_QUERY + tableName + ";", new UserRowMapper());
     }
 
     protected Long insert(User entity) {
-        final String INSERT_SQL = "INSERT INTO " + TABLE_NAME + " (usr_name, usr_password, usr_email) VALUES (?, ?, ?);";
+        final String INSERT_SQL = "INSERT INTO " + tableName + " (usr_name, usr_password, usr_email) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
@@ -76,7 +81,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     protected Long update(User entity) {
-        int rows = jdbcTemplate.update("UPDATE " + TABLE_NAME +
+        int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET usr_name=?, usr_password=?, usr_email=?, usr_level=? WHERE usr_id = "
                         + entity.getUserId() + ";",
                 entity.getUserName(),
@@ -89,7 +94,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
 
     @Override
     public boolean delete(Long id) {
-        int rows = jdbcTemplate.update("DELETE FROM " + TABLE_NAME + " WHERE usr_id = ?;", id);
+        int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE usr_id = ?;", id);
         return rows > 0;
     }
 
@@ -100,13 +105,13 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
 
     @Override
     public int count() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + TABLE_NAME + ";", Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
 
     public String existentEmail(String userEmail) {
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT usr_name FROM " + TABLE_NAME + " WHERE usr_email = ?;",
+                    "SELECT usr_name FROM " + tableName + " WHERE usr_email = ?;",
                     new Object[]{userEmail},
                     String.class);
         } catch (EmptyResultDataAccessException e) {

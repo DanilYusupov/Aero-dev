@@ -1,7 +1,9 @@
+package com.gdc.aerodev.service.test;
+
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
-import com.gdc.aerodev.service.postgres.ProjectService;
+import com.gdc.aerodev.service.postgres.PostgresProjectService;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
@@ -10,7 +12,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ProjectServiceTest {
+public class PostgresProjectServiceTest {
 
     private String tableName = "project_test";
     private String projectName = "Project";
@@ -25,7 +27,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testCreateProject(){
-        ProjectService service = getService();
+        PostgresProjectService service = getService();
         PostgresProjectDao dao = service.getDao();
         int size = dao.count();
         assertNotNull(service.createProject(projectName, projectOwner, projectType, projectDescription));
@@ -34,7 +36,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testCreateExistentProject(){
-        ProjectService service = getService();
+        PostgresProjectService service = getService();
         PostgresProjectDao dao = service.getDao();
         assertNotNull(service.createProject(projectName, projectOwner, projectType, projectDescription));
         int size = dao.count();
@@ -44,7 +46,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testCreateWithEmptyName(){
-        ProjectService service = getService();
+        PostgresProjectService service = getService();
         PostgresProjectDao dao = service.getDao();
         int size = dao.count();
         assertNull(service.createProject("", projectOwner, projectType, projectDescription));
@@ -55,7 +57,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testUpdateProject(){
-        ProjectService service = getService();
+        PostgresProjectService service = getService();
         PostgresProjectDao dao = service.getDao();
         Project before = dao.getById(1L);
         assertNotNull(service.updateProject(1L, projectName, projectType, projectDescription));
@@ -64,7 +66,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testUpdateExistentProject(){
-        ProjectService service = getService();
+        PostgresProjectService service = getService();
         PostgresProjectDao dao = service.getDao();
         Long id = service.createProject(projectName, projectOwner, projectType, projectDescription);
         int size = dao.count();
@@ -72,7 +74,7 @@ public class ProjectServiceTest {
         assertEquals(size, dao.count());
     }
 
-    private ProjectService getService(){
-        return new ProjectService(db.getTestDatabase(), tableName);
+    private PostgresProjectService getService(){
+        return new PostgresProjectService(db.getTestDatabase());
     }
 }

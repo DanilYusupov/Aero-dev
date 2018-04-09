@@ -3,34 +3,28 @@ package com.gdc.aerodev.service.postgres;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.GenericService;
+import com.gdc.aerodev.service.util.TableManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
 @Service
-public class UserService extends GenericService{
+public class PostgresUserService implements com.gdc.aerodev.service.UserService{
 
     private final PostgresUserDao dao;
 
-    public UserService() {
-        this.dao = new PostgresUserDao(new JdbcTemplate(), getTableName("user.table"));
+    @Autowired
+    public PostgresUserService() {
+        this.dao = new PostgresUserDao(new JdbcTemplate(), TableManager.getTableName("user.table"));
     }
 
-    public UserService(DataSource testDb, String tableName){
-        this.dao = new PostgresUserDao(new JdbcTemplate(testDb), tableName);
+    public PostgresUserService(DataSource dataSource){
+        this.dao = new PostgresUserDao(new JdbcTemplate(dataSource));
     }
 
-    /**
-     * Inserts {@code User} into database configured by input parameters.
-     *
-     * @param userName name of new {@code User}
-     * @param userPassword password of {@code User}
-     * @param userEmail email of current {@code Project}
-     * @return (0) {@param userId} of inserted {@code User}
-     *         (1) or {@code null} in cause of problems
-     */
+    @Override
     public Long createUser(String userName, String userPassword, String userEmail){
         if (userName.equals("") || userPassword.equals("") || userEmail.equals("")){
             return null;
@@ -53,18 +47,7 @@ public class UserService extends GenericService{
         }
     }
 
-    /**
-     * Updates existent {@code User} chosen by {@param userId} with input parameters. If there is no need to
-     * change some parameter, it should be left as empty ones.
-     *
-     * @param userId ID of updating {@code User}
-     * @param userName new name of updating {@code User}
-     * @param userPassword new password of updating {@code User}
-     * @param userEmail new email for {@code User}
-     * @param userLevel new user level
-     * @return (0) {@param userId} of updated {@code User}
-     *         (1) or {@code null} in cause of problems
-     */
+    @Override
     public Long updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel){
         User user = dao.getById(userId);
         if (!userName.equals("")){
