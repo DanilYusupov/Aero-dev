@@ -1,4 +1,4 @@
-package com.gdc.aerodev.service.specific;
+package com.gdc.aerodev.service.postgres;
 
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
