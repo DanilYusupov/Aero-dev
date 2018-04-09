@@ -4,35 +4,29 @@ import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
-import com.gdc.aerodev.service.GenericService;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.util.TableManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 
 @Service
-public class ProjectService extends GenericService {
+public class PostgresProjectService implements ProjectService {
 
     private final PostgresProjectDao dao;
 
-    public ProjectService() {
-        this.dao = new PostgresProjectDao(new JdbcTemplate(), getTableName("project.table"));
+    @Autowired
+    public PostgresProjectService() {
+        this.dao = new PostgresProjectDao(new JdbcTemplate(), TableManager.getTableName("project.table"));
     }
 
-    public ProjectService(DataSource testDb, String tableName){
-        this.dao = new PostgresProjectDao(new JdbcTemplate(testDb), tableName);
+    public PostgresProjectService(DataSource dataSource){
+        this.dao = new PostgresProjectDao(new JdbcTemplate(dataSource));
     }
 
-    /**
-     * Inserts {@code Project} into database configured by input parameters.
-     *
-     * @param projectName name of new {@code Project}
-     * @param projectOwner ID of {@code User}, who created this {@code Project}
-     * @param projectType {@code ProjectType} of current {@code Project}
-     * @param projectDescription text with description of {@code Project}
-     * @return (0) {@param projectId} of inserted {@code Project}
-     *         (1) or {@code null} in cause of problems
-     */
+    @Override
     public Long createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
         if (projectName.equals("") || projectOwner == null || projectDescription.equals("")) {
             return null;
@@ -50,17 +44,7 @@ public class ProjectService extends GenericService {
         }
     }
 
-    /**
-     * Updates existent {@code Project} chosen by {@param projectId} with input parameters. If there is no need to
-     * change some parameter, it should be left as empty ones.
-     *
-     * @param projectId ID of updating {@code Project}
-     * @param projectName new name of updating {@code Project}
-     * @param projectType new {@code ProjectType} of updating {@code Project}
-     * @param projectDescription new description for {@code Project}
-     * @return (0) {@param projectId} of updated {@code Project}
-     *         (1) or {@code null} in cause of problems
-     */
+    @Override
     public Long updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription) {
         Project project = dao.getById(projectId);
         if (!projectName.equals("")) {

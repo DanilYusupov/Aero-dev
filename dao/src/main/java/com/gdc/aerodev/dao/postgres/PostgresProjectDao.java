@@ -3,6 +3,7 @@ package com.gdc.aerodev.dao.postgres;
 import com.gdc.aerodev.dao.ProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,18 +26,23 @@ import java.util.List;
 public class PostgresProjectDao extends AbstractDao<Project, Long> implements ProjectDao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final String TABLE_NAME;
+    private String tableName = "project_test";
     private final String SELECT_QUERY = "SELECT prj_id, prj_name, prj_owner, prj_type, prj_description FROM ";
 
-    public PostgresProjectDao(JdbcTemplate jdbcTemplate, String TABLE_NAME) {
+    @Autowired
+    public PostgresProjectDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.TABLE_NAME = TABLE_NAME;
+    }
+
+    public PostgresProjectDao(JdbcTemplate jdbcTemplate, String tableName) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.tableName = tableName;
     }
 
     @Override
     public Project getById(Long id) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + TABLE_NAME + " WHERE prj_id = ?;",
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE prj_id = ?;",
                     new ProjectRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -46,7 +52,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
     @Override
     public Project getByName(String name) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + TABLE_NAME + " WHERE prj_name = ?;",
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE prj_name = ?;",
                     new ProjectRowMapper(), name);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -55,12 +61,12 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
 
     @Override
     public List<Project> getAll() {
-        return jdbcTemplate.query(SELECT_QUERY + TABLE_NAME + ";",
+        return jdbcTemplate.query(SELECT_QUERY + tableName + ";",
                 new ProjectRowMapper());
     }
 
     protected Long insert(Project entity) {
-        final String INSERT_SQL = "INSERT INTO " + TABLE_NAME + " (prj_name, prj_owner, prj_type, prj_description) VALUES (?, ?, ?, ?);";
+        final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_name, prj_owner, prj_type, prj_description) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
@@ -77,7 +83,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
     }
 
     protected Long update(Project entity) {
-        int rows = jdbcTemplate.update("UPDATE " + TABLE_NAME +
+        int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET prj_name=?, prj_owner=?, prj_type=?, prj_description=? WHERE prj_id = "
                         + entity.getProjectId() + ";",
                 entity.getProjectName(),
@@ -89,7 +95,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
 
     @Override
     public boolean delete(Long id) {
-        int rows = jdbcTemplate.update("DELETE FROM " + TABLE_NAME + " WHERE prj_id = ?;", id);
+        int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE prj_id = ?;", id);
         return rows > 0;
     }
 
@@ -100,7 +106,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
 
     @Override
     public int count() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + TABLE_NAME + ";", Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
 
     private static class ProjectRowMapper implements RowMapper<Project>{

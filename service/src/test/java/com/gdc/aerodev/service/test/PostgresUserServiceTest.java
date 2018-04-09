@@ -1,6 +1,8 @@
+package com.gdc.aerodev.service.test;
+
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.postgres.UserService;
+import com.gdc.aerodev.service.postgres.PostgresUserService;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
@@ -9,7 +11,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class UserServiceTest {
+public class PostgresUserServiceTest {
 
     private String tableName = "user_test";
     private String userName = "Bob";
@@ -24,7 +26,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateUser(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao = service.getDao();
         int size = dao.count();
         service.createUser(userName, userPassword, userEmail);
@@ -34,7 +36,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateExistentUser(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao = service.getDao();
         assertNotNull(service.createUser(userName, userPassword, userEmail));
         int size = dao.count();
@@ -44,7 +46,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateEmptyName(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao = service.getDao();
         int size = dao.count();
         assertNull(service.createUser("", userPassword, userEmail));
@@ -53,7 +55,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateExistentEmail(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao = service.getDao();
         assertNotNull(service.createUser(userName, userPassword, userEmail));
         int size = dao.count();
@@ -65,7 +67,7 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateUser(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao = service.getDao();
         User before = dao.getById(1L);
         assertNotNull(service.updateUser(1L, userName, userPassword, userEmail, level));
@@ -74,7 +76,7 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateWithEmptyParams(){
-        UserService service = getService();
+        PostgresUserService service = getService();
         PostgresUserDao dao =service.getDao();
         Long id = service.createUser(userName, userPassword, userEmail);
         User before = dao.getById(id);
@@ -86,8 +88,8 @@ public class UserServiceTest {
         assertEquals(before.getUserLevel(), after.getUserLevel());
     }
 
-    private UserService getService(){
-        return new UserService(db.getTestDatabase(), tableName);
+    private PostgresUserService getService(){
+        return new PostgresUserService(db.getTestDatabase());
     }
 
 }
