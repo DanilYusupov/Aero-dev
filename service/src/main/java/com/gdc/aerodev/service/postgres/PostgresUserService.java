@@ -3,7 +3,6 @@ package com.gdc.aerodev.service.postgres;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.util.TableManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class PostgresUserService implements com.gdc.aerodev.service.UserService{
 
     @Autowired
     public PostgresUserService() {
-        this.dao = new PostgresUserDao(new JdbcTemplate(), TableManager.getTableName("user.table"));
+        this.dao = new PostgresUserDao();
     }
 
     public PostgresUserService(DataSource dataSource){
