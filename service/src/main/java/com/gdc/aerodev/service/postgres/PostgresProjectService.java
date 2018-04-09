@@ -5,7 +5,6 @@ import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.service.ProjectService;
-import com.gdc.aerodev.service.util.TableManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class PostgresProjectService implements ProjectService {
 
     @Autowired
     public PostgresProjectService() {
-        this.dao = new PostgresProjectDao(new JdbcTemplate(), TableManager.getTableName("project.table"));
+        this.dao = new PostgresProjectDao();
     }
 
     public PostgresProjectService(DataSource dataSource){
