@@ -24,17 +24,17 @@ public class HomeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/home")
-    public String signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long id = service.createUser(
                 request.getParameter("name"),
                 request.getParameter("email"),
                 request.getParameter("password"));
         if (id != null){
+
             response.getWriter().write(String.valueOf(id));
         } else {
             response.getWriter().write("null");
         }
-        return "result";
     }
 
 }

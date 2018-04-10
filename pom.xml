@@ -20,6 +20,8 @@
         <postgresql.version>42.2.1.jre7</postgresql.version>
         <otj.vesrion>0.11.3</otj.vesrion>
         <flyway.version>5.0.7</flyway.version>
+        <log4j.api.version>2.10.0</log4j.api.version>
+        <log4j.version>1.2.12</log4j.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +51,21 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.api.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
