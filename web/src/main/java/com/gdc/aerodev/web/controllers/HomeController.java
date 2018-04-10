@@ -1,6 +1,6 @@
 package com.gdc.aerodev.web.controllers;
 
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.postgres.PostgresUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +27,8 @@ public class HomeController {
     public void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long id = service.createUser(
                 request.getParameter("name"),
-                request.getParameter("email"),
-                request.getParameter("password"));
+                Hasher.hash(request.getParameter("password")),
+                request.getParameter("email"));
         if (id != null){
 
             response.getWriter().write(String.valueOf(id));
