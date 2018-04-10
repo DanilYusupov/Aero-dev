@@ -25,13 +25,14 @@ import java.util.List;
 @Repository
 public class PostgresProjectDao extends AbstractDao<Project, Long> implements ProjectDao {
 
-    private final JdbcTemplate jdbcTemplate;
-    private String tableName = "project_test";
+    private JdbcTemplate jdbcTemplate;
+    private String tableName;
     private final String SELECT_QUERY = "SELECT prj_id, prj_name, prj_owner, prj_type, prj_description FROM ";
 
     @Autowired
     public PostgresProjectDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.tableName = getTableName("project.table");
     }
 
     public PostgresProjectDao(JdbcTemplate jdbcTemplate, String tableName) {

@@ -3,6 +3,9 @@ package com.gdc.aerodev.dao.postgres;
 import com.gdc.aerodev.dao.exception.DaoException;
 import org.springframework.dao.DuplicateKeyException;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public abstract class AbstractDao<T, V>{
 
     /**
@@ -53,5 +56,15 @@ public abstract class AbstractDao<T, V>{
      * @return number of entities in table
      */
     public abstract int count();
+
+    public String getTableName(String propertyName){
+        Properties properties = new Properties();
+        try {
+            properties.load(AbstractDao.class.getResourceAsStream("/db.properties"));
+        } catch (IOException e) {
+            throw new DaoException("Error reading properties from '/db.properties' file: ", e);
+        }
+        return properties.getProperty(propertyName);
+    }
 
 }

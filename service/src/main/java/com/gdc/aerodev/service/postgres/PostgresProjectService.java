@@ -5,25 +5,16 @@ import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.service.ProjectService;
-import com.gdc.aerodev.service.util.TableManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-
 @Service
-public class PostgresProjectService implements ProjectService {
+public class PostgresProjectService implements ProjectService, LoggingService {
 
     private final PostgresProjectDao dao;
 
-    @Autowired
-    public PostgresProjectService() {
-        this.dao = new PostgresProjectDao(new JdbcTemplate(), TableManager.getTableName("project.table"));
-    }
-
-    public PostgresProjectService(DataSource dataSource){
-        this.dao = new PostgresProjectDao(new JdbcTemplate(dataSource));
+    public PostgresProjectService(PostgresProjectDao dao) {
+        this.dao = dao;
     }
 
     @Override
@@ -32,13 +23,13 @@ public class PostgresProjectService implements ProjectService {
             return null;
         }
         if (isExistentName(projectName)) {
+            log.error("Project with name '" + projectName + "' is already exists.");
             return null;
-            //TODO: plug in logger
-//            return "Project with name '" + projectName + "' is already exists.";
         }
         try {
-            return dao.save(new Project(projectName, projectOwner, projectType, projectDescription));
-//            return "Project '" + projectName + "' created with id " + id + ".";
+            Long id = dao.save(new Project(projectName, projectOwner, projectType, projectDescription));
+            log.info("Project '" + projectName + "' created with id " + id + ".");
+            return id;
         } catch (DaoException e) {
             return null;
         }
@@ -49,8 +40,8 @@ public class PostgresProjectService implements ProjectService {
         Project project = dao.getById(projectId);
         if (!projectName.equals("")) {
             if (isExistentName(projectName)) {
+                log.error("Project with name '" + projectName + "' is already exists.");
                 return null;
-//                return "Project with name '" + projectName + "' is already exists.";
             }
             project.setProjectName(projectName);
         } else if (projectDescription.equals("")){
@@ -61,8 +52,8 @@ public class PostgresProjectService implements ProjectService {
         }
         project.setProjectType(projectType);
         try{
+            log.info("Project '" + projectName + "' successfully updated.");
             return dao.save(project);
-//            return "Project '" + projectName + "' successfully updated.";
         } catch (DaoException e){
             return null;
         }

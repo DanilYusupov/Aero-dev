@@ -43,9 +43,9 @@
                         </button>
                     </div>
                     <div class="float-right">
-                        <button class="btn btn-light rounded-0"><b>Sign in</b></button>
+                        <button id="sign_in" class="btn btn-light rounded-0"><b>Sign in</b></button>
                         <span class="p-1" style="vertical-align: -11% !important; color: #5a6268">or</span>
-                        <button class="btn btn-light rounded-0"><b>Sign up</b></button>
+                        <button id="sign_up" class="btn btn-light rounded-0"><b>Sign up</b></button>
                     </div>
                 </div>
                 <!--<div class="col-sm-1 ml-auto mr-0">-->
@@ -54,6 +54,50 @@
             </div>
         </div>
     </nav>
+</div>
+
+<!-- Sign-up modal -->
+
+<div class="modal fade" id="sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createLabel">Registration</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <label for="new_name">Nickname</label>
+                            <input id="new_name" type="text" class="form-control" placeholder="Ivan007" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <label for="new_email">E-mail</label>
+                            <input id="new_email" type="text" class="form-control" placeholder="i007@mail.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col mb-3">
+                            <label for="new_pass">Password</label>
+                            <input id="new_pass" type="text" class="form-control"
+                                   placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required>
+                        </div>
+                    </div>
+                    <div class="btn-group float-right" role="group" aria-label="Form controls">
+                        <button id="register" type="button" class="btn btn-warning btn-sm">Sign-up</button>
+                        <button type="reset" class="btn btn-secondary btn-sm">Clear</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Hello bar -->
@@ -290,7 +334,7 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.js}" src="../static/js/bootstrap.js"></script>
-
+<script type="text/javascript" th:src="@{/js/home.js}" src="../static/js/home.js"></script>
 
 </body>
 </html>

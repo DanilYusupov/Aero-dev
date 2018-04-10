@@ -24,13 +24,14 @@ import java.util.List;
 @Repository
 public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao {
 
-    private final JdbcTemplate jdbcTemplate;
-    private  String tableName = "user_test";
+    private JdbcTemplate jdbcTemplate;
+    private String tableName;
     private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level FROM ";
 
     @Autowired
     public PostgresUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.tableName = getTableName("user.table");
     }
 
     public PostgresUserDao(JdbcTemplate jdbcTemplate, String tableName) {
