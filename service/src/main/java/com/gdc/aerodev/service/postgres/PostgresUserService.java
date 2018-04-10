@@ -70,6 +70,10 @@ public class PostgresUserService implements UserService, LoggingService {
         }
     }
 
+    public boolean isExistent(String name){
+        return dao.getByName(name) != null;
+    }
+
     public PostgresUserDao getDao(){
         return dao;
     }

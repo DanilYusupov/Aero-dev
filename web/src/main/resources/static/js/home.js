@@ -2,6 +2,10 @@ $(document).on("click", "#sign_up", function () {
     $("#sign_up_modal").modal("show");
 });
 
+$(document).on("click", "#sign_in", function () {
+    $("#sign_in_modal").modal("show");
+});
+
 $(document).on("click", "#register", function () {
     var name = document.getElementById('new_name').value;
     var email = document.getElementById('new_email').value;
@@ -16,3 +20,20 @@ $(document).on("click", "#register", function () {
         }
     });
 });
+
+// $(document).on("click", "#log_in", function () {
+//     var name = document.getElementById("name").value;
+//     var password = document.getElementById("pass").value;
+//     var url = "/login?name=" + name + "&password" + password;
+//
+// });
+
+function showPass(){
+    var x = document.getElementById("pass");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
