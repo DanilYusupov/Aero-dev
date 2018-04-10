@@ -3,24 +3,17 @@ package com.gdc.aerodev.service.postgres;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
-
 @Service
-public class PostgresUserService implements com.gdc.aerodev.service.UserService{
+public class PostgresUserService implements UserService, LoggingService {
 
     private final PostgresUserDao dao;
 
-    @Autowired
-    public PostgresUserService() {
-        this.dao = new PostgresUserDao();
-    }
-
-    public PostgresUserService(DataSource dataSource){
-        this.dao = new PostgresUserDao(new JdbcTemplate(dataSource));
+    public PostgresUserService(PostgresUserDao dao) {
+        this.dao = dao;
     }
 
     @Override
@@ -29,18 +22,18 @@ public class PostgresUserService implements com.gdc.aerodev.service.UserService{
             return null;
         }
         if (isExistentName(userName)){
+            log.error("User with name '" + userName + "' is already exists.");
             return null;
-            //TODO: plug in logger
-//            return "User with name '" + userName + "' is already exists.";
         }
         String emailOwner = dao.existentEmail(userEmail);
         if (emailOwner != null){
+            log.error("This email is already used by '" + emailOwner + "'.");
             return null;
-//            return "This email is already used by '" + emailOwner + "'.";
         }
         try {
-            return dao.save(new User(userName, userPassword, userEmail));
-//            return "Successful created user '" + userName + "' with id " + id + ".";
+            Long id = dao.save(new User(userName, userPassword, userEmail));
+            log.info("Successful created user '" + userName + "' with id " + id + ".");
+            return id;
         } catch (DaoException e){
             return null;
         }
@@ -51,8 +44,8 @@ public class PostgresUserService implements com.gdc.aerodev.service.UserService{
         User user = dao.getById(userId);
         if (!userName.equals("")){
             if (isExistentName(userName)){
+                log.error("User with name '" + userName + "' is already exists.");
                 return null;
-//                return "User with name '" + userName + "' is already exists.";
             }
             user.setUserName(userName);
         } else if (userPassword.equals("") && userEmail.equals("") && user.getUserLevel() == userLevel){
@@ -64,8 +57,8 @@ public class PostgresUserService implements com.gdc.aerodev.service.UserService{
         if (!userEmail.equals("")){
             String emailOwner = dao.existentEmail(userEmail);
             if (emailOwner != null){
+                log.error("This email is already used by '" + emailOwner + "'.");
                 return null;
-//                return "This email is already used by '" + emailOwner + "'.";
             }
             user.setUserEmail(userEmail);
         }

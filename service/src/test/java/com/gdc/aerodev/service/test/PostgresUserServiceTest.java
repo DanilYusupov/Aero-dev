@@ -8,6 +8,7 @@ import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.Assert.*;
 
@@ -89,7 +90,7 @@ public class PostgresUserServiceTest {
     }
 
     private PostgresUserService getService(){
-        return new PostgresUserService(db.getTestDatabase());
+        return new PostgresUserService(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
     }
 
 }

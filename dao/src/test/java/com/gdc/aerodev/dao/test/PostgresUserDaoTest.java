@@ -144,7 +144,7 @@ public class PostgresUserDaoTest {
     }
 
     private PostgresUserDao getDao() {
-        return new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()));
+        return new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 
 }

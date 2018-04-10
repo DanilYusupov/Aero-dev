@@ -11,7 +11,7 @@ $(document).on("click", "#register", function () {
         if (id === 'null'){
             alert("Error while signing up. Try another name or password.");
         } else {
-            alert("Signed up successful!");
+            alert("Signed up successful! Your id: " + id);
             window.location.href = "/user/" + id;
         }
     });

@@ -133,6 +133,6 @@ public class PostgresProjectDaoTest {
     }
 
     private PostgresProjectDao getDao() {
-        return new PostgresProjectDao(new JdbcTemplate(db.getTestDatabase()));
+        return new PostgresProjectDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 }

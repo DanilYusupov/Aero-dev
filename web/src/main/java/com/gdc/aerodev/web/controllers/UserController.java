@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 public class UserController {
 
     private final PostgresUserService service;
@@ -23,7 +25,9 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/user/{id}")
-    public User getUser(@PathVariable String id){
-        return service.getDao().getById(Long.valueOf(id));
+    public ModelAndView getUser(@PathVariable String id){
+        ModelAndView mav = new ModelAndView("user");
+        mav.addObject("user", service.getDao().getById(Long.valueOf(id)));
+        return mav;
     }
 }
