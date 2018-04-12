@@ -1,6 +1,6 @@
 package com.gdc.aerodev.web.controllers;
 
-import com.gdc.aerodev.service.postgres.PostgresUserService;
+import com.gdc.aerodev.service.impl.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,9 +12,9 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
-    private final PostgresUserService service;
+    private final UserService service;
 
-    public HomeController(PostgresUserService service) {
+    public HomeController(UserService service) {
         this.service = service;
     }
 

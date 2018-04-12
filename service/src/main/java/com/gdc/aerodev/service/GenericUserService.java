@@ -1,6 +1,8 @@
 package com.gdc.aerodev.service;
 
-public interface UserService extends GenericService {
+import com.gdc.aerodev.model.User;
+
+public interface GenericUserService extends GenericService {
 
     /**
      * Inserts {@code User} into database configured by input parameters.
@@ -26,5 +28,9 @@ public interface UserService extends GenericService {
      *         (1) or {@code null} in cause of problems
      */
     Long updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel);
+
+    User getUser(String name);
+
+    User getUser(Long id);
 
 }

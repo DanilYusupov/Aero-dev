@@ -1,19 +1,19 @@
-package com.gdc.aerodev.service.postgres;
+package com.gdc.aerodev.service.impl;
 
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
-import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.GenericProjectService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PostgresProjectService implements ProjectService, LoggingService {
+public class ProjectService implements GenericProjectService, LoggingService {
 
     private final PostgresProjectDao dao;
 
-    public PostgresProjectService(PostgresProjectDao dao) {
+    public ProjectService(PostgresProjectDao dao) {
         this.dao = dao;
     }
 
@@ -59,8 +59,18 @@ public class PostgresProjectService implements ProjectService, LoggingService {
         }
     }
 
-    public PostgresProjectDao getDao(){
-        return dao;
+    @Override
+    public Project getProject(String name) {
+        return dao.getByName(name);
+    }
+
+    @Override
+    public Project getProject(Long id) {
+        return dao.getById(id);
+    }
+
+    public int countProjects(){
+        return dao.count();
     }
 
     private boolean isExistentName(String projectName) {

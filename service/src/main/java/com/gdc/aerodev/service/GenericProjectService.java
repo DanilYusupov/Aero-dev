@@ -1,8 +1,9 @@
 package com.gdc.aerodev.service;
 
+import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
 
-public interface ProjectService extends GenericService {
+public interface GenericProjectService extends GenericService {
 
     /**
      * Inserts {@code Project} into database configured by input parameters.
@@ -28,4 +29,9 @@ public interface ProjectService extends GenericService {
      *         (1) or {@code null} in cause of problems
      */
     Long updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription);
+
+    Project getProject(String name);
+
+    Project getProject(Long id);
+
 }
