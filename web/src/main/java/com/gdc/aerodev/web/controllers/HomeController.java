@@ -24,6 +24,19 @@ public class HomeController {
         return "home";
     }
 
+    /**
+     * Makes {@code User} registration by incoming params: <ul>
+     *     <li> name </li>
+     *     <li> password </li>
+     *     <li> email </li>
+     * </ul>
+     * <p>
+     *     Password encrypts before storing into database.
+     * </p>
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/home")
     public void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long id = service.createUser(
