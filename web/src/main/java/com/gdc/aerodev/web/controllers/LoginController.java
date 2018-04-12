@@ -19,6 +19,12 @@ public class LoginController implements LoggingWeb{
         this.service = service;
     }
 
+    /**
+     * Sets {@code User} as session attribute 'user' if login success. Or redirects to '/home?error'
+     * @param request HTTP request from client
+     * @return (0) '/user/{id}' redirection if login success or <br>
+     *         (1) '/home?error' redirection if access denied
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/login")
     public String login(HttpServletRequest request){
         String name = request.getParameter("name");
