@@ -2,6 +2,7 @@
 *.iml
 /target
 /.idea
+/dump
 
 # Compiled class file
 *.class

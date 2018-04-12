@@ -1,18 +1,18 @@
-package com.gdc.aerodev.service.postgres;
+package com.gdc.aerodev.service.impl;
 
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.GenericUserService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PostgresUserService implements UserService, LoggingService {
+public class UserService implements GenericUserService, LoggingService {
 
     private final PostgresUserDao dao;
 
-    public PostgresUserService(PostgresUserDao dao) {
+    public UserService(PostgresUserDao dao) {
         this.dao = dao;
     }
 
@@ -70,8 +70,18 @@ public class PostgresUserService implements UserService, LoggingService {
         }
     }
 
-    public PostgresUserDao getDao(){
-        return dao;
+    @Override
+    public User getUser(String name) {
+        return dao.getByName(name);
+    }
+
+    @Override
+    public User getUser(Long id) {
+        return dao.getById(id);
+    }
+
+    public int countUsers(){
+        return dao.count();
     }
 
     private boolean isExistentName(String userName){
