@@ -1,6 +1,7 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.service.postgres.PostgresUserService;
+import com.gdc.aerodev.service.security.Hasher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
