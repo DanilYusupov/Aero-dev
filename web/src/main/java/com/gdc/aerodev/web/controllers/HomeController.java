@@ -1,6 +1,6 @@
 package com.gdc.aerodev.web.controllers;
 
-import com.gdc.aerodev.service.postgres.PostgresUserService;
+import com.gdc.aerodev.service.impl.UserService;
 import com.gdc.aerodev.service.security.Hasher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,6 @@ public class HomeController {
      * <p>
      *     Password encrypts before storing into database.
      * </p>
-     * @param request
-     * @param response
-     * @throws IOException
      */
     @RequestMapping(method = RequestMethod.POST, path = "/home")
     public void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {

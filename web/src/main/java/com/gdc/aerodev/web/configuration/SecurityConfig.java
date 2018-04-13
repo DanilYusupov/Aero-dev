@@ -1,7 +1,7 @@
 package com.gdc.aerodev.web.configuration;
 
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.postgres.PostgresUserService;
+import com.gdc.aerodev.service.impl.UserService;
 import com.gdc.aerodev.service.security.Hasher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +14,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PostgresUserService userService;
+    private final UserService userService;
 
-    public SecurityConfig(PostgresUserService userService) {
+    public SecurityConfig(UserService userService) {
         this.userService = userService;
     }
 
@@ -50,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected UserDetailsService userDetailsService() {
         return username -> {
-            User user = userService.getDao().getByName(username);
+            User user = userService.getUser(username);
             if (user == null) {
                 throw new UsernameNotFoundException("User '" + username + "' was not found in the database");
             }
