@@ -19,6 +19,11 @@ public class LoginController implements LoggingWeb{
         this.service = service;
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/login")
+    public String getLogin(){
+        return "login";
+    }
+
     /**
      * Sets {@code User} as session attribute 'user' if login success. Or redirects to '/home?error'
      * @param request HTTP request from client
@@ -32,7 +37,7 @@ public class LoginController implements LoggingWeb{
         log.info("Received (name/password): (" + name + "/" + password + ")");
         if (!service.isExistent(name)){
             log.error("No such user '" + name + "'");
-            return "redirect:/home?error";
+            return "redirect:/nouser";
         }
         User user = service.getDao().getByName(name);
         String hashed = Hasher.hash(password);
@@ -42,7 +47,7 @@ public class LoginController implements LoggingWeb{
         } else {
             log.error("Password: '" + hashed + "' for '" + name + "' with id " + user.getUserId() +
                     " doesn't matches. " + user.getUserPassword());
-            return "redirect:/home?error";
+            return "redirect:/invalidpass";
         }
     }
 }
