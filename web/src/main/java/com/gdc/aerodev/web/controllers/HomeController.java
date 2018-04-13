@@ -43,7 +43,6 @@ public class HomeController {
                 Hasher.hash(request.getParameter("password")),
                 request.getParameter("email"));
         if (id != null){
-
             response.getWriter().write(String.valueOf(id));
         } else {
             response.getWriter().write("null");

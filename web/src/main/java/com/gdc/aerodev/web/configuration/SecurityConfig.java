@@ -32,10 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests()
-                    .anyRequest().authenticated()
+                    .antMatchers("/home").permitAll()
+                    .antMatchers("/profile", "/user/**").hasRole("USER")
                     .and()
                 .formLogin()
+                    .usernameParameter("name")
+                    .loginPage("/login").
+                successHandler(new MySuccessHandler())
                     .and()
+                .csrf()
+                    .disable()
                 .httpBasic();
         // @formatter:on
     }
@@ -67,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
-    private static class UserWrapper implements UserDetails {
+    static class UserWrapper implements UserDetails {
         private final User user;
 
         private UserWrapper(User user) {
@@ -81,11 +87,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             // FIXME: stub, add roles to the database
-            return Arrays.asList(
-                    new SimpleGrantedAuthority("ROLE_USER"),
-                    new SimpleGrantedAuthority("ROLE_ADMINISTRATOR")
+            return Collections.singletonList(
+                    new SimpleGrantedAuthority("ROLE_USER")
+//                    new SimpleGrantedAuthority("ROLE_ADMINISTRATOR")
             );
         }
+
+        public Long getId(){return user.getUserId();}
 
         @Override
         public String getPassword() {
