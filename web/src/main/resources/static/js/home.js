@@ -16,3 +16,20 @@ $(document).on("click", "#register", function () {
         }
     });
 });
+
+// $(document).on("click", "#log_in", function () {
+//     var name = document.getElementById("name").value;
+//     var password = document.getElementById("pass").value;
+//     var url = "/login?name=" + name + "&password" + password;
+//
+// });
+
+function showPass(){
+    var x = document.getElementById("pass");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
