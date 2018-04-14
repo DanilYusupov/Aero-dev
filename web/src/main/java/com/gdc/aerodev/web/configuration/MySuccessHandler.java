@@ -12,7 +12,7 @@ public class MySuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         SecurityConfig.UserWrapper user = (SecurityConfig.UserWrapper) authentication.getPrincipal();
-        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("user", user.getId());
         response.sendRedirect("/user/" + String.valueOf(user.getId()));
     }
 }
