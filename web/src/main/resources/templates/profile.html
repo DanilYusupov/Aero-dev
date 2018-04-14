@@ -53,14 +53,16 @@
             </div>
 
             <div class="row mt-3 bg-light" style="max-height: 80px;">
-                <button class="float-right btn btn-warning">Create project</button>
+                <a href="/create_prj" class="float-right btn btn-warning">Create project</a>
             </div>
             <!-- List -->
             <div class="row">
                 <div class="col">
                     <table class="table">
                         <tr th:each="prj: ${prjs}">
-                            <td th:text="${prj.getProjectName()}"></td>
+                            <td>
+                                <a class="lead" th:text="${prj.getProjectName()}" th:href="@{/project(prjId=${prj.getProjectId()})}"></a>
+                            </td>
                         </tr>
                     </table>
                 </div>

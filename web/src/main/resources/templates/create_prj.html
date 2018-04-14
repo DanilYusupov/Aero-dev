@@ -15,17 +15,27 @@
     <div class="row my-auto">
         <div class="col-5 mx-auto" style="margin-top: 20vh;">
             <form th:action="@{/create_prj}" method="post">
+                <div class="form-row">
+                    <div class="col">
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">
+                                Error creating project!
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="from-row">
                     <div class="col mb-3 text-center">
                         <label for="name">Project name:</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Project name"
                                required>
+                        <input class="invisible" type="text" name="usrId" id="usrId" th:value="${user.getUserId()}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col mb-3 text-center">
-                        <label for="select">Project type:</label>
-                        <select id="select" class="custom-select">
+                        <label for="type">Project type:</label>
+                        <select id="type" name="type" class="custom-select">
                             <option value="Aerodynamics" selected>Aerodynamics</option>
                             <option value="Structure">Structure</option>
                             <option value="Design">Design</option>
@@ -38,7 +48,7 @@
                 <div class="form-row">
                     <div class="col mb-3 text-center">
                         <label for="description">Project description:</label>
-                        <textarea id="description" class="form-control" rows="3"></textarea>
+                        <textarea id="description" name="description" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
                 <div class="form-row">

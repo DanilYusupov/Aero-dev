@@ -25,17 +25,12 @@ public class    ProfileController implements LoggingWeb{
 
     @RequestMapping(method = RequestMethod.GET, path = "/profile")
     public ModelAndView profile(HttpSession session){
-        try {
             User user = usrService.getUser((Long) session.getAttribute("user"));
             log.debug("Received user '" + user.getUserName() + "'.");
             ModelAndView mav = new ModelAndView("profile");
             mav.addObject("user", user);
             mav.addObject("prjs", prjService.getByUserId(user.getUserId()));
             return mav;
-        } catch (NullPointerException e){
-            log.error("Cannot receive users id as session attribute.");
-            return new ModelAndView("/login");
-        }
     }
 
 }
