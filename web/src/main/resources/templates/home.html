@@ -71,9 +71,10 @@
                 <h1 class="display-3 mt-3">
                     Welcome to aviation sandbox!
                 </h1>
-                <hr class="my-4 border w-50">
                 <p class="lead">Here You can invite something new and share with Your experience to another
                     engineers.</p>
+                <hr class="my-4 border w-50">
+
                 <a href="#info" class="btn btn-lg btn-outline-primary rounded-0" style="opacity: 0.75">Learn more</a>
             </div>
         </div>
@@ -262,14 +263,7 @@
 <!-- About project -->
 
 <div class="container-fluid my-5">
-    <div class="row">
-        <div class="col">
-            <div class="text-center">
-                <p class="display-4" id="info">about Aero-dev</p>
-                <h4>Some text...</h4>
-            </div>
-        </div>
-    </div>
+    <div th:replace="fragments/about :: about"></div>
 </div>
 
 <!-- Footer -->
@@ -294,14 +288,6 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.js}" src="../static/js/bootstrap.js"></script>
 <script type="text/javascript" th:src="@{/js/home.js}" src="../static/js/home.js"></script>
-<script th:inline="javascript">
-    $(document).ready(function () {
-        if ([[${session.user}]] === null){
-            $("#not_authorized").style.display = 'block';
-            $("#authorized").style.display = 'none';
-        }
-    });
-</script>
 
 </body>
 </html>

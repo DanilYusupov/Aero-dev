@@ -6,5 +6,5 @@ package com.gdc.aerodev.model;
  * @author Yusupov Danil
  */
 public enum ProjectType {
-    AERODYNAMICS, STRUCTURE, DESIGN, TECHNOLOGIC, ACOUSTIC, AEROELASTIC
+        AERODYNAMICS, STRUCTURE, DESIGN, TECHNOLOGY, ACOUSTICS, AEROELASTICITY
 }
