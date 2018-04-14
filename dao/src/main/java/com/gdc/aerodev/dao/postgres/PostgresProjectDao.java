@@ -40,6 +40,11 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
         this.tableName = tableName;
     }
 
+    public List<Project> getByUserId(Long usrId){
+            return jdbcTemplate.query(SELECT_QUERY + tableName + " WHERE prj_owner = ?;",
+                    new ProjectRowMapper(), usrId);
+    }
+
     @Override
     public Project getById(Long id) {
         try {
