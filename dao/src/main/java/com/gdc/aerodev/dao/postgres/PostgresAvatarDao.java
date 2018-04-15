@@ -30,6 +30,7 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
     }
 
     public Avatar getAvatar(Long id) {
+        //FIXME: Perform JOIN query by usr_id!
         try {
             return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_id = ?;", new AvatarRowMapper(), id);
         } catch (EmptyResultDataAccessException e){
