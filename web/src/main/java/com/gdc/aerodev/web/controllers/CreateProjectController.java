@@ -3,7 +3,6 @@ package com.gdc.aerodev.web.controllers;
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.impl.ProjectService;
-import com.gdc.aerodev.service.impl.UserService;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +17,9 @@ import javax.servlet.http.HttpSession;
 public class CreateProjectController implements LoggingWeb{
 
     private final ProjectService prjService;
-    private final UserService usrService;
 
-    public CreateProjectController(ProjectService prjService, UserService usrService) {
+    public CreateProjectController(ProjectService prjService) {
         this.prjService = prjService;
-        this.usrService = usrService;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/create_prj")
@@ -35,7 +32,7 @@ public class CreateProjectController implements LoggingWeb{
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/create_prj")
-    public String createProject(HttpServletRequest request, HttpServletResponse response){
+    public String createProject(HttpServletRequest request){
         Long owner = Long.valueOf(request.getParameter("usrId"));
         Long id = prjService.createProject(request.getParameter("name"),
                 owner,

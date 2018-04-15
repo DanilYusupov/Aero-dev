@@ -21,11 +21,6 @@ public class UserController {
         this.prj_service = prj_service;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/user")
-    public String user(Model model){
-        return "user";
-    }
-
     @RequestMapping(method = RequestMethod.GET, path = "/user/{id}")
     public ModelAndView getUser(@PathVariable String id){
         User user = usr_service.getUser(Long.valueOf(id));
