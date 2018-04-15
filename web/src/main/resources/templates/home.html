@@ -10,10 +10,10 @@
 
 <!-- Navigation bar -->
 
-<div th:if="${user != null}">
+<div th:if="${session.client != null}">
     <div th:replace="fragments/navbar :: authorized"></div>
 </div>
-<div th:if="${user == null}">
+<div th:if="${session.client == null}">
     <div th:replace="fragments/navbar :: not_authorized"></div>
 </div>
 
@@ -89,7 +89,7 @@
         top three projects
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col" th:each="prj: ${top_prj}">
             <div class="card text-white bg-dark border-0">
                 <div class="blackout">
                     <a href="">
@@ -102,47 +102,7 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Project's name</h5>
-                    <p class="card-text">Small description of project</p>
-                    <p class="card-text">
-                        <small class="text-muted">Author's name</small>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-white bg-dark border-0">
-                <div class="blackout">
-                    <a href="">
-                        <div class="image">
-                            <img class="card-img-top" th:src="@{/img/project_face_example.jpg}"
-                                 src="../static/img/project_face_example.jpg"
-                                 alt="Project's face image"
-                                 style="object-fit: cover; height: 15em;">
-                        </div>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Project's name</h5>
-                    <p class="card-text">Small description of project</p>
-                    <p class="card-text">
-                        <small class="text-muted">Author's name</small>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card text-white bg-dark border-0">
-                <a href="" class="blackout">
-                    <div class="image">
-                        <img class="card-img-top" th:src="@{/img/project_face_example.jpg}"
-                             src="../static/img/project_face_example.jpg"
-                             alt="Project's face image"
-                             style="object-fit: cover; height: 15em;">
-                    </div>
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">Project's name</h5>
+                    <h5 class="card-title" th:text="${prj.getProjectName()}"></h5>
                     <p class="card-text">Small description of project</p>
                     <p class="card-text">
                         <small class="text-muted">Author's name</small>
@@ -160,45 +120,15 @@
         top three engineers
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col" th:each="top_user: ${top_users}">
             <div class="card border-0">
-                <a href="" class="mx-auto">
-                    <img class="card-img-top rounded-circle" th:src="@{/img/engineer_example.jpg}"
-                         src="../static/img/engineer_example.jpg"
+                <a th:href="@{'/user/' + ${top_user.userId}}" class="mx-auto">
+                    <img class="card-img-top rounded-circle" th:src="@{/img/Bob.jpg}"
+                         src="../static/img/Bob.jpg"
                          style="object-fit: cover; height: 15em; width: 15em;">
                 </a>
                 <div class="card-body text-center">
-                    <h5 class="card-title">Engineer's name</h5>
-                    <p class="card-text">His statistics & info
-                        <span class="badge badge-primary badge-pill">14</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0">
-                <a href="" class="mx-auto">
-                    <img class="card-img-top rounded-circle" th:src="@{/img/engineer_example.jpg}"
-                         src="../static/img/engineer_example.jpg"
-                         style="object-fit: cover; height: 15em; width: 15em;">
-                </a>
-                <div class="card-body text-center">
-                    <h5 class="card-title">Engineer's name</h5>
-                    <p class="card-text">His statistics & info
-                        <span class="badge badge-primary badge-pill">14</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0">
-                <a href="" class="mx-auto">
-                    <img class="card-img-top rounded-circle" th:src="@{/img/engineer_example.jpg}"
-                         src="../static/img/engineer_example.jpg"
-                         style="object-fit: cover; height: 15em; width: 15em;">
-                </a>
-                <div class="card-body text-center">
-                    <h5 class="card-title">Engineer's name</h5>
+                    <h5 class="card-title" th:text="${top_user.getUserName()}"></h5>
                     <p class="card-text">His statistics & info
                         <span class="badge badge-primary badge-pill">14</span>
                     </p>

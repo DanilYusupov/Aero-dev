@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col p-3" style="max-width: 400px;">
                     <div class="card bg-dark text-light border-0">
-                        <img class="card-img-top" src="../static/img/engineer_example.jpg" th:src="@{/img/engineer_example.jpg}" style=" object-fit: cover; max-height: 400px;">
+                        <img class="card-img-top" src="../static/img/Bob.jpg" th:src="@{/img/Bob.jpg}" style=" object-fit: cover; max-height: 400px;">
                         <div class="card-img-overlay" style="margin-top: -15px;">
                             <span class="badge badge-pill badge-primary" style="margin-left: -15px;">Engineer</span>
                         </div>
@@ -45,22 +45,7 @@
 
         <!-- Buttons and list col -->
         <div class="col">
-
-            <!-- Buttons -->
-            <div class="row mt-3" style="max-height: 80px;">
-                <div class="col"><a href="" class="btn btn-link btn-lg">Projects</a></div>
-                <div class="col"><a href="" class="btn btn-link btn-lg">Offers</a></div>
-                <div class="col"><a href="" class="btn btn-link btn-lg">History</a></div>
-                <div class="col"><a href="" class="btn btn-link btn-lg">Followers</a></div>
-                <div class="col"><a href="" class="btn btn-link btn-lg">Following</a></div>
-            </div>
-
-            <!-- List -->
-            <div class="row">
-                <div class="col">
-                    <!-- Here js data from servlets -->
-                </div>
-            </div>
+            <div th:replace="fragments/tabs :: user_tab"></div>
         </div>
     </div>
 </div>

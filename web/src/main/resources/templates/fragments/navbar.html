@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" href="../static/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/my-blackout.css}" href="../static/css/my-blackout.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" href="../../static/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/my-blackout.css}" href="../../static/css/my-blackout.css"/>
 </head>
 <body>
 
@@ -48,16 +48,36 @@
                                 <a class="image btn" style="margin-top: -7px; margin-bottom: -7px;"
                                    data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
-                                    <img class="rounded-circle" src="../static/img/engineer_example.jpg"
-                                         th:src="@{/img/engineer_example.jpg}"
+                                    <img class="rounded-circle" src="../static/img/Bob.jpg"
+                                         th:src="@{/img/Bob.jpg}"
                                          style="object-fit: cover; height: 2.6em; width: 2.6em;" data-toggle="tooltip"
                                          title="Your name">
                                 </a>
                                 <div class="dropdown-menu">
-                                    <p class="dropdown-item" th:text="${user.getUserName()}"></p>
+                                    <p class="dropdown-item disabled" th:text="${session.client.getUserName()}"></p>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/profile">Profile</a>
                                     <a class="dropdown-item" href="">Settings</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="float-right">
+                            <div class="dropdown blackout">
+                                <a class="image btn" style="margin-top: -7px; margin-bottom: -7px;"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <svg id="i-plus" viewBox="0 0 32 32"
+                                         style="object-fit: cover; height: 1.7em; width: 1.7em; margin-top: 30%;"
+                                         data-toggle="tooltip"
+                                         stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round"
+                                         stroke-width="2">
+                                        <path d="M16 2 L16 30 M2 16 L30 16"/>
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/create_prj">Project</a>
                                 </div>
                             </div>
                         </div>
@@ -122,6 +142,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
-<script type="text/javascript" th:src="@{/js/bootstrap.js}" src="../static/js/bootstrap.js"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.js}" src="../../static/js/bootstrap.js"></script>
 </body>
 </html>

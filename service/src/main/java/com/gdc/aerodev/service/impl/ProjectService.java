@@ -84,4 +84,7 @@ public class ProjectService implements GenericProjectService, LoggingService {
         return dao.getByName(projectName) != null;
     }
 
+    public List<Project> getTopThree() {
+        return dao.getTopThree();
+    }
 }

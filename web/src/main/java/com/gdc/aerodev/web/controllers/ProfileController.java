@@ -25,7 +25,7 @@ public class    ProfileController implements LoggingWeb{
 
     @RequestMapping(method = RequestMethod.GET, path = "/profile")
     public ModelAndView profile(HttpSession session){
-            User user = usrService.getUser((Long) session.getAttribute("user"));
+            User user = (User) session.getAttribute("client");
             log.debug("Received user '" + user.getUserName() + "'.");
             ModelAndView mav = new ModelAndView("profile");
             mav.addObject("user", user);

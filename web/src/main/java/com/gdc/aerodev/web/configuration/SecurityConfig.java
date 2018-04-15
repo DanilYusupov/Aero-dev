@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .usernameParameter("name")
                     .loginPage("/login").
-                successHandler(new MySuccessHandler())
+                successHandler(new MySuccessHandler(userService))
                     .and()
                 .csrf()
                     .disable()

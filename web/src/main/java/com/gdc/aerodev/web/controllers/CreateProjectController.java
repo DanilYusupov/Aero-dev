@@ -27,7 +27,7 @@ public class CreateProjectController implements LoggingWeb{
 
     @RequestMapping(method = RequestMethod.GET, path = "/create_prj")
     public ModelAndView getPage(HttpSession session){
-        User user = usrService.getUser((Long) session.getAttribute("user"));
+        User user = (User) session.getAttribute("client");
         log.debug("Received user '" + user.getUserName() + "'.");
         ModelAndView mav = new ModelAndView("create_prj");
         mav.addObject("user", user);
