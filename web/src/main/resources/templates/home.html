@@ -92,7 +92,7 @@
         <div class="col" th:each="prj: ${top_prj}">
             <div class="card text-white bg-dark border-0">
                 <div class="blackout">
-                    <a href="">
+                    <a th:href="@{'/project/' + ${prj.getProjectId()}}">
                         <div class="image">
                             <img class="card-img-top" th:src="@{/img/project_face_example.jpg}"
                                  src="../static/img/project_face_example.jpg"

@@ -33,7 +33,7 @@
                         <tr th:each="prj: ${prjs}">
                             <td>
                                 <a class="lead" th:text="${prj.getProjectName()}"
-                                   th:href="@{/project(prjId=${prj.getProjectId()})}"></a>
+                                   th:href="@{'/project/' + ${prj.getProjectId()}}"></a>
                             </td>
                         </tr>
                     </table>
@@ -82,7 +82,7 @@
                         <tr th:each="prj: ${prjs}">
                             <td>
                                 <a class="lead" th:text="${prj.getProjectName()}"
-                                   th:href="@{/project(prjId=${prj.getProjectId()})}"></a>
+                                   th:href="@{'/project/' + ${prj.getProjectId()}}"></a>
                             </td>
                         </tr>
                     </table>
