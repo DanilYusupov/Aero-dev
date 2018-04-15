@@ -8,6 +8,9 @@ import com.gdc.aerodev.service.GenericProjectService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProjectService implements GenericProjectService, LoggingService {
 
@@ -69,6 +72,10 @@ public class ProjectService implements GenericProjectService, LoggingService {
         return dao.getById(id);
     }
 
+    public List<Project> getByUserId(Long id){
+        return dao.getByUserId(id);
+    }
+
     public int countProjects(){
         return dao.count();
     }
@@ -77,4 +84,7 @@ public class ProjectService implements GenericProjectService, LoggingService {
         return dao.getByName(projectName) != null;
     }
 
+    public List<Project> getTopThree() {
+        return dao.getTopThree();
+    }
 }

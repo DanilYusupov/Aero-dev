@@ -7,6 +7,8 @@ import com.gdc.aerodev.service.GenericUserService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements GenericUserService, LoggingService {
 
@@ -14,6 +16,10 @@ public class UserService implements GenericUserService, LoggingService {
 
     public UserService(PostgresUserDao dao) {
         this.dao = dao;
+    }
+
+    public List<User> getTopThree(){
+        return dao.getTopThree();
     }
 
     @Override

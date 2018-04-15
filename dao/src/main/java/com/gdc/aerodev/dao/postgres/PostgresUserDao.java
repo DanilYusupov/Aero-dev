@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,6 +119,11 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    public List<User> getTopThree() {
+        return jdbcTemplate.query(SELECT_QUERY + tableName + " LIMIT 3;", new UserRowMapper());
+        //TODO: add rating logic!
     }
 
     private static class UserRowMapper implements RowMapper<User> {
