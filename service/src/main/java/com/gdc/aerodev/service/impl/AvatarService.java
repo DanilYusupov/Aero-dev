@@ -35,7 +35,12 @@ public class AvatarService implements GenericAvatarService, LoggingService {
      */
     @Override
     public Avatar getAvatar(Long id) {
-        return avDao.getById(id);
+        try{
+            return avDao.getById(id);
+        } catch (NullPointerException e){
+            return null;
+            //FIXME: return default avatar
+        }
     }
 
     public Long uploadAvatar(Long userId, byte[] bytes, String contentType) {
