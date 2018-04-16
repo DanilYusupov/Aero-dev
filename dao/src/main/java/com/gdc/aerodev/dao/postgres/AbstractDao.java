@@ -1,12 +1,13 @@
 package com.gdc.aerodev.dao.postgres;
 
 import com.gdc.aerodev.dao.exception.DaoException;
+import com.gdc.aerodev.dao.logging.LoggingDao;
 import org.springframework.dao.DuplicateKeyException;
 
 import java.io.IOException;
 import java.util.Properties;
 
-public abstract class AbstractDao<T, V>{
+public abstract class AbstractDao<T, V> implements LoggingDao{
 
     /**
      * Method inherited from {@code GenericDao} & checks which method needs to be invoked. If {@code entityId} is

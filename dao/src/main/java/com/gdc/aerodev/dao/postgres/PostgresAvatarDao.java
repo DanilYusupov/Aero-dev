@@ -8,15 +8,21 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Arrays;
 
+@Repository
 public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
     private final String SELECT_QUERY = "SELECT av_id, av_owner, av_data, av_type FROM ";
-    private final String INSERT_SQL = "INSERT INTO " + tableName + " (av_owner, av_data, av_type) VALUES (?, ?, ?);";
 
     @Autowired
     public PostgresAvatarDao(JdbcTemplate jdbcTemplate) {
@@ -29,11 +35,10 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
         this.tableName = tableName;
     }
 
-    public Avatar getAvatar(Long id) {
-        //FIXME: Perform JOIN query by usr_id!
+    public Avatar getAvatarByOwnerId(Long id) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_id = ?;", new AvatarRowMapper(), id);
-        } catch (EmptyResultDataAccessException e){
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_owner = ?;", new AvatarRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
@@ -43,41 +48,47 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
-                    Blob blob = con.createBlob();
-                    PreparedStatement ps = con.prepareStatement(INSERT_SQL, new String[]{"av_id"});
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO " + tableName + " (av_owner, av_data, av_type) VALUES (?, ?, ?);", new String[]{"av_id"});
                     ps.setLong(1, entity.getAvatarOwner());
                     if (entity.getAvatarData() == null) {
-                        ps.setNull(2, Types.BLOB);
+                        throw new DaoException("Empty byte array!");
                     } else {
-                        blob.setBytes(1, entity.getAvatarData());
-                        ps.setBlob(2, blob);
+                        log.info("Received new avatar with size: " + entity.getAvatarData().length + " bytes.");
+                        ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()));
                     }
                     ps.setString(3, entity.getContentType());
                     return ps;
                 },
                 keyHolder
         );
-        return keyHolder.getKey().longValue();
+        long id = keyHolder.getKey().longValue();
+        log.info("Inserted avatar with id " + id);
+        return id;
     }
 
     @Override
     protected Long update(Avatar entity) {
         int rows = jdbcTemplate.update(
                 con -> {
-                    Blob blob = con.createBlob();
                     PreparedStatement ps = con.prepareStatement("UPDATE " + tableName + " SET av_owner=?, av_data=?, av_type=? WHERE av_id = " + entity.getAvatarId() + ";");
                     ps.setLong(1, entity.getAvatarOwner());
                     if (entity.getAvatarData() == null) {
-                        ps.setNull(2, Types.BLOB);
+                        throw new DaoException("Empty byte array!");
                     } else {
-                        blob.setBytes(1, entity.getAvatarData());
-                        ps.setBlob(2, blob);
+                        ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()), entity.getAvatarData().length);
                     }
                     ps.setString(3, entity.getContentType());
                     return ps;
                 }
         );
-        return (rows > 0) ? entity.getAvatarId() : null;
+        Long id = entity.getAvatarId();
+        if (rows > 0) {
+            log.info("Updated avatar with id " + id);
+            return id;
+        } else {
+            log.error("Nothing to update. Avatar id " + id);
+            throw new DaoException("Nothing to update. Avatar id" + id);
+        }
     }
 
     @Override
@@ -92,15 +103,22 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
             Avatar avatar = new Avatar();
             avatar.setAvatarId(resultSet.getLong("av_id"));
             avatar.setAvatarOwner(resultSet.getLong("av_owner"));
-            Blob blob = resultSet.getBlob("av_data");
-            if (blob == null) {
-                throw new DaoException("No binary data in avatar: " + avatar.getAvatarId());
-            }
-            int length = (int) blob.length();
-            byte[] avatarData = blob.getBytes(1, length);
-            avatar.setAvatarData(avatarData);
+            avatar.setAvatarData(toByteArray(resultSet.getBinaryStream("av_data")));
             avatar.setContentType(resultSet.getString("av_type"));
             return avatar;
+        }
+    }
+
+    private static byte[] toByteArray(InputStream inputStream) {
+        try(InputStream in = inputStream;
+                ByteArrayOutputStream out = new ByteArrayOutputStream()){
+            int a;
+            while ((a = in.read()) != -1){
+                out.write(a);
+            }
+            return out.toByteArray();
+        } catch (IOException e) {
+            throw new DaoException("Error reading avatar from DB: ", e);
         }
     }
 
