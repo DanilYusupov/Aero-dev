@@ -46,7 +46,7 @@ public class PostgresAvatarDaoTest {
         PostgresAvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         Long id = dao.save(avatar);
-        Avatar received = dao.getAvatarByOwnerId(owner);
+        Avatar received = dao.getById(owner);
         assertEquals(avatar.getAvatarData().length, received.getAvatarData().length);
         assertEquals(id, received.getAvatarId());
     }
@@ -54,7 +54,7 @@ public class PostgresAvatarDaoTest {
     @Test
     public void testGetNonExistentImage(){
         PostgresAvatarDao dao = getDao();
-        assertNull(dao.getAvatarByOwnerId(owner));
+        assertNull(dao.getById(owner));
     }
 
     @Test
@@ -63,10 +63,10 @@ public class PostgresAvatarDaoTest {
         PostgresAvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         dao.save(avatar);
-        Avatar update = dao.getAvatarByOwnerId(owner);
+        Avatar update = dao.getById(owner);
         update.setAvatarOwner(newOwner);
         assertEquals(id, dao.save(update));
-        assertEquals(newOwner, dao.getAvatarByOwnerId(newOwner).getAvatarOwner());
+        assertEquals(newOwner, dao.getById(newOwner).getAvatarOwner());
     }
 
     private PostgresAvatarDao getDao() {

@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao.postgres;
 
+import com.gdc.aerodev.dao.AvatarDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Avatar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.sql.*;
 import java.util.Arrays;
 
 @Repository
-public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
+public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements AvatarDao {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -35,12 +36,31 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> {
         this.tableName = tableName;
     }
 
-    public Avatar getAvatarByOwnerId(Long id) {
+    /**
+     * Gives user's avatar by his id
+     * @param id identifier of avatar owner {@code User}
+     * @return (0) {@code Avatar} or
+     *         (1) {@code null}
+     */
+    @Override
+    public Avatar getById(Long id) {
         try {
             return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_owner = ?;", new AvatarRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    /**
+     * Deletes user's avatar by his id
+     * @param id identifier of user which avatar must be deleted
+     * @return (0) {@code true} if avatar was deleted or
+     *         (1) {@code false} if avatar wasn't deleted
+     */
+    @Override
+    public boolean delete(Long id) {
+        int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE av_owner = ?;", id);
+        return rows > 0;
     }
 
     @Override
