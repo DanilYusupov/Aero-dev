@@ -43,15 +43,17 @@ public class HomeController {
      * </p>
      */
     @RequestMapping(method = RequestMethod.POST, path = "/home")
-    public void signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String signUp(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long id = usr_service.createUser(
                 request.getParameter("name"),
                 Hasher.hash(request.getParameter("password")),
-                request.getParameter("email"));
+                request.getParameter("email"),
+                Boolean.parseBoolean(request.getParameter("male"))
+        );
         if (id != null){
-            response.getWriter().write(String.valueOf(id));
+            return "redirect:/user/" + id;
         } else {
-            response.getWriter().write("null");
+            return "redirect:/home?error";
         }
     }
 

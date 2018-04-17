@@ -10,10 +10,26 @@ package com.gdc.aerodev.model;
 public class User {
 
     private Long userId;
+    /**
+     * @param userName used as <b>nickname</b> to get access to user's profile
+     */
     private String userName;
     private String userPassword;
     private String userEmail;
+    /**
+     * @param userLevel describes summary user's competence
+     */
     private short userLevel;
+    private String userFirstName;
+    private String userLastName;
+    private String userBiography;
+    /**
+     * @param userRating counts according to his activity.
+     */
+    private int userRating;
+    private String userCountry;
+    private String userCity;
+    private boolean isMale;
 
     public User() {
     }
@@ -24,12 +40,23 @@ public class User {
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userLevel = userLevel;
+        this.userFirstName="";
+        this.userLastName="";
+        this.userBiography="";
+        this.userCountry="";
+        this.userCity="";
     }
 
-    public User(String userName, String userPassword, String userEmail) {
+    public User(String userName, String userPassword, String userEmail, boolean isMale) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
+        this.userFirstName="";
+        this.userLastName="";
+        this.userBiography="";
+        this.userCountry="";
+        this.userCity="";
+        this.isMale = isMale;
     }
 
     public Long getUserId() {
@@ -52,6 +79,34 @@ public class User {
         return userLevel;
     }
 
+    public String getUserFirstName() {
+        return userFirstName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public String getUserBiography() {
+        return userBiography;
+    }
+
+    public int getUserRating() {
+        return userRating;
+    }
+
+    public String getUserCountry() {
+        return userCountry;
+    }
+
+    public String getUserCity() {
+        return userCity;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -70,5 +125,33 @@ public class User {
 
     public void setUserLevel(short userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public void setUserBiography(String userBiography) {
+        this.userBiography = userBiography;
+    }
+
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
+    }
+
+    public void setUserCountry(String userCountry) {
+        this.userCountry = userCountry;
+    }
+
+    public void setUserCity(String userCity) {
+        this.userCity = userCity;
+    }
+
+    public void setMale(boolean male) {
+        isMale = male;
     }
 }

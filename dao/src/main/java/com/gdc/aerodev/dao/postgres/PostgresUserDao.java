@@ -27,7 +27,14 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
-    private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level FROM ";
+    private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level," +
+            " usr_first_name, usr_last_name, usr_biography, usr_rating, usr_country, usr_city, usr_is_male FROM ";
+
+    private final String INSERT_PARAMS = " (usr_name, usr_password, usr_email," +
+            " usr_first_name, usr_last_name, usr_biography, usr_country, usr_city, usr_is_male) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    private final String UPDATE_PARAMS = " SET usr_name=?, usr_password=?, usr_email=?, usr_level=?," +
+            " usr_first_name=?, usr_last_name=?, usr_biography=?, usr_rating=?, usr_country=?, usr_city=?, usr_is_male=?";
 
     @Autowired
     public PostgresUserDao(JdbcTemplate jdbcTemplate) {
@@ -67,7 +74,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     protected Long insert(User entity) {
-        final String INSERT_SQL = "INSERT INTO " + tableName + " (usr_name, usr_password, usr_email) VALUES (?, ?, ?);";
+        final String INSERT_SQL = "INSERT INTO " + tableName + INSERT_PARAMS;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
@@ -75,6 +82,12 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
                     ps.setString(1, entity.getUserName());
                     ps.setString(2, entity.getUserPassword());
                     ps.setString(3, entity.getUserEmail());
+                    ps.setString(4, entity.getUserFirstName());
+                    ps.setString(5, entity.getUserLastName());
+                    ps.setString(6, entity.getUserBiography());
+                    ps.setString(7, entity.getUserCountry());
+                    ps.setString(8, entity.getUserCity());
+                    ps.setBoolean(9, entity.isMale());
                     return ps;
                 },
                 keyHolder
@@ -83,13 +96,20 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     protected Long update(User entity) {
-        int rows = jdbcTemplate.update("UPDATE " + tableName +
-                        " SET usr_name=?, usr_password=?, usr_email=?, usr_level=? WHERE usr_id = "
+        int rows = jdbcTemplate.update("UPDATE " + tableName + UPDATE_PARAMS + " WHERE usr_id = "
                         + entity.getUserId() + ";",
                 entity.getUserName(),
                 entity.getUserPassword(),
                 entity.getUserEmail(),
-                entity.getUserLevel());
+                entity.getUserLevel(),
+                entity.getUserFirstName(),
+                entity.getUserLastName(),
+                entity.getUserBiography(),
+                entity.getUserRating(),
+                entity.getUserCountry(),
+                entity.getUserCity(),
+                entity.isMale()
+        );
         return (rows > 0) ? entity.getUserId() : null;
     }
 
@@ -122,7 +142,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     public List<User> getTopThree() {
-        return jdbcTemplate.query(SELECT_QUERY + tableName + " LIMIT 3;", new UserRowMapper());
+        return jdbcTemplate.query(SELECT_QUERY + tableName + " ORDER BY usr_rating DESC LIMIT 3;", new UserRowMapper());
         //TODO: add rating logic!
     }
 
@@ -142,6 +162,13 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
             user.setUserPassword(resultSet.getString("usr_password"));
             user.setUserEmail(resultSet.getString("usr_email"));
             user.setUserLevel(resultSet.getShort("usr_level"));
+            user.setUserFirstName(resultSet.getString("usr_first_name"));
+            user.setUserLastName(resultSet.getString("usr_last_name"));
+            user.setUserBiography(resultSet.getString("usr_biography"));
+            user.setUserRating(resultSet.getInt("usr_rating"));
+            user.setUserCountry(resultSet.getString("usr_country"));
+            user.setUserCity(resultSet.getString("usr_city"));
+            user.setMale(resultSet.getBoolean("usr_is_male"));
             return user;
         }
     }

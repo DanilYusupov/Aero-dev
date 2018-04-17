@@ -17,6 +17,17 @@
     <div th:replace="fragments/navbar :: not_authorized"></div>
 </div>
 
+<div th:if="${param.error}">
+    <div class="alert alert-danger alert-dismissible w-50 mx-auto"
+         style="z-index: 1080; position: fixed; left: calc(100vw - 76.25%); top: 10%;" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>Error while signing in!</h4>
+        <hr>
+        <p>Error message</p>
+    </div>
+</div>
 <!-- Sign-up modal -->
 
 <div class="modal fade" id="sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
@@ -29,28 +40,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post" action="/home" class="was-validated">
                     <div class="form-row">
                         <div class="col mb-2">
-                            <label for="new_name">Nickname</label>
-                            <input id="new_name" type="text" class="form-control" placeholder="Ivan007" required>
+                            <label for="name">Nickname</label>
+                            <input id="name" name="name" type="text" class="form-control" placeholder="Ivan007"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="male">Gender:</label>
+                            <select id="male" name="male" class="custom-select">
+                                <option value="true" selected>Male</option>
+                                <option value="false">Female</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col mb-2">
-                            <label for="new_email">E-mail</label>
-                            <input id="new_email" type="text" class="form-control" placeholder="i007@mail.com" required>
+                            <label for="email">E-mail</label>
+                            <input id="email" name="email" type="text" class="form-control" placeholder="i007@mail.com"
+                                   required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col mb-3">
-                            <label for="new_pass">Password</label>
-                            <input id="new_pass" type="text" class="form-control"
+                            <label for="password">Password</label>
+                            <input id="password" name="password" type="text" class="form-control"
                                    placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required>
                         </div>
                     </div>
                     <div class="btn-group float-right" role="group" aria-label="Form controls">
-                        <button id="register" type="button" class="btn btn-warning btn-sm">Sign-up</button>
+                        <button type="submit" class="btn btn-success btn-sm">Sign-up</button>
                         <button type="reset" class="btn btn-secondary btn-sm">Clear</button>
                     </div>
                 </form>
@@ -129,8 +151,8 @@
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title" th:text="${top_user.getUserName()}"></h5>
-                    <p class="card-text">His statistics & info
-                        <span class="badge badge-primary badge-pill">14</span>
+                    <p class="card-text"> Rating:
+                        <span class="badge badge-primary badge-pill" th:text="${top_user.getUserRating()}"></span>
                     </p>
                 </div>
             </div>

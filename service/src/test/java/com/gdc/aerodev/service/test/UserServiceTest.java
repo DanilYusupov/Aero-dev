@@ -18,7 +18,13 @@ public class UserServiceTest {
     private String userName = "Bob";
     private String userPassword = "p@ssw0rd";
     private String userEmail = "email";
+    private boolean isMale = true;
     private short level = 100;
+    private String userFirstName = "Bob";
+    private String userLastName = "Smith";
+    private int rating = 4;
+    private String userCountry = "UK";
+    private String userCity = "Bournemouth";
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("user-service"));
@@ -29,7 +35,7 @@ public class UserServiceTest {
     public void testCreateUser(){
         UserService service = getService();
         int size = service.countUsers();
-        service.createUser(userName, userPassword, userEmail);
+        service.createUser(userName, userPassword, userEmail, isMale);
         assertNotNull(service.getUser(userName));
         assertEquals(size + 1, service.countUsers());
     }
@@ -37,9 +43,9 @@ public class UserServiceTest {
     @Test
     public void testCreateExistentUser(){
         UserService service = getService();
-        assertNotNull(service.createUser(userName, userPassword, userEmail));
+        assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
-        assertNull(service.createUser(userName, userPassword, userEmail));
+        assertNull(service.createUser(userName, userPassword, userEmail, isMale));
         assertEquals(size, service.countUsers());
     }
 
@@ -47,16 +53,16 @@ public class UserServiceTest {
     public void testCreateEmptyName(){
         UserService service = getService();
         int size = service.countUsers();
-        assertNull(service.createUser("", userPassword, userEmail));
+        assertNull(service.createUser("", userPassword, userEmail, isMale));
         assertEquals(size, service.countUsers());
     }
 
     @Test
     public void testCreateExistentEmail(){
         UserService service = getService();
-        assertNotNull(service.createUser(userName, userPassword, userEmail));
+        assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
-        assertNull(service.createUser("second", "new", userEmail));
+        assertNull(service.createUser("second", "new", userEmail, isMale));
         assertEquals(size, service.countUsers());
     }
 
@@ -73,7 +79,7 @@ public class UserServiceTest {
     @Test
     public void testUpdateWithEmptyParams(){
         UserService service = getService();
-        Long id = service.createUser(userName, userPassword, userEmail);
+        Long id = service.createUser(userName, userPassword, userEmail, isMale);
         User before = service.getUser(id);
         assertNull(service.updateUser(id, "", "", "", (short) 0));
         User after = service.getUser(id);
@@ -81,6 +87,16 @@ public class UserServiceTest {
         assertEquals(before.getUserPassword(), after.getUserPassword());
         assertEquals(before.getUserEmail(), after.getUserEmail());
         assertEquals(before.getUserLevel(), after.getUserLevel());
+    }
+
+    @Test
+    public void testUpdateInfo(){
+        UserService service = getService();
+        Long id = service.createUser(userName, userPassword, userEmail, isMale);
+        service.updateInfo(id, userFirstName, userLastName, "", userCountry, userCity);
+        User user = service.getUser(id);
+        assertNotNull(user.getUserBiography());
+
     }
 
     private UserService getService(){

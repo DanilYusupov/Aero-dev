@@ -23,7 +23,8 @@
                 <div class="col p-3" style="max-width: 400px;">
                     <div class="card bg-dark text-light border-0">
                         <img class="card-img-top" src="../static/img/Bob.jpg"
-                             th:src="@{'/avatar/' + ${user.getUserId()}}" style=" object-fit: cover; max-height: 400px;">
+                             th:src="@{'/avatar/' + ${user.getUserId()}}"
+                             style=" object-fit: cover; max-height: 400px;">
                         <div class="card-img-overlay" style="margin-top: -15px;">
                             <span class="badge badge-pill badge-primary" style="margin-left: -15px;">Engineer</span>
                         </div>
@@ -36,24 +37,56 @@
                                                 <button class="btn btn-outline-primary" type="submit">Upload</button>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" name="file" id="file" class="custom-file-input">
+                                                <input type="file" name="file" id="file" class="custom-file-input"
+                                                       required>
                                                 <label class="custom-file-label" for="file">Change avatar</label>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title" th:text="${user.getUserName()}"></h5>
-                                    <p class="card-text">Small biography</p>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <p class="card-text">Statistics</p>
+                            <form method="post" action="/profile/update">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="first_name">First name:</label>
+                                        <input type="text" class="form-control" name="first_name" id="first_name"
+                                               th:value="${user.getUserFirstName()}">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-row mt-2">
+                                    <div class="col">
+                                        <label for="last_name">Last name:</label>
+                                        <input type="text" class="form-control" name="last_name" id="last_name"
+                                               th:value="${user.getUserLastName()}">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2">
+                                    <div class="col">
+                                        <label for="biography">Biography:</label>
+                                        <input type="text" class="form-control" name="biography" id="biography"
+                                               th:value="${user.getUserBiography()}">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2">
+                                    <div class="col">
+                                        <label for="country">Biography:</label>
+                                        <input type="text" class="form-control" name="country" id="country"
+                                               th:value="${user.getUserCountry()}">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2">
+                                    <div class="col">
+                                        <label for="city">Biography:</label>
+                                        <input type="text" class="form-control" name="city" id="city"
+                                               th:value="${user.getUserCity()}">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2">
+                                    <div class="col">
+                                        <button class="btn btn-outline-primary" type="submit">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -62,7 +95,18 @@
 
         <!-- Buttons and list col -->
         <div class="col">
-            <div th:replace="fragments/tabs :: profile_tab"></div>
+            <div class="row mt-3">
+                <div class="col">
+                    <h2 class="display-4" th:utext="${session.client.getUserName()} + '`s room'"></h2>
+                    <h1 class="text-muted ml-4" th:text="${session.client.getUserFirstName()} + ' ' + ${session.client.getUserLastName()}"></h1>
+                    <p class="card-text" th:text="${session.client.getUserBiography()}"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div th:replace="fragments/tabs :: profile_tab"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -16,4 +16,5 @@ spring:
             sql-migration-separator: __
             schemas: aero
             locations: classpath:db/migration/postgresql
+            clean-disabled: false
     mandatory-file-encoding: UTF-8

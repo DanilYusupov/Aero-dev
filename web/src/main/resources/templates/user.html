@@ -30,12 +30,8 @@
                             <span class="badge badge-pill badge-primary" style="margin-left: -15px;">Engineer</span>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${user.getUserName()}"></h5>
-                            <p class="card-text">Small biography</p>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
+                            <p class="card-text" th:text="${user.getUserFirstName()} + ' ' + ${user.getUserLastName()}"></p>
+                            <p class="card-text" th:text="${user.getUserBiography()}"></p>
                             <p class="card-text">Statistics</p>
                         </div>
                     </div>
