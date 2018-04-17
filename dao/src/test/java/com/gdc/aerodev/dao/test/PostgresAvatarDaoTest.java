@@ -21,7 +21,6 @@ public class PostgresAvatarDaoTest {
     private final String tableName = "avatar_test";
     private Long id = 1L;
     private Long owner = 5L;
-    private final String PATH_TO_RESOURCES = "D:/Projects/aero-dev/dao/src/test/resources/";
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("avatar"));
@@ -74,10 +73,12 @@ public class PostgresAvatarDaoTest {
     }
 
     private byte[] getImage() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File image = new File(classLoader.getResource("java.png").getFile());
         try (
                 BufferedInputStream in =
                         new BufferedInputStream(
-                                new FileInputStream(PATH_TO_RESOURCES + "java.png")
+                                new FileInputStream(image)
                         );
                 ByteArrayOutputStream out = new ByteArrayOutputStream()
         ) {
