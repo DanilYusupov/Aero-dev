@@ -6,10 +6,12 @@ public interface GenericAvatarService extends GenericService {
 
     /**
      * Inserts avatar into database
-     * @param avatar target
-     * @return id of inserted avatar
+     * @param userId owner
+     * @param bytes data
+     * @param contentType mime type
+     * @return id of created/updated avatar
      */
-    Long uploadAvatar(Avatar avatar);
+    Long uploadAvatar(Long userId, byte[] bytes, String contentType);
 
     /**
      * Gives {@code Avatar} by {@code User} id

@@ -21,7 +21,6 @@ public class PostgresAvatarDaoTest {
     private final String tableName = "avatar_test";
     private Long id = 1L;
     private Long owner = 5L;
-    private final String PATH_TO_RESOURCES = "D:/Projects/aero-dev/dao/src/test/resources/";
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("avatar"));
@@ -46,7 +45,7 @@ public class PostgresAvatarDaoTest {
         PostgresAvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         Long id = dao.save(avatar);
-        Avatar received = dao.getAvatarByOwnerId(owner);
+        Avatar received = dao.getById(owner);
         assertEquals(avatar.getAvatarData().length, received.getAvatarData().length);
         assertEquals(id, received.getAvatarId());
     }
@@ -54,7 +53,7 @@ public class PostgresAvatarDaoTest {
     @Test
     public void testGetNonExistentImage(){
         PostgresAvatarDao dao = getDao();
-        assertNull(dao.getAvatarByOwnerId(owner));
+        assertNull(dao.getById(owner));
     }
 
     @Test
@@ -63,10 +62,10 @@ public class PostgresAvatarDaoTest {
         PostgresAvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         dao.save(avatar);
-        Avatar update = dao.getAvatarByOwnerId(owner);
+        Avatar update = dao.getById(owner);
         update.setAvatarOwner(newOwner);
         assertEquals(id, dao.save(update));
-        assertEquals(newOwner, dao.getAvatarByOwnerId(newOwner).getAvatarOwner());
+        assertEquals(newOwner, dao.getById(newOwner).getAvatarOwner());
     }
 
     private PostgresAvatarDao getDao() {
@@ -74,10 +73,12 @@ public class PostgresAvatarDaoTest {
     }
 
     private byte[] getImage() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File image = new File(classLoader.getResource("java.png").getFile());
         try (
                 BufferedInputStream in =
                         new BufferedInputStream(
-                                new FileInputStream(PATH_TO_RESOURCES + "java.png")
+                                new FileInputStream(image)
                         );
                 ByteArrayOutputStream out = new ByteArrayOutputStream()
         ) {

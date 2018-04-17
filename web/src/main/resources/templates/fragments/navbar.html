@@ -48,8 +48,7 @@
                                 <a class="image btn" style="margin-top: -7px; margin-bottom: -7px;"
                                    data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">
-                                    <img class="rounded-circle" src="../static/img/Bob.jpg"
-                                         th:src="@{/img/Bob.jpg}"
+                                    <img class="rounded-circle" th:src="@{'/avatar/' + ${session.client.getUserId()}}"
                                          style="object-fit: cover; height: 2.6em; width: 2.6em;" data-toggle="tooltip"
                                          title="Your name">
                                 </a>
