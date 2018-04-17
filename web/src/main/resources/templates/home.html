@@ -151,8 +151,8 @@
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title" th:text="${top_user.getUserName()}"></h5>
-                    <p class="card-text">His statistics & info
-                        <span class="badge badge-primary badge-pill">14</span>
+                    <p class="card-text"> Rating:
+                        <span class="badge badge-primary badge-pill" th:text="${top_user.getUserRating()}"></span>
                     </p>
                 </div>
             </div>

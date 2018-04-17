@@ -142,7 +142,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     public List<User> getTopThree() {
-        return jdbcTemplate.query(SELECT_QUERY + tableName + " LIMIT 3;", new UserRowMapper());
+        return jdbcTemplate.query(SELECT_QUERY + tableName + " ORDER BY usr_rating DESC LIMIT 3;", new UserRowMapper());
         //TODO: add rating logic!
     }
 
