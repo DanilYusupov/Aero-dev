@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * This class describes engineer in web-portal. Every newcomers can register in web-service as {@code User}.
  * Strictly {@code User} can create {@code Project} and in future add files there. Bind between {@code User}
@@ -37,12 +39,18 @@ public class User {
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userLevel = userLevel;
+        this.userFirstName="";
+        this.userLastName="";
+        this.userBiography="";
     }
 
     public User(String userName, String userPassword, String userEmail) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
+        this.userFirstName="";
+        this.userLastName="";
+        this.userBiography="";
     }
 
     public Long getUserId() {

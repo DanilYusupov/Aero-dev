@@ -45,6 +45,24 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
         this.tableName = tableName;
     }
 
+    public boolean setUserFirstName(Long id, String firstName){
+        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_first_name=? WHERE usr_id=" + id + ";",
+                firstName);
+        return rows > 0;
+    }
+
+    public boolean setUserLastName(Long id, String lastName){
+        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_last_name=? WHERE usr_id=" + id + ";",
+                lastName);
+        return rows > 0;
+    }
+
+    public boolean setUserBiography(Long id, String biography){
+        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_biography=? WHERE usr_id=" + id + ";",
+                biography);
+        return rows > 0;
+    }
+
     @Override
     public User getById(Long id) {
         try {
