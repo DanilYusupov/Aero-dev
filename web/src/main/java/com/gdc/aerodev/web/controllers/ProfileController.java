@@ -40,7 +40,9 @@ public class ProfileController implements LoggingWeb{
                 user.getUserId(),
                 request.getParameter("first_name"),
                 request.getParameter("last_name"),
-                request.getParameter("biography")
+                request.getParameter("biography"),
+                request.getParameter("country"),
+                request.getParameter("city")
                 );
         return "redirect:/profile";
     }

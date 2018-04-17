@@ -28,11 +28,13 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
     private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level," +
-            " usr_first_name, usr_last_name, usr_biography, usr_rating FROM ";
+            " usr_first_name, usr_last_name, usr_biography, usr_rating, usr_country, usr_city, usr_is_male FROM ";
+
     private final String INSERT_PARAMS = " (usr_name, usr_password, usr_email," +
-            " usr_first_name, usr_last_name, usr_biography) VALUES (?, ?, ?, ?, ?, ?);";
+            " usr_first_name, usr_last_name, usr_biography, usr_country, usr_city, usr_is_male) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
     private final String UPDATE_PARAMS = " SET usr_name=?, usr_password=?, usr_email=?, usr_level=?," +
-            " usr_first_name=?, usr_last_name=?, usr_biography=?, usr_rating=?";
+            " usr_first_name=?, usr_last_name=?, usr_biography=?, usr_rating=?, usr_country=?, usr_city=?, usr_is_male=?";
 
     @Autowired
     public PostgresUserDao(JdbcTemplate jdbcTemplate) {
@@ -43,24 +45,6 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     public PostgresUserDao(JdbcTemplate jdbcTemplate, String tableName) {
         this.jdbcTemplate = jdbcTemplate;
         this.tableName = tableName;
-    }
-
-    public boolean setUserFirstName(Long id, String firstName){
-        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_first_name=? WHERE usr_id=" + id + ";",
-                firstName);
-        return rows > 0;
-    }
-
-    public boolean setUserLastName(Long id, String lastName){
-        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_last_name=? WHERE usr_id=" + id + ";",
-                lastName);
-        return rows > 0;
-    }
-
-    public boolean setUserBiography(Long id, String biography){
-        int rows = jdbcTemplate.update("UPDATE " + tableName + " SET usr_biography=? WHERE usr_id=" + id + ";",
-                biography);
-        return rows > 0;
     }
 
     @Override
@@ -101,6 +85,9 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
                     ps.setString(4, entity.getUserFirstName());
                     ps.setString(5, entity.getUserLastName());
                     ps.setString(6, entity.getUserBiography());
+                    ps.setString(7, entity.getUserCountry());
+                    ps.setString(8, entity.getUserCity());
+                    ps.setBoolean(9, entity.isMale());
                     return ps;
                 },
                 keyHolder
@@ -118,7 +105,11 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
                 entity.getUserFirstName(),
                 entity.getUserLastName(),
                 entity.getUserBiography(),
-                entity.getUserRating());
+                entity.getUserRating(),
+                entity.getUserCountry(),
+                entity.getUserCity(),
+                entity.isMale()
+        );
         return (rows > 0) ? entity.getUserId() : null;
     }
 
@@ -175,6 +166,9 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
             user.setUserLastName(resultSet.getString("usr_last_name"));
             user.setUserBiography(resultSet.getString("usr_biography"));
             user.setUserRating(resultSet.getInt("usr_rating"));
+            user.setUserCountry(resultSet.getString("usr_country"));
+            user.setUserCity(resultSet.getString("usr_city"));
+            user.setMale(resultSet.getBoolean("usr_is_male"));
             return user;
         }
     }

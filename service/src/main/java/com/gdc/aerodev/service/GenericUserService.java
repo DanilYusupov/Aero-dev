@@ -10,10 +10,11 @@ public interface GenericUserService extends GenericService {
      * @param userName name of new {@code User}
      * @param userPassword password of {@code User}
      * @param userEmail email of current {@code Project}
+     * @param isMale gender indicator
      * @return (0) {@param userId} of inserted {@code User}
      *         (1) or {@code null} in cause of problems
      */
-    Long createUser(String userName, String userPassword, String userEmail);
+    Long createUser(String userName, String userPassword, String userEmail, boolean isMale);
 
     /**
      * Updates existent {@code User} chosen by {@param userId} with input parameters. If there is no need to

@@ -23,11 +23,13 @@ public class UserService implements GenericUserService, LoggingService {
         return dao.getTopThree();
     }
 
-    public void updateInfo(Long id, String firstName, String lastName, String biography) {
+    public void updateInfo(Long id, String firstName, String lastName, String biography, String userCountry, String userCity) {
         User user = dao.getById(id);
         user.setUserFirstName(firstName);
         user.setUserLastName(lastName);
         user.setUserBiography(biography);
+        user.setUserCountry(userCountry);
+        user.setUserCity(userCity);
         if (dao.save(user) == null){
             log.error("Nothing to update for user '" + getUser(id).getUserName() + "'.");
         } else {
@@ -36,7 +38,7 @@ public class UserService implements GenericUserService, LoggingService {
     }
 
     @Override
-    public Long createUser(String userName, String userPassword, String userEmail) {
+    public Long createUser(String userName, String userPassword, String userEmail, boolean isMale) {
         if (userName.equals("") || userPassword.equals("") || userEmail.equals("")) {
             return null;
         }
@@ -50,7 +52,7 @@ public class UserService implements GenericUserService, LoggingService {
             return null;
         }
         try {
-            Long id = dao.save(new User(userName, userPassword, userEmail));
+            Long id = dao.save(new User(userName, userPassword, userEmail, isMale));
             log.info("Successful created user '" + userName + "' with id " + id + ".");
             return id;
         } catch (DaoException e) {

@@ -13,9 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PostgresUserDaoTest {
 
@@ -23,7 +21,7 @@ public class PostgresUserDaoTest {
     private String name = "Novichok";
     private String password = "p@ssw0rd";
     private String email = "email";
-    private User user = new User(name, password, email);
+    private User user = new User(name, password, email, true);
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("user"));
@@ -58,7 +56,12 @@ public class PostgresUserDaoTest {
     public void testInsert() {
         PostgresUserDao dao = getDao();
         Long id = dao.save(user);
-        assertEquals(name, dao.getById(id).getUserName());
+        User user = dao.getById(id);;
+        assertEquals(name, user.getUserName());
+        assertNotNull(user.getUserCountry());
+        assertNotNull(user.getUserCity());
+        assertNotNull(user.getUserFirstName());
+        assertNotNull(user.getUserLastName());
     }
 
     @Test
@@ -72,8 +75,13 @@ public class PostgresUserDaoTest {
         user.setUserName(name);
         user.setUserLevel(level);
         dao.save(user);
-        assertEquals(name, dao.getById(id).getUserName());
-        assertEquals(level, dao.getById(id).getUserLevel());
+        User newUser = dao.getById(id);
+        assertEquals(name, newUser.getUserName());
+        assertEquals(level, newUser.getUserLevel());
+        assertNotNull(newUser.getUserCountry());
+        assertNotNull(newUser.getUserCity());
+        assertNotNull(newUser.getUserFirstName());
+        assertNotNull(newUser.getUserLastName());
     }
 
     @Test

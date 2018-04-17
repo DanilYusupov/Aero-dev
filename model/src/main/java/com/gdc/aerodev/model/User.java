@@ -27,6 +27,9 @@ public class User {
      * @param userRating counts according to his activity.
      */
     private int userRating;
+    private String userCountry;
+    private String userCity;
+    private boolean isMale;
 
     public User() {
     }
@@ -40,15 +43,20 @@ public class User {
         this.userFirstName="";
         this.userLastName="";
         this.userBiography="";
+        this.userCountry="";
+        this.userCity="";
     }
 
-    public User(String userName, String userPassword, String userEmail) {
+    public User(String userName, String userPassword, String userEmail, boolean isMale) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userFirstName="";
         this.userLastName="";
         this.userBiography="";
+        this.userCountry="";
+        this.userCity="";
+        this.isMale = isMale;
     }
 
     public Long getUserId() {
@@ -87,6 +95,18 @@ public class User {
         return userRating;
     }
 
+    public String getUserCountry() {
+        return userCountry;
+    }
+
+    public String getUserCity() {
+        return userCity;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -121,5 +141,17 @@ public class User {
 
     public void setUserRating(int userRating) {
         this.userRating = userRating;
+    }
+
+    public void setUserCountry(String userCountry) {
+        this.userCountry = userCountry;
+    }
+
+    public void setUserCity(String userCity) {
+        this.userCity = userCity;
+    }
+
+    public void setMale(boolean male) {
+        isMale = male;
     }
 }
