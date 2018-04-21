@@ -46,17 +46,11 @@ public abstract class AbstractDao<T, V> implements LoggingDao{
     protected abstract V update(T entity);
 
     /**
-     * Checks nullable of entity's ID.
+     * Checks nullable of entity's ID. This is necessary check for method 'save'.
      * @param entity target to check
      * @return (1) {@code true} if ID of entity is {@code null}, (2) {@code false} if ID of entity is {@code not null}
      */
     protected abstract boolean isNew(T entity);
-
-    /**
-     * Counts all number of entities in table with simple query which returns {@code int}
-     * @return number of entities in table
-     */
-    public abstract int count();
 
     public String getTableName(String propertyName){
         Properties properties = new Properties();

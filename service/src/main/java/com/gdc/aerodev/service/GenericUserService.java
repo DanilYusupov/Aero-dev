@@ -2,7 +2,16 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.User;
 
-public interface GenericUserService extends GenericService {
+import java.util.List;
+
+/**
+ * Generic interface of service, which makes manipulations with {@code User} entity.
+ *
+ * @see com.gdc.aerodev.model.User
+ * @see com.gdc.aerodev.dao.UserDao
+ * @author Yusupov Danil
+ */
+public interface GenericUserService {
 
     /**
      * Inserts {@code User} into database configured by input parameters.
@@ -30,8 +39,40 @@ public interface GenericUserService extends GenericService {
      */
     Long updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel);
 
+    /**
+     * Encapsulates same method in {@code UserDao}
+     * @see com.gdc.aerodev.dao.UserDao
+     * @param name user's nickname
+     * @return (0) {@code User} or
+     *         (1) {@code null} if there is no such user
+     */
     User getUser(String name);
 
+    /**
+     * Encapsulates same method in {@code UserDao}
+     * @see com.gdc.aerodev.dao.UserDao
+     * @param id user's id
+     * @return (0) {@code User} or
+     *         (1) {@code null} if there is no such user
+     */
     User getUser(Long id);
+
+    /**
+     * Encapsulates same method in {@code UserDao}
+     * @see com.gdc.aerodev.dao.UserDao
+     * @return list of top three users with biggest rating
+     */
+    List<User> getTopThree();
+
+    /**
+     * Updates user's profile information.
+     * @param id of target user
+     * @param firstName of user
+     * @param lastName of user
+     * @param biography of user
+     * @param userCountry user's country
+     * @param userCity user's city
+     */
+    void updateInfo(Long id, String firstName, String lastName, String biography, String userCountry, String userCity);
 
 }

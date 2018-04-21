@@ -141,9 +141,4 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
             throw new DaoException("Error reading avatar from DB: ", e);
         }
     }
-
-    @Override
-    public int count() {
-        return 0;
-    }
 }

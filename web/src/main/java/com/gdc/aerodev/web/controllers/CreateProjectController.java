@@ -2,6 +2,7 @@ package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.GenericProjectService;
 import com.gdc.aerodev.service.impl.ProjectService;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CreateProjectController implements LoggingWeb{
 
-    private final ProjectService prjService;
+    private final GenericProjectService prjService;
 
     public CreateProjectController(ProjectService prjService) {
         this.prjService = prjService;
