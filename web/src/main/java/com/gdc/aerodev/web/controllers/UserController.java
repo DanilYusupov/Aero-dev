@@ -1,6 +1,8 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.GenericProjectService;
+import com.gdc.aerodev.service.GenericUserService;
 import com.gdc.aerodev.service.impl.ProjectService;
 import com.gdc.aerodev.service.impl.UserService;
 import org.springframework.ui.Model;
@@ -13,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class UserController {
 
-    private final UserService usr_service;
-    private final ProjectService prj_service;
+    private final GenericUserService usr_service;
+    private final GenericProjectService prj_service;
 
     public UserController(UserService usr_service, ProjectService prj_service) {
         this.usr_service = usr_service;

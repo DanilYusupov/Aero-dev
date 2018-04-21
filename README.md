@@ -2,7 +2,7 @@
 Web-service for aviation engineer's ideas.
 
 Build status: 
-  - [![Build Status](https://travis-ci.org/DanilYusupov/aero-dev.svg?branch=master)](https://travis-ci.org/DanilYusupov/aero-dev)
+[![Build Status](https://travis-ci.org/DanilYusupov/aero-dev.svg?branch=master)](https://travis-ci.org/DanilYusupov/aero-dev)
 
 ## About 'Aero-dev'
 ### Intro
@@ -10,12 +10,12 @@ Build status:
 This project is the result of my half-year internship studying, where I gleaned a lot of
 knowledge.
 My lead purpose was to improve my Java development skills and become
-'junior/middle'
+`junior/middle`
 developer.
 During my internship I also learned to use new languages such as: HTML, CSS, JavaScript and
 other.
 I'm sure, that it is a nice start to improve my skills and become a
-'senior'
+`senior`
 developer eventually.
 </p>
                   

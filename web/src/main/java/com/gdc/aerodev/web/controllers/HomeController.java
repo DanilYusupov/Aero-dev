@@ -1,5 +1,7 @@
 package com.gdc.aerodev.web.controllers;
 
+import com.gdc.aerodev.service.GenericProjectService;
+import com.gdc.aerodev.service.GenericUserService;
 import com.gdc.aerodev.service.impl.ProjectService;
 import com.gdc.aerodev.service.impl.UserService;
 import com.gdc.aerodev.service.security.Hasher;
@@ -15,8 +17,8 @@ import java.io.IOException;
 @Controller
 public class HomeController {
 
-    private final UserService usr_service;
-    private final ProjectService prj_service;
+    private final GenericUserService usr_service;
+    private final GenericProjectService prj_service;
 
     public HomeController(UserService usr_service, ProjectService prj_service) {
         this.usr_service = usr_service;

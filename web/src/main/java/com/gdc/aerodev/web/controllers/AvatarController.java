@@ -1,6 +1,7 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.GenericAvatarService;
 import com.gdc.aerodev.service.impl.AvatarService;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.http.CacheControl;
@@ -20,7 +21,7 @@ import java.io.IOException;
 @Controller
 public class AvatarController implements LoggingWeb{
 
-    private final AvatarService service;
+    private final GenericAvatarService service;
 
     public AvatarController(AvatarService service) {
         this.service = service;

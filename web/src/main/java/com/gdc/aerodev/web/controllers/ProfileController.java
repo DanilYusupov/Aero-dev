@@ -1,6 +1,8 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.GenericProjectService;
+import com.gdc.aerodev.service.GenericUserService;
 import com.gdc.aerodev.service.impl.ProjectService;
 import com.gdc.aerodev.service.impl.UserService;
 import com.gdc.aerodev.web.logging.LoggingWeb;
@@ -15,8 +17,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ProfileController implements LoggingWeb{
 
-    private final UserService usrService;
-    private final ProjectService prjService;
+    private final GenericUserService usrService;
+    private final GenericProjectService prjService;
 
     public ProfileController(UserService usrService, ProjectService prjService) {
         this.usrService = usrService;

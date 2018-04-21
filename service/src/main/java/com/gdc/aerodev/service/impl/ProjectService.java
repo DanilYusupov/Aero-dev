@@ -1,5 +1,6 @@
 package com.gdc.aerodev.service.impl;
 
+import com.gdc.aerodev.dao.ProjectDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class ProjectService implements GenericProjectService, LoggingService {
 
-    private final PostgresProjectDao dao;
+    private final ProjectDao dao;
 
     public ProjectService(PostgresProjectDao dao) {
         this.dao = dao;
