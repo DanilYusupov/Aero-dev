@@ -23,8 +23,7 @@ public class PostgresProjectDaoTest {
     private String name = "start-up";
     private Long owner = 1L;
     private ProjectType type = ProjectType.AERODYNAMICS;
-    private String description = "This is a new project of...";
-    private Project project = new Project(name, owner, type, description);
+    private Project project = new Project(name, owner, type);
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("project"));
