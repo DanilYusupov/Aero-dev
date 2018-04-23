@@ -33,7 +33,7 @@ public class PostgresAvatarDaoTest {
         assertEquals(id, dao.save(avatar));
     }
 
-    @Test (expected = DaoException.class)
+    @Test (expected = NullPointerException.class)
     public void testInsertNullImage() {
         PostgresAvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, null, "image");

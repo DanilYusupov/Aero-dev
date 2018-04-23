@@ -22,8 +22,8 @@ public class ProjectService implements GenericProjectService, LoggingService {
     }
 
     @Override
-    public Long createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
-        if (projectName.equals("") || projectOwner == null || projectDescription.equals("")) {
+    public Long createProject(String projectName, Long projectOwner, ProjectType projectType) {
+        if (projectName.equals("") || projectOwner == null) {
             return null;
         }
         if (isExistentName(projectName)) {
@@ -31,7 +31,7 @@ public class ProjectService implements GenericProjectService, LoggingService {
             return null;
         }
         try {
-            Long id = dao.save(new Project(projectName, projectOwner, projectType, projectDescription));
+            Long id = dao.save(new Project(projectName, projectOwner, projectType));
             log.info("Project '" + projectName + "' created with id " + id + ".");
             return id;
         } catch (DaoException e) {
@@ -50,9 +50,6 @@ public class ProjectService implements GenericProjectService, LoggingService {
             project.setProjectName(projectName);
         } else if (projectDescription.equals("")){
             return null;
-        }
-        if (!projectDescription.equals("")){
-            project.setProjectDescription(projectDescription);
         }
         project.setProjectType(projectType);
         try{

@@ -1,7 +1,7 @@
 package com.gdc.aerodev.model;
 
-import java.util.Date;
-import java.util.List;
+
+import java.sql.Date;
 
 /**
  * This entity is strictly related to {@code Project} one and details it.
@@ -23,11 +23,6 @@ public class ProjectContent {
     private byte[] projectLogo;
 
     /**
-     * Here is array of images, which will be shown in page's carousel
-     */
-    private List<byte[]> projectImages;
-
-    /**
      * Some information about project
      */
     private String projectDescription;
@@ -37,17 +32,15 @@ public class ProjectContent {
      */
     private Date projectBirthDay;
 
-    public ProjectContent(byte[] projectLogo, List<byte[]> projectImages, String projectDescription, Date projectBirthDay) {
+    public ProjectContent(byte[] projectLogo, String projectDescription, Date projectBirthDay) {
         this.projectLogo = projectLogo;
-        this.projectImages = projectImages;
         this.projectDescription = projectDescription;
         this.projectBirthDay = projectBirthDay;
     }
 
-    public ProjectContent(Long projectId, byte[] projectLogo, List<byte[]> projectImages, String projectDescription, Date projectBirthDay) {
+    public ProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirthDay) {
         this.projectId = projectId;
         this.projectLogo = projectLogo;
-        this.projectImages = projectImages;
         this.projectDescription = projectDescription;
         this.projectBirthDay = projectBirthDay;
     }
@@ -58,10 +51,6 @@ public class ProjectContent {
 
     public byte[] getProjectLogo() {
         return projectLogo;
-    }
-
-    public List<byte[]> getProjectImages() {
-        return projectImages;
     }
 
     public String getProjectDescription() {

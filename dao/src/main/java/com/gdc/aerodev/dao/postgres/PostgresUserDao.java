@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
+
 /**
  * Realization of data access object for working with {@code User} instance
  *
@@ -23,7 +25,7 @@ import java.util.List;
  * @see User
  */
 @Repository
-public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao {
+public class PostgresUserDao implements UserDao, Daoable<User, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -73,7 +75,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
         return jdbcTemplate.query(SELECT_QUERY + tableName + ";", new UserRowMapper());
     }
 
-    protected Long insert(User entity) {
+    public Long insert(User entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + INSERT_PARAMS;
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -95,7 +97,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
         return keyHolder.getKey().longValue();
     }
 
-    protected Long update(User entity) {
+    public Long update(User entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName + UPDATE_PARAMS + " WHERE usr_id = "
                         + entity.getUserId() + ";",
                 entity.getUserName(),
@@ -121,7 +123,7 @@ public class PostgresUserDao extends AbstractDao<User, Long> implements UserDao 
     }
 
     @Override
-    protected boolean isNew(User entity) {
+    public boolean isNew(User entity) {
         return entity.getUserId() == null;
     }
 

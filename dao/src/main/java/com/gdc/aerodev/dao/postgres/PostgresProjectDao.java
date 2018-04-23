@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
+
 /**
  * Realization of data access object for working with {@code Project} instance
  *
@@ -23,7 +25,7 @@ import java.util.List;
  * @author Yusupov Danil
  */
 @Repository
-public class PostgresProjectDao extends AbstractDao<Project, Long> implements ProjectDao {
+public class PostgresProjectDao implements ProjectDao, Daoable<Project, Long>{
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -76,7 +78,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
                 new ProjectRowMapper());
     }
 
-    protected Long insert(Project entity) {
+    public Long insert(Project entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_name, prj_owner, prj_type) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -92,7 +94,7 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
         return keyHolder.getKey().longValue();
     }
 
-    protected Long update(Project entity) {
+    public Long update(Project entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET prj_name=?, prj_owner=?, prj_type=? WHERE prj_id = "
                         + entity.getProjectId() + ";",
@@ -109,11 +111,10 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
     }
 
     @Override
-    protected boolean isNew(Project entity) {
+    public boolean isNew(Project entity) {
         return entity.getProjectId() == null;
     }
 
-    @Override
     public int count() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }

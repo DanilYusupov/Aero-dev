@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao.postgres;
 
+import com.gdc.aerodev.dao.GenericDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.logging.LoggingDao;
 import org.springframework.dao.DuplicateKeyException;
@@ -7,7 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import java.io.IOException;
 import java.util.Properties;
 
-public abstract class AbstractDao<T, V> implements LoggingDao{
+interface Daoable<T, V> extends GenericDao<T, V>, LoggingDao {
 
     /**
      * Method inherited from {@code GenericDao} & checks which method needs to be invoked. If {@code entityId} is
@@ -17,7 +18,8 @@ public abstract class AbstractDao<T, V> implements LoggingDao{
      * @param entity {@code T} entity to save
      * @return id of saved or updated entity
      */
-    public V save(T entity) {
+    @Override
+    default V save(T entity) {
         if (isNew(entity)){
             try {
                 return insert(entity);
@@ -35,7 +37,7 @@ public abstract class AbstractDao<T, V> implements LoggingDao{
      * @param entity {@code T} entity to save
      * @return {@code V} id of inserted entity
      */
-    protected abstract V insert(T entity);
+    V insert(T entity);
 
     /**
      * Updates entity with {@code entityId != null} into database.
@@ -43,23 +45,13 @@ public abstract class AbstractDao<T, V> implements LoggingDao{
      * @param entity {@code T} entity to update
      * @return {@code V} id of updated entity
      */
-    protected abstract V update(T entity);
+    V update(T entity);
 
     /**
      * Checks nullable of entity's ID. This is necessary check for method 'save'.
      * @param entity target to check
      * @return (1) {@code true} if ID of entity is {@code null}, (2) {@code false} if ID of entity is {@code not null}
      */
-    protected abstract boolean isNew(T entity);
-
-    public String getTableName(String propertyName){
-        Properties properties = new Properties();
-        try {
-            properties.load(AbstractDao.class.getResourceAsStream("/db.properties"));
-        } catch (IOException e) {
-            throw new DaoException("Error reading properties from '/db.properties' file: ", e);
-        }
-        return properties.getProperty(propertyName);
-    }
+    boolean isNew(T entity);
 
 }

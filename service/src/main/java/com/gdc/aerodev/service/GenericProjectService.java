@@ -20,11 +20,10 @@ public interface GenericProjectService {
      * @param projectName name of new {@code Project}
      * @param projectOwner ID of {@code User}, who created this {@code Project}
      * @param projectType {@code ProjectType} of current {@code Project}
-     * @param projectDescription text with description of {@code Project}
      * @return (0) {@param projectId} of inserted {@code Project}
      *         (1) or {@code null} in cause of problems
      */
-    Long createProject(String projectName, Long projectOwner, ProjectType projectType, String projectDescription);
+    Long createProject(String projectName, Long projectOwner, ProjectType projectType);
 
     /**
      * Updates existent {@code Project} chosen by {@param projectId} with input parameters. If there is no need to
