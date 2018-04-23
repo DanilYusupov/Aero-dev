@@ -1,10 +1,10 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.GenericProjectService;
-import com.gdc.aerodev.service.GenericUserService;
-import com.gdc.aerodev.service.impl.ProjectService;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.ProjectServiceImpl;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ProfileController implements LoggingWeb{
 
-    private final GenericUserService usrService;
-    private final GenericProjectService prjService;
+    private final UserService usrService;
+    private final ProjectService prjService;
 
-    public ProfileController(UserService usrService, ProjectService prjService) {
+    public ProfileController(UserServiceImpl usrService, ProjectServiceImpl prjService) {
         this.usrService = usrService;
         this.prjService = prjService;
     }

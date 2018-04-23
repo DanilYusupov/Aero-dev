@@ -4,19 +4,18 @@ import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.GenericUserService;
-import com.gdc.aerodev.service.exception.ServiceException;
+import com.gdc.aerodev.service.UserService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService implements GenericUserService, LoggingService {
+public class UserServiceImpl implements UserService, LoggingService {
 
     private final UserDao dao;
 
-    public UserService(PostgresUserDao dao) {
+    public UserServiceImpl(PostgresUserDao dao) {
         this.dao = dao;
     }
 

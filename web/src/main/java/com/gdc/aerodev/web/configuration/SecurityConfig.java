@@ -1,7 +1,7 @@
 package com.gdc.aerodev.web.configuration;
 
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.service.security.Hasher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +20,9 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserServiceImpl userService) {
         this.userService = userService;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
  * @see com.gdc.aerodev.dao.ProjectDao
  * @author Yusupov Danil
  */
-public interface GenericProjectService {
+public interface ProjectService {
 
     /**
      * Inserts {@code Project} into database configured by input parameters.
@@ -32,11 +32,10 @@ public interface GenericProjectService {
      * @param projectId ID of updating {@code Project}
      * @param projectName new name of updating {@code Project}
      * @param projectType new {@code ProjectType} of updating {@code Project}
-     * @param projectDescription new description for {@code Project}
      * @return (0) {@param projectId} of updated {@code Project}
      *         (1) or {@code null} in cause of problems
      */
-    Long updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription);
+    Long updateProject(Long projectId, String projectName, ProjectType projectType);
 
     /**
      * Encapsulates same method in {@code ProjectDao}
@@ -70,4 +69,10 @@ public interface GenericProjectService {
      * @return list of projects created by {@code User} with {@code userId}
      */
     List<Project> getByUserId(Long userId);
+
+    /**
+     * I don't know why I did this two weeks ago...
+     * @return number of all projects
+     */
+    int countProjects();
 }

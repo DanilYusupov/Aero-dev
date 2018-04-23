@@ -9,7 +9,7 @@ import com.gdc.aerodev.model.Avatar;
  * @see com.gdc.aerodev.dao.AvatarDao
  * @author Yusupov Danil
  */
-public interface GenericAvatarService {
+public interface AvatarService {
 
     /**
      * Inserts avatar into database

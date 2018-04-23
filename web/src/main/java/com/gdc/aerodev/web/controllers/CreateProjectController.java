@@ -2,8 +2,8 @@ package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.GenericProjectService;
-import com.gdc.aerodev.service.impl.ProjectService;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.impl.ProjectServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,15 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class CreateProjectController implements LoggingWeb{
 
-    private final GenericProjectService prjService;
+    private final ProjectService prjService;
 
-    public CreateProjectController(ProjectService prjService) {
+    public CreateProjectController(ProjectServiceImpl prjService) {
         this.prjService = prjService;
     }
 
@@ -37,8 +36,7 @@ public class CreateProjectController implements LoggingWeb{
         Long owner = Long.valueOf(request.getParameter("usrId"));
         Long id = prjService.createProject(request.getParameter("name"),
                 owner,
-                ProjectType.valueOf(request.getParameter("type").toUpperCase()),
-                request.getParameter("description"));
+                ProjectType.valueOf(request.getParameter("type").toUpperCase()));
         if  (id != null){
             log.info("Created project with id " + id + ". Owner id " + owner + ".");
             return "redirect:/profile";

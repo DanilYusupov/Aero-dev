@@ -2,7 +2,7 @@ package com.gdc.aerodev.service.test;
 
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
@@ -33,7 +33,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateUser(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         int size = service.countUsers();
         service.createUser(userName, userPassword, userEmail, isMale);
         assertNotNull(service.getUser(userName));
@@ -42,7 +42,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateExistentUser(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
         assertNull(service.createUser(userName, userPassword, userEmail, isMale));
@@ -51,7 +51,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateEmptyName(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         int size = service.countUsers();
         assertNull(service.createUser("", userPassword, userEmail, isMale));
         assertEquals(size, service.countUsers());
@@ -59,7 +59,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateExistentEmail(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
         assertNull(service.createUser("second", "new", userEmail, isMale));
@@ -70,7 +70,7 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateUser(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         User before = service.getUser(1L);
         assertNotNull(service.updateUser(1L, userName, userPassword, userEmail, level));
         assertNotEquals(before.getUserName(), service.getUser(1L).getUserName());
@@ -78,7 +78,7 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateWithEmptyParams(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         Long id = service.createUser(userName, userPassword, userEmail, isMale);
         User before = service.getUser(id);
         assertNull(service.updateUser(id, "", "", "", (short) 0));
@@ -91,7 +91,7 @@ public class UserServiceTest {
 
     @Test
     public void testUpdateInfo(){
-        UserService service = getService();
+        UserServiceImpl service = getService();
         Long id = service.createUser(userName, userPassword, userEmail, isMale);
         service.updateInfo(id, userFirstName, userLastName, "", userCountry, userCity);
         User user = service.getUser(id);
@@ -99,8 +99,8 @@ public class UserServiceTest {
 
     }
 
-    private UserService getService(){
-        return new UserService(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
+    private UserServiceImpl getService(){
+        return new UserServiceImpl(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
     }
 
 }

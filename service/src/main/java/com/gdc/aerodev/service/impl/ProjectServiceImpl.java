@@ -5,19 +5,18 @@ import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
-import com.gdc.aerodev.service.GenericProjectService;
+import com.gdc.aerodev.service.ProjectService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProjectService implements GenericProjectService, LoggingService {
+public class ProjectServiceImpl implements ProjectService, LoggingService {
 
     private final ProjectDao dao;
 
-    public ProjectService(PostgresProjectDao dao) {
+    public ProjectServiceImpl(PostgresProjectDao dao) {
         this.dao = dao;
     }
 
@@ -40,7 +39,7 @@ public class ProjectService implements GenericProjectService, LoggingService {
     }
 
     @Override
-    public Long updateProject(Long projectId, String projectName, ProjectType projectType, String projectDescription) {
+    public Long updateProject(Long projectId, String projectName, ProjectType projectType) {
         Project project = dao.getById(projectId);
         if (!projectName.equals("")) {
             if (isExistentName(projectName)) {
@@ -48,8 +47,6 @@ public class ProjectService implements GenericProjectService, LoggingService {
                 return null;
             }
             project.setProjectName(projectName);
-        } else if (projectDescription.equals("")){
-            return null;
         }
         project.setProjectType(projectType);
         try{

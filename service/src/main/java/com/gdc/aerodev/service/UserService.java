@@ -11,7 +11,7 @@ import java.util.List;
  * @see com.gdc.aerodev.dao.UserDao
  * @author Yusupov Danil
  */
-public interface GenericUserService {
+public interface UserService {
 
     /**
      * Inserts {@code User} into database configured by input parameters.
