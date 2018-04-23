@@ -25,7 +25,7 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
  * @author Yusupov Danil
  */
 @Repository
-public class PostgresProjectDao implements ProjectDao, Daoable<Project, Long>{
+public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;

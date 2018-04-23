@@ -1,25 +1,25 @@
 package com.gdc.aerodev.dao;
 
-import com.gdc.aerodev.model.ProjectFiles;
+import com.gdc.aerodev.model.ProjectFile;
 
 import java.util.List;
 
 /**
- * Describes data access object to work with {@code ProjectFiles}
+ * Describes data access object to work with {@code ProjectFile}
  *
- * @see ProjectFiles
+ * @see ProjectFile
  * @author Yusupov Danil
  */
-public interface ProjectFilesDao extends GenericDao<ProjectFiles, Long> {
+public interface ProjectFileDao extends GenericDao<ProjectFile, Long> {
 
     /**
      * No reason to get this sub entity by name
-     * @param name name of target {@code ProjectFiles}
+     * @param name name of target {@code ProjectFile}
      * @return {@code null}
      */
     @Deprecated
     @Override
-    default ProjectFiles getByName(String name){
+    default ProjectFile getByName(String name){
         return null;
     }
 
@@ -29,7 +29,7 @@ public interface ProjectFilesDao extends GenericDao<ProjectFiles, Long> {
      */
     @Deprecated
     @Override
-    default List<ProjectFiles> getAll(){
+    default List<ProjectFile> getAll(){
         return null;
     }
 }

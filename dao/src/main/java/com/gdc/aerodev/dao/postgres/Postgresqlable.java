@@ -5,10 +5,7 @@ import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.logging.LoggingDao;
 import org.springframework.dao.DuplicateKeyException;
 
-import java.io.IOException;
-import java.util.Properties;
-
-interface Daoable<T, V> extends GenericDao<T, V>, LoggingDao {
+interface Postgresqlable<T, V> extends GenericDao<T, V>, LoggingDao {
 
     /**
      * Method inherited from {@code GenericDao} & checks which method needs to be invoked. If {@code entityId} is

@@ -1,6 +1,5 @@
-package com.gdc.aerodev.dao.test;
+package com.gdc.aerodev.dao.test.postgres;
 
-import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
 import com.gdc.aerodev.model.Avatar;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class PostgresAvatarDaoTest {
+public class PostgresAvatarDaoTest extends WithFiles {
 
     private final String tableName = "avatar_test";
     private Long id = 1L;
@@ -70,23 +69,5 @@ public class PostgresAvatarDaoTest {
 
     private PostgresAvatarDao getDao() {
         return new PostgresAvatarDao(new JdbcTemplate(db.getTestDatabase()), tableName);
-    }
-
-    private byte[] getImage() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File image = new File(classLoader.getResource("java.png").getFile());
-        try (
-                BufferedInputStream in =
-                        new BufferedInputStream(
-                                new FileInputStream(image)
-                        );
-                ByteArrayOutputStream out = new ByteArrayOutputStream()
-        ) {
-            int a;
-            while ((a = in.read()) != -1) {
-                out.write(a);
-            }
-            return out.toByteArray();
-        }
     }
 }

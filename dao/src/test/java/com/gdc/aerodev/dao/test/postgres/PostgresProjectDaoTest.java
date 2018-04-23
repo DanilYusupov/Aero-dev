@@ -1,4 +1,4 @@
-package com.gdc.aerodev.dao.test;
+package com.gdc.aerodev.dao.test.postgres;
 
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.dao.exception.DaoException;

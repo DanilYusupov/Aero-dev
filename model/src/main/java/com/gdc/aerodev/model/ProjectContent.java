@@ -1,7 +1,7 @@
 package com.gdc.aerodev.model;
 
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * This entity is strictly related to {@code Project} one and details it.
@@ -31,12 +31,6 @@ public class ProjectContent {
      * Date of project creation
      */
     private Date projectBirthDay;
-
-    public ProjectContent(byte[] projectLogo, String projectDescription, Date projectBirthDay) {
-        this.projectLogo = projectLogo;
-        this.projectDescription = projectDescription;
-        this.projectBirthDay = projectBirthDay;
-    }
 
     public ProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirthDay) {
         this.projectId = projectId;

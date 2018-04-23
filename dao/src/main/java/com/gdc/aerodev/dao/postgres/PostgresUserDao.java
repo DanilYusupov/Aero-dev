@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
@@ -25,7 +24,7 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
  * @see User
  */
 @Repository
-public class PostgresUserDao implements UserDao, Daoable<User, Long> {
+public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;

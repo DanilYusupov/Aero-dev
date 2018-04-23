@@ -28,7 +28,7 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
  * @see ProjectContent
  */
 @Repository
-public class PostgresProjectContentDao implements ProjectContentDao, Daoable<ProjectContent, Long> {
+public class PostgresProjectContentDao implements ProjectContentDao, Postgresqlable<ProjectContent, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -67,7 +67,7 @@ public class PostgresProjectContentDao implements ProjectContentDao, Daoable<Pro
                     log.info("Received new project logo for project with id: " + entity.getProjectId() + ". Size: " + entity.getProjectLogo().length + " bytes.");
                     ps.setBinaryStream(2, new ByteArrayInputStream(entity.getProjectLogo()));
                     ps.setString(3, entity.getProjectDescription());
-                    ps.setDate(4, (Date) entity.getProjectBirthDay());
+                    ps.setDate(4, new Date(entity.getProjectBirthDay().getTime()));
                     return ps;
                 },
                 keyHolder
@@ -125,7 +125,7 @@ public class PostgresProjectContentDao implements ProjectContentDao, Daoable<Pro
                     rs.getLong("prj_id"),
                     toByteArray(rs.getBinaryStream("prj_logo")),
                     rs.getString("prj_description"),
-                    rs.getDate("prj_date")
+                    new Date(rs.getDate("prj_date").getTime())
             );
         }
     }

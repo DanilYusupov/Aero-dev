@@ -18,7 +18,7 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
 import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
 
 @Repository
-public class PostgresAvatarDao implements AvatarDao, Daoable<Avatar, Long> {
+public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
