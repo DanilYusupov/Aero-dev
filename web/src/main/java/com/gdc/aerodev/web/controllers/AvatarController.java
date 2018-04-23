@@ -1,6 +1,5 @@
 package com.gdc.aerodev.web.controllers;
 
-import com.gdc.aerodev.model.Avatar;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.impl.AvatarService;
 import com.gdc.aerodev.web.logging.LoggingWeb;

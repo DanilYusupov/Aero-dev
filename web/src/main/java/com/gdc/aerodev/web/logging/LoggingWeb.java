@@ -1,9 +1,10 @@
 package com.gdc.aerodev.web.logging;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public interface LoggingWeb {
 
-    Logger log = Logger.getLogger(LoggingWeb.class);
+    Log log = LogFactory.getLog(LoggingWeb.class);
 
 }

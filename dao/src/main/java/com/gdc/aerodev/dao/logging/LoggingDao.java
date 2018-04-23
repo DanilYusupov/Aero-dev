@@ -1,9 +1,11 @@
 package com.gdc.aerodev.dao.logging;
 
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public interface LoggingDao {
 
-    Logger log = Logger.getLogger(LoggingDao.class);
+    Log log = LogFactory.getLog(LoggingDao.class);
 
 }
