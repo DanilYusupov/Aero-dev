@@ -2,7 +2,7 @@ server:
   port: 9099
   undertow:
     accesslog:
-      dir: web/target
+      dir: /log
       enabled: true
 spring:
   datasource:
