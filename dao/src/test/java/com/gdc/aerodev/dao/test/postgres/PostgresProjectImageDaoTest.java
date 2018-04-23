@@ -30,7 +30,7 @@ public class PostgresProjectImageDaoTest extends WithFiles{
 
     @Test
     public void testInsertImage() throws IOException {
-        PostgresProjectImageDao dao = getDao();
+        ProjectImageDao dao = getDao();
         ProjectImage image = new ProjectImage(projectId, getImage(), contentType);
         assertTrue(image.getProjectImage().length > 0);
         assertEquals(imageId, dao.save(image));
@@ -38,14 +38,14 @@ public class PostgresProjectImageDaoTest extends WithFiles{
 
     @Test (expected = NullPointerException.class)
     public void testInsertNullImage() {
-        PostgresProjectImageDao dao = getDao();
+        ProjectImageDao dao = getDao();
         ProjectImage image = new ProjectImage(projectId, null, contentType);
         dao.save(image);
     }
 
     @Test
     public void testGetImages() throws IOException {
-        PostgresProjectImageDao dao = getDao();
+        ProjectImageDao dao = getDao();
         ProjectImage image0 = new ProjectImage(projectId, getImage(), contentType);
         ProjectImage image1 = new ProjectImage(projectId, getImage(), contentType);
         ProjectImage image2 = new ProjectImage(projectId, getImage(), contentType);
@@ -61,7 +61,7 @@ public class PostgresProjectImageDaoTest extends WithFiles{
 
     @Test
     public void testGetNonExistentImage(){
-        PostgresProjectImageDao dao = getDao();
+        ProjectImageDao dao = getDao();
         List<ProjectImage> received = dao.getAll(projectId);
         assertTrue(received.isEmpty());
     }
@@ -77,7 +77,7 @@ public class PostgresProjectImageDaoTest extends WithFiles{
 
     }
 
-    private PostgresProjectImageDao getDao() {
+    private ProjectImageDao getDao() {
         return new PostgresProjectImageDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 

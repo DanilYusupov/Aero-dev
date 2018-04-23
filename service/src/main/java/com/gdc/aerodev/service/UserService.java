@@ -75,4 +75,9 @@ public interface UserService {
      */
     void updateInfo(Long id, String firstName, String lastName, String biography, String userCountry, String userCity);
 
+    /**
+     * Counts all users in DB...
+     * @return number of users
+     */
+    int countUsers();
 }

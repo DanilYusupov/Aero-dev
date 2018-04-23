@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao.test.postgres;
 
+import com.gdc.aerodev.dao.AvatarDao;
 import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
 import com.gdc.aerodev.model.Avatar;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -26,7 +27,7 @@ public class PostgresAvatarDaoTest extends WithFiles {
 
     @Test
     public void testInsertImage() throws IOException {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         assertTrue(avatar.getAvatarData().length > 0);
         assertEquals(id, dao.save(avatar));
@@ -34,14 +35,14 @@ public class PostgresAvatarDaoTest extends WithFiles {
 
     @Test (expected = NullPointerException.class)
     public void testInsertNullImage() {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, null, "image");
         dao.save(avatar);
     }
 
     @Test
     public void testGetImage() throws IOException {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         Long id = dao.save(avatar);
         Avatar received = dao.getById(owner);
@@ -51,14 +52,14 @@ public class PostgresAvatarDaoTest extends WithFiles {
 
     @Test
     public void testGetNonExistentImage(){
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         assertNull(dao.getById(owner));
     }
 
     @Test
     public void testUpdateImage() throws IOException {
         Long newOwner = 77L;
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         dao.save(avatar);
         Avatar update = dao.getById(owner);
@@ -67,7 +68,7 @@ public class PostgresAvatarDaoTest extends WithFiles {
         assertEquals(newOwner, dao.getById(newOwner).getAvatarOwner());
     }
 
-    private PostgresAvatarDao getDao() {
+    private AvatarDao getDao() {
         return new PostgresAvatarDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 }

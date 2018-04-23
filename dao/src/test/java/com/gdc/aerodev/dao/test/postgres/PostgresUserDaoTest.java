@@ -1,5 +1,6 @@
 package com.gdc.aerodev.dao.test.postgres;
 
+import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.User;
@@ -30,7 +31,7 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testGetById() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         User user = dao.getById(1L);
         assertEquals("Petr", user.getUserName());
         assertEquals("velikii@spb.ru", user.getUserEmail());
@@ -39,7 +40,7 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testGetByName() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         User user = dao.getByName("Petr");
         assertEquals("velikii@spb.ru", user.getUserEmail());
         assertEquals(0, user.getUserLevel());
@@ -47,14 +48,14 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testGetAll() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         List<User> list = dao.getAll();
         assertEquals(3, list.size());
     }
 
     @Test
     public void testInsert() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         Long id = dao.save(user);
         User user = dao.getById(id);;
         assertEquals(name, user.getUserName());
@@ -66,7 +67,7 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testUpdate() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         Long id = 1L;
         String name = "Denis";
         short level = 1;
@@ -86,7 +87,7 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testDelete() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         int size = dao.getAll().size();
         dao.delete(2L);
         assertEquals(size - 1, dao.getAll().size());
@@ -94,19 +95,19 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testExistentEmail(){
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertEquals("Petr", dao.existentEmail("velikii@spb.ru"));
     }
 
     @Test
     public void testNonExistentEmail(){
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertNull(dao.existentEmail("!!!"));
     }
 
     @Test
     public void testCount(){
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertEquals(3, dao.count());
     }
 
@@ -114,19 +115,19 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testGetByIdNonExistent() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertNull(dao.getById(-1L));
     }
 
     @Test
     public void testGetByNameNonExistent() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertNull(dao.getByName("!!!"));
     }
 
     @Test(expected = DaoException.class)
     public void testInsertExistentUserException() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         String newName = "Petr";
         user.setUserName(newName);
         assertNull(dao.save(user));
@@ -134,7 +135,7 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testInsertExistentUserDbSize() {
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         String newName = "Petr";
         user.setUserName(newName);
         int size = dao.getAll().size();
@@ -147,11 +148,11 @@ public class PostgresUserDaoTest {
 
     @Test
     public void testDeleteNonExistentUser(){
-        PostgresUserDao dao = getDao();
+        UserDao dao = getDao();
         assertFalse(dao.delete(-1L));
     }
 
-    private PostgresUserDao getDao() {
+    private UserDao getDao() {
         return new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 
