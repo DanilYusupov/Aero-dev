@@ -12,6 +12,7 @@ import java.util.Date;
 public class ProjectContentServiceImpl implements ProjectContentService {
 
     private ProjectContentDao contentDao;
+    private final Long DEFAULT_PROJECT = 1L;
 
     public ProjectContentServiceImpl(PostgresProjectContentDao contentDao) {
         this.contentDao = contentDao;
@@ -46,7 +47,14 @@ public class ProjectContentServiceImpl implements ProjectContentService {
 
     @Override
     public ProjectContent get(Long projectId) {
-        return contentDao.getById(projectId);
+        ProjectContent content = contentDao.getById(projectId);
+        if (content.getProjectLogo() == null || content.getProjectLogo().length == 0) {
+            log.debug("No project logo for project with id: " + projectId);
+            byte [] logo = contentDao.getById(DEFAULT_PROJECT).getProjectLogo();
+            log.debug("Loaded default logo: " + logo.length + " bytes.");
+            content.setProjectLogo(logo);
+        }
+        return content;
     }
 
     @Override

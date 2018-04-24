@@ -29,7 +29,10 @@ public class PostgresProjectContentDaoTest extends WithFiles {
     public void testInsert() throws IOException {
         ProjectContentDao dao = getDao();
         ProjectContent content = new ProjectContent(projectId, getImage(), projectDescription, new java.util.Date());
-        assertNotNull(dao.save(content));
+        Long id = dao.save(content);
+        assertNotNull(id);
+        ProjectContent projectContent = dao.getById(id);
+        assertTrue(projectContent.getProjectLogo().length > 0);
     }
 
     @Test

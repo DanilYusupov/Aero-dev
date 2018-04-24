@@ -1,6 +1,7 @@
 package com.gdc.aerodev.service.test;
 
 import com.gdc.aerodev.dao.postgres.PostgresProjectContentDao;
+import com.gdc.aerodev.model.ProjectContent;
 import com.gdc.aerodev.service.ProjectContentService;
 import com.gdc.aerodev.service.impl.ProjectContentServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -65,6 +66,15 @@ public class ProjectContentServiceTest extends WithFiles {
         ProjectContentService service = getService();
         service.createProjectContent(projectId, getImage(), description, new Date());
         service.createProjectContent(projectId, getImage(), description, new Date());
+    }
+
+    @Test
+    public void getNullLogo(){
+        ProjectContentService service = getService();
+        boolean create = service.createProjectContent(projectId, new byte[0], description, new Date());
+        assertTrue(create);
+        boolean result = service.get(projectId).getProjectLogo().length > 0;
+        assertTrue(result);
     }
 
     ProjectContentService getService() {

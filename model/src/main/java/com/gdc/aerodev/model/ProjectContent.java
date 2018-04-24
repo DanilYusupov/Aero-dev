@@ -60,4 +60,8 @@ public class ProjectContent {
     public Date getProjectBirthDay() {
         return projectBirthDay;
     }
+
+    public void setProjectLogo(byte[] projectLogo) {
+        this.projectLogo = projectLogo;
+    }
 }
