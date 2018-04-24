@@ -23,14 +23,14 @@
             <div class="col p-3 ml-3" style="max-width: 400px;">
                 <div class="card bg-dark text-light border-0">
                     <img class="card-img-top" src="../static/img/prj_logo_example.png"
-                         th:src="@{/img/prj_logo_example.png}" style=" object-fit: cover; max-height: 400px;">
+                         th:src="@{'/project/logo/' + ${prj.getProjectId()}}" style=" object-fit: cover; max-height: 400px;">
                     <div class="card-img-overlay" style="margin-top: -15px; max-height: 80px;">
                         <a href="#" class="badge badge-success" style="margin-left: -10px;" th:text="${prj.getProjectType()}"></a>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${prj.projectName}"></h5>
                         <p class="card-text">Author: <a th:href="@{'/user/' + ${prj.getProjectOwner()}}"><span th:text="${ownerName}"></span></a>
-                        </p>
+                        <p class="card-text">Creation date: <span th:text="${content.getProjectBirthDay().getDate()}"></span></p>
                         <br>
                         <br>
                         <br>
@@ -48,17 +48,9 @@
         <div class="row">
             <div class="col">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner" style="height: 50vh;">
+                    <div class="carousel-inner" style="height: 50vh;" th:each="image: ${images}">
                         <div class="carousel-item active my-auto">
-                            <img class="d-block w-100" th:src="@{/img/project_face_example.jpg}" alt="First slide">
-                        </div>
-                        <div class="carousel-item my-auto">
-                            <img class="d-block w-100" th:src="@{/img/project_img_2.jpg}"alt="Second slide"
-                            >
-                        </div>
-                        <div class="carousel-item my-auto">
-                            <img class="d-block w-100" th:src="@{/img/project_img_3.jpg}" alt="Third slide"
-                            >
+                            <img class="d-block w-100" th:src="@{'/project/image/' + ${image.getImageId()}}" alt="First slide">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -79,7 +71,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Project description</h5>
-                        <p class="card-text" th:text="${prj.getProjectDescription()}"></p>
+                        <p class="card-text" th:text="${content.getProjectDescription()}"></p>
                     </div>
                 </div>
             </div>
