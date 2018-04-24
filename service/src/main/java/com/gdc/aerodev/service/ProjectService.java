@@ -2,6 +2,7 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @see com.gdc.aerodev.dao.ProjectDao
  * @author Yusupov Danil
  */
-public interface ProjectService {
+public interface ProjectService extends LoggingService {
 
     /**
      * Inserts {@code Project} into database configured by input parameters.

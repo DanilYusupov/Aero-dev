@@ -1,6 +1,9 @@
 package com.gdc.aerodev.dao;
 
+import com.gdc.aerodev.dao.exception.DaoException;
+import com.gdc.aerodev.dao.logging.LoggingDao;
 import com.gdc.aerodev.model.ProjectContent;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * @see ProjectContent
  * @author Yusupov Danil
  */
-public interface ProjectContentDao extends GenericDao<ProjectContent, Long>{
+public interface ProjectContentDao extends GenericDao<ProjectContent, Long>, LoggingDao{
     /**
      * There is no reason to get this entity by name.
      * @return {@code null}
@@ -30,4 +33,23 @@ public interface ProjectContentDao extends GenericDao<ProjectContent, Long>{
     default List<ProjectContent> getAll(){
         return null;
     }
+
+    @Override
+    default Long save(ProjectContent entity){
+        if (isNew(entity.getProjectId())){
+            try {
+                return insert(entity);
+            } catch (DuplicateKeyException e){
+                throw new DaoException("Error inserting ProjectContent: ", e);
+            }
+        } else {
+            return update(entity);
+        }
+    }
+
+    Long update(ProjectContent entity);
+
+    Long insert(ProjectContent entity);
+
+    boolean isNew(Long projectId);
 }

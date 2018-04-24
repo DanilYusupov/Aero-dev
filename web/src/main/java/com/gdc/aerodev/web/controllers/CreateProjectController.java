@@ -2,6 +2,7 @@ package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.ProjectType;
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.ProjectContentService;
 import com.gdc.aerodev.service.ProjectService;
 import com.gdc.aerodev.service.impl.ProjectServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;

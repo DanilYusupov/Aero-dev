@@ -3,6 +3,7 @@ package com.gdc.aerodev.dao.postgres;
 import com.gdc.aerodev.dao.ProjectImageDao;
 import com.gdc.aerodev.model.ProjectImage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -48,6 +49,18 @@ public class PostgresProjectImageDao implements ProjectImageDao {
         return jdbcTemplate.query(
                 SELECT_QUERY + tableName + " WHERE prj_id = ?;",
                 new ProjectImageRowMapper(), projectId);
+    }
+
+    @Override
+    public ProjectImage getById(Long id) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    SELECT_QUERY + tableName + " WHERE img_id=?;",
+                    new ProjectImageRowMapper(),
+                    id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

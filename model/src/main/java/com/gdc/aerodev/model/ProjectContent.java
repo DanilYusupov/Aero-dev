@@ -39,6 +39,12 @@ public class ProjectContent {
         this.projectBirthDay = projectBirthDay;
     }
 
+    public ProjectContent(Long projectId, byte[] projectLogo, String projectDescription) {
+        this.projectId = projectId;
+        this.projectLogo = projectLogo;
+        this.projectDescription = projectDescription;
+    }
+
     public Long getProjectId() {
         return projectId;
     }

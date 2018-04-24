@@ -15,17 +15,6 @@ import java.util.List;
 public interface ProjectImageDao extends GenericDao<ProjectImage, Long>, LoggingDao {
 
     /**
-     * No reason to get one image if there is more than one
-     * @param id of {@code Project}
-     * @return null
-     */
-    @Deprecated
-    @Override
-    default ProjectImage getById(Long id){
-        return null;
-    }
-
-    /**
      * There is no such param in entity
      * @return {@code null}
      */

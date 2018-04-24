@@ -1,6 +1,7 @@
 package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.ProjectImage;
+import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.List;
 
@@ -12,8 +13,16 @@ import java.util.List;
  * @see com.gdc.aerodev.dao.ProjectImageDao
  * @author Yusupov Danil
  */
-public interface ProjectImageService {
+public interface ProjectImageService extends LoggingService{
 
+    /**
+     * Saves {@code ProjectImage} entity to connected DB
+     * @param projectId id of target project
+     * @param image image data
+     * @param contentType type of image
+     * @return (0) {@code img_id} if image saved or
+     *         (1) {@code null} if not
+     */
     Long createImage(Long projectId, byte[] image, String contentType);
 
     /**

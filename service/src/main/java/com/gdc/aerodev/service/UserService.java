@@ -1,6 +1,7 @@
 package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @see com.gdc.aerodev.dao.UserDao
  * @author Yusupov Danil
  */
-public interface UserService {
+public interface UserService extends LoggingService {
 
     /**
      * Inserts {@code User} into database configured by input parameters.

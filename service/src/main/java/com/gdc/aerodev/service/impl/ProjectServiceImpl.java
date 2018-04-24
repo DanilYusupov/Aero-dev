@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProjectServiceImpl implements ProjectService, LoggingService {
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDao dao;
 
     public ProjectServiceImpl(PostgresProjectDao dao) {
         this.dao = dao;
     }
+
+    //TODO: add createProjectContent() method from ProjectContentService
 
     @Override
     public Long createProject(String projectName, Long projectOwner, ProjectType projectType) {
@@ -35,6 +37,7 @@ public class ProjectServiceImpl implements ProjectService, LoggingService {
             return id;
         } catch (DaoException e) {
             return null;
+            //FIXME: fix exception handling
         }
     }
 

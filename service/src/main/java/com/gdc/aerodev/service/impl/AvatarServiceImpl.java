@@ -10,7 +10,7 @@ import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AvatarServiceImpl implements AvatarService, LoggingService {
+public class AvatarServiceImpl implements AvatarService {
 
     private final AvatarDao avDao;
     private final UserDao usrDao;

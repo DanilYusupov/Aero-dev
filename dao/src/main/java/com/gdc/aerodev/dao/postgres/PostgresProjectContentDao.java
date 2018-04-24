@@ -28,7 +28,7 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
  * @see ProjectContent
  */
 @Repository
-public class PostgresProjectContentDao implements ProjectContentDao, Postgresqlable<ProjectContent, Long> {
+public class PostgresProjectContentDao implements ProjectContentDao {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -99,11 +99,11 @@ public class PostgresProjectContentDao implements ProjectContentDao, Postgresqla
     }
 
     @Override
-    public boolean isNew(ProjectContent entity) {
+    public boolean isNew(Long projectId) {
         try {
             jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE prj_id = ?;",
                     new ProjectContentRowMapper(),
-                    entity.getProjectId());
+                    projectId);
             return false;
         } catch (EmptyResultDataAccessException e) {
             return true;
