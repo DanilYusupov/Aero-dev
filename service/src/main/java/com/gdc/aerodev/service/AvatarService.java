@@ -1,8 +1,16 @@
 package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.Avatar;
+import com.gdc.aerodev.service.logging.LoggingService;
 
-public interface GenericAvatarService extends GenericService {
+/**
+ * Generic interface of service, which works with {@code Avatar} entities
+ *
+ * @see com.gdc.aerodev.model.Avatar
+ * @see com.gdc.aerodev.dao.AvatarDao
+ * @author Yusupov Danil
+ */
+public interface AvatarService extends LoggingService{
 
     /**
      * Inserts avatar into database

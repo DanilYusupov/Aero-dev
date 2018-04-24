@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
+
 /**
  * Realization of data access object for working with {@code Project} instance
  *
@@ -23,11 +25,11 @@ import java.util.List;
  * @author Yusupov Danil
  */
 @Repository
-public class PostgresProjectDao extends AbstractDao<Project, Long> implements ProjectDao {
+public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
-    private final String SELECT_QUERY = "SELECT prj_id, prj_name, prj_owner, prj_type, prj_description FROM ";
+    private final String SELECT_QUERY = "SELECT prj_id, prj_name, prj_owner, prj_type FROM ";
 
     @Autowired
     public PostgresProjectDao(JdbcTemplate jdbcTemplate) {
@@ -76,8 +78,8 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
                 new ProjectRowMapper());
     }
 
-    protected Long insert(Project entity) {
-        final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_name, prj_owner, prj_type, prj_description) VALUES (?, ?, ?, ?);";
+    public Long insert(Project entity) {
+        final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_name, prj_owner, prj_type) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
@@ -85,7 +87,6 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
                     ps.setString(1, entity.getProjectName());
                     ps.setLong(2, entity.getProjectOwner());
                     ps.setString(3, entity.getProjectType().toString());
-                    ps.setString(4, entity.getProjectDescription());
                     return ps;
                 },
                 keyHolder
@@ -93,14 +94,13 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
         return keyHolder.getKey().longValue();
     }
 
-    protected Long update(Project entity) {
+    public Long update(Project entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
-                        " SET prj_name=?, prj_owner=?, prj_type=?, prj_description=? WHERE prj_id = "
+                        " SET prj_name=?, prj_owner=?, prj_type=? WHERE prj_id = "
                         + entity.getProjectId() + ";",
                 entity.getProjectName(),
                 entity.getProjectOwner(),
-                entity.getProjectType().toString(),
-                entity.getProjectDescription());
+                entity.getProjectType().toString());
         return (rows > 0) ? entity.getProjectId() : null;
     }
 
@@ -111,11 +111,10 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
     }
 
     @Override
-    protected boolean isNew(Project entity) {
+    public boolean isNew(Project entity) {
         return entity.getProjectId() == null;
     }
 
-    @Override
     public int count() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
@@ -134,7 +133,6 @@ public class PostgresProjectDao extends AbstractDao<Project, Long> implements Pr
             project.setProjectName(resultSet.getString("prj_name"));
             project.setProjectOwner(resultSet.getLong("prj_owner"));
             project.setProjectType(ProjectType.valueOf(resultSet.getString("prj_type").toUpperCase()));
-            project.setProjectDescription(resultSet.getString("prj_description"));
             return project;
         }
     }

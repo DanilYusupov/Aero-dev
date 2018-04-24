@@ -1,9 +1,10 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.impl.ProjectService;
-import com.gdc.aerodev.service.impl.UserService;
-import org.springframework.ui.Model;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.ProjectServiceImpl;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +17,7 @@ public class UserController {
     private final UserService usr_service;
     private final ProjectService prj_service;
 
-    public UserController(UserService usr_service, ProjectService prj_service) {
+    public UserController(UserServiceImpl usr_service, ProjectServiceImpl prj_service) {
         this.usr_service = usr_service;
         this.prj_service = prj_service;
     }

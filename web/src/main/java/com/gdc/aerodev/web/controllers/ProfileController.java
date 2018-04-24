@@ -1,8 +1,10 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.impl.ProjectService;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.ProjectServiceImpl;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ public class ProfileController implements LoggingWeb{
     private final UserService usrService;
     private final ProjectService prjService;
 
-    public ProfileController(UserService usrService, ProjectService prjService) {
+    public ProfileController(UserServiceImpl usrService, ProjectServiceImpl prjService) {
         this.usrService = usrService;
         this.prjService = prjService;
     }

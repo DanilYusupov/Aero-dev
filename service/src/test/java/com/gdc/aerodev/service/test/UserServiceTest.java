@@ -2,7 +2,8 @@ package com.gdc.aerodev.service.test;
 
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
@@ -100,7 +101,7 @@ public class UserServiceTest {
     }
 
     private UserService getService(){
-        return new UserService(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
+        return new UserServiceImpl(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
     }
 
 }

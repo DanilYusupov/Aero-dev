@@ -12,24 +12,21 @@ public class Project {
     private String projectName;
     private Long projectOwner;
     private ProjectType projectType;
-    private String projectDescription;
 
     public Project() {
     }
 
-    public Project(Long projectId, String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
+    public Project(Long projectId, String projectName, Long projectOwner, ProjectType projectType) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectOwner = projectOwner;
         this.projectType = projectType;
-        this.projectDescription = projectDescription;
     }
 
-    public Project(String projectName, Long projectOwner, ProjectType projectType, String projectDescription) {
+    public Project(String projectName, Long projectOwner, ProjectType projectType) {
         this.projectName = projectName;
         this.projectOwner = projectOwner;
         this.projectType = projectType;
-        this.projectDescription = projectDescription;
     }
 
     public Long getProjectId() {
@@ -48,10 +45,6 @@ public class Project {
         return projectType;
     }
 
-    public String getProjectDescription() {
-        return projectDescription;
-    }
-
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
@@ -66,9 +59,5 @@ public class Project {
 
     public void setProjectType(ProjectType projectType) {
         this.projectType = projectType;
-    }
-
-    public void setProjectDescription(String projectDescription) {
-        this.projectDescription = projectDescription;
     }
 }

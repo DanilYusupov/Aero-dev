@@ -12,14 +12,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.util.Arrays;
+
+import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
+import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
 
 @Repository
-public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements AvatarDao {
+public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long> {
 
     private JdbcTemplate jdbcTemplate;
     private String tableName;
@@ -38,9 +37,10 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
 
     /**
      * Gives user's avatar by his id
+     *
      * @param id identifier of avatar owner {@code User}
      * @return (0) {@code Avatar} or
-     *         (1) {@code null}
+     * (1) {@code null}
      */
     @Override
     public Avatar getById(Long id) {
@@ -53,9 +53,10 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
 
     /**
      * Deletes user's avatar by his id
+     *
      * @param id identifier of user which avatar must be deleted
      * @return (0) {@code true} if avatar was deleted or
-     *         (1) {@code false} if avatar wasn't deleted
+     * (1) {@code false} if avatar wasn't deleted
      */
     @Override
     public boolean delete(Long id) {
@@ -64,18 +65,14 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
     }
 
     @Override
-    protected Long insert(Avatar entity) {
+    public Long insert(Avatar entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
                     PreparedStatement ps = con.prepareStatement("INSERT INTO " + tableName + " (av_owner, av_data, av_type) VALUES (?, ?, ?);", new String[]{"av_id"});
                     ps.setLong(1, entity.getAvatarOwner());
-                    if (entity.getAvatarData() == null) {
-                        throw new DaoException("Empty byte array!");
-                    } else {
-                        log.info("Received new avatar with size: " + entity.getAvatarData().length + " bytes.");
-                        ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()));
-                    }
+                    log.info("Received new avatar with size: " + entity.getAvatarData().length + " bytes.");
+                    ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()));
                     ps.setString(3, entity.getContentType());
                     return ps;
                 },
@@ -87,10 +84,11 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
     }
 
     @Override
-    protected Long update(Avatar entity) {
+    public Long update(Avatar entity) {
+        Long id = entity.getAvatarId();
         int rows = jdbcTemplate.update(
                 con -> {
-                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName + " SET av_owner=?, av_data=?, av_type=? WHERE av_id = " + entity.getAvatarId() + ";");
+                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName + " SET av_owner=?, av_data=?, av_type=? WHERE av_id=?;");
                     ps.setLong(1, entity.getAvatarOwner());
                     if (entity.getAvatarData() == null) {
                         throw new DaoException("Empty byte array!");
@@ -98,10 +96,10 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
                         ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()), entity.getAvatarData().length);
                     }
                     ps.setString(3, entity.getContentType());
+                    ps.setLong(4, id);
                     return ps;
                 }
         );
-        Long id = entity.getAvatarId();
         if (rows > 0) {
             log.info("Updated avatar with id " + id);
             return id;
@@ -112,7 +110,7 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
     }
 
     @Override
-    protected boolean isNew(Avatar entity) {
+    public boolean isNew(Avatar entity) {
         return entity.getAvatarId() == null;
     }
 
@@ -127,23 +125,5 @@ public class PostgresAvatarDao extends AbstractDao<Avatar, Long> implements Avat
             avatar.setContentType(resultSet.getString("av_type"));
             return avatar;
         }
-    }
-
-    private static byte[] toByteArray(InputStream inputStream) {
-        try(InputStream in = inputStream;
-                ByteArrayOutputStream out = new ByteArrayOutputStream()){
-            int a;
-            while ((a = in.read()) != -1){
-                out.write(a);
-            }
-            return out.toByteArray();
-        } catch (IOException e) {
-            throw new DaoException("Error reading avatar from DB: ", e);
-        }
-    }
-
-    @Override
-    public int count() {
-        return 0;
     }
 }

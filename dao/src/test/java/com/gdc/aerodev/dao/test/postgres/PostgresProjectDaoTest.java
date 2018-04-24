@@ -1,5 +1,6 @@
-package com.gdc.aerodev.dao.test;
+package com.gdc.aerodev.dao.test.postgres;
 
+import com.gdc.aerodev.dao.ProjectDao;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
@@ -23,8 +24,7 @@ public class PostgresProjectDaoTest {
     private String name = "start-up";
     private Long owner = 1L;
     private ProjectType type = ProjectType.AERODYNAMICS;
-    private String description = "This is a new project of...";
-    private Project project = new Project(name, owner, type, description);
+    private Project project = new Project(name, owner, type);
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("project"));
@@ -33,7 +33,7 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testGetById() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         Project project = dao.getById(1L);
         assertEquals("3D test", project.getProjectName());
         assertEquals(ProjectType.DESIGN, project.getProjectType());
@@ -42,7 +42,7 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testGetByName() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         Project project = dao.getByName("3D test");
         assertEquals(ProjectType.DESIGN, project.getProjectType());
         assertEquals(Long.valueOf(1), project.getProjectOwner());
@@ -50,21 +50,21 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testGetAll() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         List<Project> list = dao.getAll();
         assertEquals(3, list.size());
     }
 
     @Test
     public void testInsert() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         Long id = dao.save(project);
         assertEquals(name, dao.getById(id).getProjectName());
     }
 
     @Test
     public void testUpdate() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         Long id = 1L;
         String name = "Thing";
         ProjectType type = ProjectType.AERODYNAMICS;
@@ -79,7 +79,7 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testDelete() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         int size = dao.getAll().size();
         dao.delete(2L);
         assertEquals(size - 1, dao.getAll().size());
@@ -87,7 +87,7 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testCount(){
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         assertEquals(3, dao.count());
     }
 
@@ -95,19 +95,19 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testGetByIdNonExistent() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         assertNull(dao.getById(-1L));
     }
 
     @Test
     public void testGetByNameNonExistent() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         assertNull(dao.getByName("!!!"));
     }
 
     @Test(expected = DaoException.class)
     public void testInsertExistentProjectException() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         String newName = "3D test";
         project.setProjectName(newName);
         assertNull(dao.save(project));
@@ -115,7 +115,7 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testInsertExistentUserDbSize() {
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         String newName = "3D test";
         project.setProjectName(newName);
         int size = dao.getAll().size();
@@ -128,11 +128,11 @@ public class PostgresProjectDaoTest {
 
     @Test
     public void testDeleteNonExistentUser(){
-        PostgresProjectDao dao = getDao();
+        ProjectDao dao = getDao();
         assertFalse(dao.delete(-1L));
     }
 
-    private PostgresProjectDao getDao() {
+    private ProjectDao getDao() {
         return new PostgresProjectDao(new JdbcTemplate(db.getTestDatabase()), tableName);
     }
 }

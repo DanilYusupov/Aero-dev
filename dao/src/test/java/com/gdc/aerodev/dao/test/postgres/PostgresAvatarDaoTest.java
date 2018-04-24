@@ -1,6 +1,6 @@
-package com.gdc.aerodev.dao.test;
+package com.gdc.aerodev.dao.test.postgres;
 
-import com.gdc.aerodev.dao.exception.DaoException;
+import com.gdc.aerodev.dao.AvatarDao;
 import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
 import com.gdc.aerodev.model.Avatar;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class PostgresAvatarDaoTest {
+public class PostgresAvatarDaoTest extends WithFiles {
 
     private final String tableName = "avatar_test";
     private Long id = 1L;
@@ -27,22 +27,22 @@ public class PostgresAvatarDaoTest {
 
     @Test
     public void testInsertImage() throws IOException {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         assertTrue(avatar.getAvatarData().length > 0);
         assertEquals(id, dao.save(avatar));
     }
 
-    @Test (expected = DaoException.class)
+    @Test (expected = NullPointerException.class)
     public void testInsertNullImage() {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, null, "image");
         dao.save(avatar);
     }
 
     @Test
     public void testGetImage() throws IOException {
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         Long id = dao.save(avatar);
         Avatar received = dao.getById(owner);
@@ -52,14 +52,14 @@ public class PostgresAvatarDaoTest {
 
     @Test
     public void testGetNonExistentImage(){
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         assertNull(dao.getById(owner));
     }
 
     @Test
     public void testUpdateImage() throws IOException {
         Long newOwner = 77L;
-        PostgresAvatarDao dao = getDao();
+        AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, getImage(), "image");
         dao.save(avatar);
         Avatar update = dao.getById(owner);
@@ -68,25 +68,7 @@ public class PostgresAvatarDaoTest {
         assertEquals(newOwner, dao.getById(newOwner).getAvatarOwner());
     }
 
-    private PostgresAvatarDao getDao() {
+    private AvatarDao getDao() {
         return new PostgresAvatarDao(new JdbcTemplate(db.getTestDatabase()), tableName);
-    }
-
-    private byte[] getImage() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File image = new File(classLoader.getResource("java.png").getFile());
-        try (
-                BufferedInputStream in =
-                        new BufferedInputStream(
-                                new FileInputStream(image)
-                        );
-                ByteArrayOutputStream out = new ByteArrayOutputStream()
-        ) {
-            int a;
-            while ((a = in.read()) != -1) {
-                out.write(a);
-            }
-            return out.toByteArray();
-        }
     }
 }

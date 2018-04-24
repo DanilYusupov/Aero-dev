@@ -1,22 +1,23 @@
 package com.gdc.aerodev.service.impl;
 
+import com.gdc.aerodev.dao.AvatarDao;
+import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.Avatar;
-import com.gdc.aerodev.service.GenericAvatarService;
+import com.gdc.aerodev.service.AvatarService;
 import com.gdc.aerodev.service.logging.LoggingService;
-import org.mockito.internal.matchers.Null;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AvatarService implements GenericAvatarService, LoggingService {
+public class AvatarServiceImpl implements AvatarService {
 
-    private final PostgresAvatarDao avDao;
-    private final PostgresUserDao usrDao;
+    private final AvatarDao avDao;
+    private final UserDao usrDao;
     private final Long DEFAULT_MAN_AVATAR = 1L;
     private final Long DEFAULT_WOMAN_AVATAR = 2L;
 
-    public AvatarService(PostgresAvatarDao avDao, PostgresUserDao usrDao) {
+    public AvatarServiceImpl(PostgresAvatarDao avDao, PostgresUserDao usrDao) {
         this.avDao = avDao;
         this.usrDao = usrDao;
     }

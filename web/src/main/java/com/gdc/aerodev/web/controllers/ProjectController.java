@@ -1,8 +1,10 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.Project;
-import com.gdc.aerodev.service.impl.ProjectService;
-import com.gdc.aerodev.service.impl.UserService;
+import com.gdc.aerodev.service.ProjectService;
+import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.ProjectServiceImpl;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,7 @@ public class ProjectController implements LoggingWeb{
     private final ProjectService prj_service;
     private final UserService usr_service;
 
-    public ProjectController(ProjectService prj_service, UserService usr_service) {
+    public ProjectController(ProjectServiceImpl prj_service, UserServiceImpl usr_service) {
         this.prj_service = prj_service;
         this.usr_service = usr_service;
     }
