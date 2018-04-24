@@ -19,7 +19,11 @@ public class ProjectContentServiceImpl implements ProjectContentService {
 
     @Override
     public boolean createProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirth) {
-        if (projectDescription.equals("")){
+        try {
+            if (projectDescription.equals("")){
+                return false;
+            }
+        } catch (NullPointerException e){
             return false;
         }
         try {

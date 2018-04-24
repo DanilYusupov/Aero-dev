@@ -23,6 +23,7 @@ public interface ProjectContentService extends LoggingService{
      * @param projectBirth date of project creation
      * @return (0) {@code true} if entity saved or
      *         (1) {@code false} if not
+     *  @throws NullPointerException if projectId will be {@code null}
      */
     boolean createProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirth);
 

@@ -20,8 +20,8 @@ public interface ProjectImageService extends LoggingService{
      * @param projectId id of target project
      * @param image image data
      * @param contentType type of image
-     * @return (0) {@code img_id} if image saved or
-     *         (1) {@code null} if not
+     * @return {@code img_id} of saved image
+     * @throws NullPointerException if save wasn't performed
      */
     Long createImage(Long projectId, byte[] image, String contentType);
 
