@@ -37,7 +37,7 @@ public interface ProjectImageDao extends GenericDao<ProjectImage, Long>, Logging
     /**
      * Gets all project's images
      * @param id of target project
-     * @return list of {@code ProjectImage}s
+     * @return list of images id!
      */
-    List<ProjectImage> getAll(Long id);
+    List<Long> getAll(Long id);
 }

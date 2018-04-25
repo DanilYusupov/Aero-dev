@@ -41,9 +41,9 @@ public class ProjectImageServiceTest extends WithFiles{
         Long imgId0 = service.createImage(projectId, getImage(), contentType);
         Long imgId1 = service.createImage(projectId, getImage(), contentType);
         Long imgId2 = service.createImage(projectId, getImage(), contentType);
-        List<ProjectImage> list = service.getAll(projectId);
+        List<Long> list = service.getAll(projectId);
         assertEquals(3, list.size());
-        assertEquals(imgId2, list.get(2).getImageId());
+        assertEquals(imgId2, list.get(2));
     }
 
     @Test

@@ -76,4 +76,13 @@ public interface ProjectService extends LoggingService {
      * @return number of all projects
      */
     int countProjects();
+
+    /**
+     * Checks project owner matching with client
+     * @param project target project to check
+     * @param userId id of current session client
+     * @return (0) {@code true} if current client is owner of this project or
+     *         (1) {@code false} if not...
+     */
+    boolean isOwner(Project project, Long userId);
 }

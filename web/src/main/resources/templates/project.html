@@ -23,19 +23,43 @@
             <div class="col p-3 ml-3" style="max-width: 400px;">
                 <div class="card bg-dark text-light border-0">
                     <img class="card-img-top" src="../static/img/prj_logo_example.png"
-                         th:src="@{'/project/logo/' + ${prj.getProjectId()}}" style=" object-fit: cover; max-height: 400px;">
+                         th:src="@{'/project/logo/' + ${prj.getProjectId()}}"
+                         style=" object-fit: cover; max-height: 400px;">
                     <div class="card-img-overlay" style="margin-top: -15px; max-height: 80px;">
-                        <a href="#" class="badge badge-success" style="margin-left: -10px;" th:text="${prj.getProjectType()}"></a>
+                        <a href="#" class="badge badge-success" style="margin-left: -10px;"
+                           th:text="${prj.getProjectType()}"></a>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${prj.projectName}"></h5>
-                        <p class="card-text">Author: <a th:href="@{'/user/' + ${prj.getProjectOwner()}}"><span th:text="${ownerName}"></span></a>
-                        <p class="card-text">Creation date: <span th:text="${content.getProjectBirthDay().getDate()}"></span></p>
+                        <div th:if="${isOwner}">
+                            <div class="row">
+                                <div class="col">
+                                    <form method="POST" enctype="multipart/form-data" action="/project/logo">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary" type="submit">Upload</button>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" name="file" id="file" class="custom-file-input"
+                                                       required>
+                                                <label class="custom-file-label" for="file">Change logo</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="card-title mb-3" th:text="${prj.projectName}"></h5>
+                        <p class="card-text">Author: <a th:href="@{'/user/' + ${prj.getProjectOwner()}}"><span
+                                th:text="${ownerName}"></span></a>
+                        <p class="card-text">Creation date: <span th:text="${content.getProjectBirthDay()}"></span></p>
                         <br>
                         <br>
                         <br>
                         <br>
                         <p class="card-text">Statistics</p>
+                        <div th:if="${isOwner}">
+                            <button id="changeInfo" class="btn btn-outline-primary">Change info</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,7 +74,7 @@
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" style="height: 50vh;" th:each="image: ${images}">
                         <div class="carousel-item active my-auto">
-                            <img class="d-block w-100" th:src="@{'/project/image/' + ${image.getImageId()}}" alt="First slide">
+                            <img class="d-block w-100" th:src="@{'/project/image/' + ${image}}" alt="First slide">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -64,6 +88,11 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-2" th:if="${isOwner}">
+            <div class="col">
+                <button id="add_image" class="btn btn-outline-primary float-right">Add image</button>
+            </div>
+        </div>
 
         <!-- Description -->
         <div class="row mt-3">
@@ -72,6 +101,9 @@
                     <div class="card-body">
                         <h5 class="card-title">Project description</h5>
                         <p class="card-text" th:text="${content.getProjectDescription()}"></p>
+                        <div th:if="${isOwner}">
+                            <button id="change_description" class="btn btn-outline-primary">Change description</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +112,10 @@
         <!-- Files -->
         <div class="row mt-3">
             <div class="col">
-                <button class="btn btn-link">Add file...</button>
+                <h5 class="ml-4 card-title">Files</h5>
+                <div th:if="${isOwner}">
+                    <button class="btn btn-link">Add file...</button>
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item">File #1 <a href="" class="float-right">dwnld</a></li>
                     <li class="list-group-item">File #2 <a href="" class="float-right">dwnld</a></li>

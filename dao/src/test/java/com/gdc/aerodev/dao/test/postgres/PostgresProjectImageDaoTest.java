@@ -52,17 +52,17 @@ public class PostgresProjectImageDaoTest extends WithFiles{
         Long id0 = dao.save(image0);
         Long id1 = dao.save(image1);
         Long id2 = dao.save(image2);
-        List<ProjectImage> received = dao.getAll(projectId);
+        List<Long> received = dao.getAll(projectId);
         assertEquals(3, received.size());
-        assertEquals(id0, received.get(0).getImageId());
-        assertEquals(id1, received.get(1).getImageId());
-        assertEquals(id2, received.get(2).getImageId());
+        assertEquals(id0, received.get(0));
+        assertEquals(id1, received.get(1));
+        assertEquals(id2, received.get(2));
     }
 
     @Test
     public void testGetNonExistentImage(){
         ProjectImageDao dao = getDao();
-        List<ProjectImage> received = dao.getAll(projectId);
+        List<Long> received = dao.getAll(projectId);
         assertTrue(received.isEmpty());
     }
 

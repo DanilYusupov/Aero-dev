@@ -3,6 +3,7 @@ package com.gdc.aerodev.web.controllers;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectContent;
 import com.gdc.aerodev.model.ProjectImage;
+import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.ProjectContentService;
 import com.gdc.aerodev.service.ProjectImageService;
 import com.gdc.aerodev.service.ProjectService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -38,11 +40,13 @@ public class ProjectController implements LoggingWeb{
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/project/{id}")
-    public ModelAndView project(@PathVariable Long id){
+    public ModelAndView project(@PathVariable Long id, HttpSession session){
         ModelAndView mav = new ModelAndView("project");
         Project project = prj_service.getProject(id);
+        User user = (User) session.getAttribute("client");
         log.debug("Received project '" + project.getProjectName() + "'.");
         mav.addObject("prj", project);
+        mav.addObject("isOwner", prj_service.isOwner(project, user.getUserId()));
         mav.addObject("ownerName", usr_service.getUser(project.getProjectOwner()).getUserName());
         mav.addObject("content", contentService.get(id));
         mav.addObject("images", imageService.getAll(id));

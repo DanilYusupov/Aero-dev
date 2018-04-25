@@ -32,8 +32,14 @@ public class ProjectImageServiceImpl implements ProjectImageService {
     }
 
     @Override
-    public List<ProjectImage> getAll(Long projectId) {
-        return imageDao.getAll(projectId);
+    public List<Long> getAll(Long projectId) {
+        List<Long> imagesId = imageDao.getAll(projectId);
+        if (imagesId.isEmpty()){
+            log.debug("No images for project with id: " + projectId + ".");
+            imagesId.add(DEFAULT_IMAGE);
+            log.debug("Added default image's id to empty list.");
+        }
+        return imagesId;
     }
 
     @Override

@@ -70,6 +70,11 @@ public class ProjectServiceImpl implements ProjectService {
         return dao.getById(id);
     }
 
+    @Override
+    public boolean isOwner(Project project, Long userId){
+        return project.getProjectOwner().equals(userId);
+    }
+
     public List<Project> getByUserId(Long id){
         return dao.getByUserId(id);
     }

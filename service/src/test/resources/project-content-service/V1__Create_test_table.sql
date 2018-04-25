@@ -8,6 +8,7 @@ CREATE TABLE aero.projects (
 );
 
 INSERT INTO aero.projects (prj_id, prj_name, prj_owner, prj_type) VALUES (1, 'project', 1, 'design');
+INSERT INTO aero.projects (prj_id, prj_name, prj_owner, prj_type) VALUES (2, 'another_one', 1, 'design');
 
 CREATE TABLE aero.project_content (
   prj_id BIGINT REFERENCES aero.projects (prj_id),

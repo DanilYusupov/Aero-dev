@@ -48,4 +48,8 @@ public class ProjectImage {
     public String getContentType() {
         return contentType;
     }
+
+    public void setProjectImage(byte[] projectImage) {
+        this.projectImage = projectImage;
+    }
 }
