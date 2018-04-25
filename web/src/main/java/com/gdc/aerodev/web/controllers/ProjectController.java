@@ -11,17 +11,18 @@ import com.gdc.aerodev.service.UserService;
 import com.gdc.aerodev.service.impl.ProjectServiceImpl;
 import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -65,6 +66,28 @@ public class ProjectController implements LoggingWeb{
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
         return new ResponseEntity<>(imageService.get(imageId).getProjectImage(), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/project/logo")
+    public String setLogo(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+        Long projectId = Long.valueOf(request.getParameter("project-id"));
+        log.debug("Received project id: '" + projectId + "'.");
+        contentService.updateProjectContent(
+                projectId,
+                file.getBytes(),
+                ""
+        );
+        return "redirect:/project/" + projectId;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/project/description")
+    public String changeDescription(HttpServletRequest request){
+        Long projectId = Long.valueOf(request.getParameter("project-id"));
+        log.debug("Received project id: '" + projectId + "'.");
+        String description = request.getParameter("description");
+        log.debug("New description is: '" + description + "'.");
+        contentService.updateProjectContent(projectId, new byte[0], description);
+        return "redirect:/project/" + projectId;
     }
 
 }

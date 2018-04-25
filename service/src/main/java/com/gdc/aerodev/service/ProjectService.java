@@ -2,9 +2,11 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Generic interface of service, which makes manipulations with {@code Project} entity.
@@ -59,9 +61,11 @@ public interface ProjectService extends LoggingService {
     /**
      * Encapsulates same method in {@code ProjectDao}
      * @see com.gdc.aerodev.dao.ProjectDao
-     * @return list of top three projects with biggest rating
+     * @return map of top three projects with biggest rating
+     *         key: sequence number (0, 1, 2)
+     *         value: project
      */
-    List<Project> getTopThree();
+    Map<Integer, Map<User, Project>> getTopThree();
 
     /**
      * Encapsulates same method in {@code ProjectDao}

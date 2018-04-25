@@ -1,9 +1,13 @@
 package com.gdc.aerodev.service;
 
+import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectContent;
 import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This service works with {@code ProjectContent} entities, which contain detailed information about {@code Project}

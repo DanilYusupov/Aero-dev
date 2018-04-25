@@ -11,6 +11,37 @@
 <!-- Navigation bar -->
 <div th:replace="fragments/navbar :: authorized"></div>
 
+<!-- Description modal -->
+<div class="modal fade" id="description_modal" tabindex="-1" role="dialog" aria-labelledby="createLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change project description</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/project/description">
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <label for="description">Project description:</label>
+                            <textarea id="description" name="description" class="form-control" rows="3"
+                                      required></textarea>
+                        </div>
+                    </div>
+                    <div th:replace="project :: prj-id"></div>
+                    <div class="btn-group float-right" role="group" aria-label="Form controls">
+                        <button type="submit" class="btn btn-warning btn-sm">Change</button>
+                        <button type="reset" class="btn btn-secondary btn-sm">Clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Content -->
 
 <div class="row" style="margin-top: 3.5em;">
@@ -43,6 +74,7 @@
                                                        required>
                                                 <label class="custom-file-label" for="file">Change logo</label>
                                             </div>
+                                            <div th:replace="project :: prj-id"></div>
                                         </div>
                                     </form>
                                 </div>
@@ -102,7 +134,7 @@
                         <h5 class="card-title">Project description</h5>
                         <p class="card-text" th:text="${content.getProjectDescription()}"></p>
                         <div th:if="${isOwner}">
-                            <button id="change_description" class="btn btn-outline-primary">Change description</button>
+                            <button id="change-description" class="btn btn-outline-primary">Change description</button>
                         </div>
                     </div>
                 </div>
@@ -127,6 +159,10 @@
     </div>
 </div>
 
+<div th:fragment="prj-id">
+    <input type="text" id="project-id" name="project-id"
+           th:value="${prj.getProjectId()}" style="display: none"/>
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -134,5 +170,10 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.js}" src="../static/js/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).on('click', '#change-description', function () {
+        $('#description_modal').modal('show');
+    });
+</script>
 </body>
 </html>

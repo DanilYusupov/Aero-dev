@@ -111,12 +111,12 @@
         top three projects
     </div>
     <div class="row">
-        <div class="col" th:each="prj: ${top_prj}">
-            <div class="card text-white bg-dark border-0">
+        <div class="col" th:each="i : ${#numbers.sequence(0, 2, 1)}">
+            <div class="card text-white bg-dark border-0" th:with="project=${top_prj[i]}}">
                 <div class="blackout">
-                    <a th:href="@{'/project/' + ${prj.getProjectId()}}">
+                    <a th:href="@{'/project/'">
                         <div class="image">
-                            <img class="card-img-top" th:src="@{/img/project_face_example.jpg}"
+                            <img class="card-img-top" th:src="@{'/project/logo/' + ${prj.getProjectId()}}"
                                  src="../static/img/project_face_example.jpg"
                                  alt="Project's face image"
                                  style="object-fit: cover; height: 15em;">

@@ -1,9 +1,5 @@
 server:
   port: 9099
-  undertow:
-    accesslog:
-      dir: /log
-      enabled: true
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -21,3 +17,12 @@ spring:
   servlet:
     multipart:
       enabled: true
+logging:
+  level:
+    com:
+      gdc:
+        aerodev:
+          web: DEBUG
+    org:
+      springframework:
+        web: ERROR

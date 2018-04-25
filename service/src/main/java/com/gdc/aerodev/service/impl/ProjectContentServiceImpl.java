@@ -3,11 +3,13 @@ package com.gdc.aerodev.service.impl;
 import com.gdc.aerodev.dao.ProjectContentDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectContentDao;
+import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectContent;
 import com.gdc.aerodev.service.ProjectContentService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.*;
+
 @Service
 public class ProjectContentServiceImpl implements ProjectContentService {
 
@@ -37,8 +39,15 @@ public class ProjectContentServiceImpl implements ProjectContentService {
 
     @Override
     public boolean updateProjectContent(Long projectId, byte[] projectLogo, String projectDescription) {
+        ProjectContent content = contentDao.getById(projectId);
+        if (projectLogo.length != 0){
+            content.setProjectLogo(projectLogo);
+        }
+        if (!projectDescription.equals("")){
+            content.setProjectDescription(projectDescription);
+        }
         try {
-            contentDao.save(new ProjectContent(projectId, projectLogo, projectDescription));
+            contentDao.save(content);
             return true;
         } catch (DaoException e){
             return false;

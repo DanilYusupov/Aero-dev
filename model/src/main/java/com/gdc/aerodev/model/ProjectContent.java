@@ -64,4 +64,8 @@ public class ProjectContent {
     public void setProjectLogo(byte[] projectLogo) {
         this.projectLogo = projectLogo;
     }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
 }
