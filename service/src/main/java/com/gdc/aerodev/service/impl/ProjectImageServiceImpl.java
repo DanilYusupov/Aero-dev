@@ -28,6 +28,9 @@ public class ProjectImageServiceImpl implements ProjectImageService {
 
     @Override
     public boolean deleteImage(Long imageId) {
+        if (imageId == 0L){
+            return false;
+        }
         return imageDao.delete(imageId);
     }
 

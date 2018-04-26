@@ -89,4 +89,14 @@ public class ProjectController implements LoggingWeb{
         log.info("Saved new image with id: " + id + " for project with id: " + projectId + ".");
         return "redirect:/project/" + projectId;
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/project/delete_image")
+    public String deleteImage(HttpServletRequest request){
+        Long projectId = Long.valueOf(request.getParameter("project-id"));
+        Long imageId = Long.valueOf(request.getParameter("del_img_id"));
+        log.debug("Received image id: " + imageId + " for deleting image.");
+        imageService.deleteImage(imageId);
+        log.info("Deleted image with id: " + imageId + ".");
+        return "redirect:/project/" + projectId;
+    }
 }

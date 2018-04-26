@@ -141,6 +141,11 @@
                             <div class="carousel-item my-auto" th:each="image,iterStat: ${images}"
                                  th:classappend="${iterStat.count == 1} ? active">
                                 <img class="w-75" th:src="@{'/project/image/' + ${image}}" alt="Image" style="background-size: cover; margin-left: 12.5%; margin-top: 0.75rem;">
+                                <form method="post" action="/project/delete_image">
+                                    <input type="text" name="del_img_id" id="del_img_id" th:value="${image}" style="display: none">
+                                    <div th:replace="project :: prj-id"></div>
+                                    <button class="btn btn-danger btn-sm" style="position: absolute; right: 13.5%; top:3%" type="submit">delete</button>
+                                </form>
                             </div>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
@@ -213,6 +218,9 @@
     });
     $(document).on('click', '#add_image', function () {
         $('#image_modal').modal('show');
+    });
+    $(document).on('click', '#delete_image', function () {
+
     });
 </script>
 </body>
