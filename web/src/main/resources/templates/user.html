@@ -32,6 +32,8 @@
                         <div class="card-body">
                             <p class="card-text" th:text="${user.getUserFirstName()} + ' ' + ${user.getUserLastName()}"></p>
                             <p class="card-text" th:text="${user.getUserBiography()}"></p>
+                            <p class="card-text" th:text="'Country: ' + ${user.getUserCountry()}"></p>
+                            <p class="card-text" th:text="'City: ' + ${user.getUserCity()}"></p>
                             <p class="card-text">Statistics</p>
                         </div>
                     </div>
