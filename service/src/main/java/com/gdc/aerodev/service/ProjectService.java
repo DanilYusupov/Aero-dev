@@ -61,11 +61,9 @@ public interface ProjectService extends LoggingService {
     /**
      * Encapsulates same method in {@code ProjectDao}
      * @see com.gdc.aerodev.dao.ProjectDao
-     * @return map of top three projects with biggest rating
-     *         key: sequence number (0, 1, 2)
-     *         value: project
+     * @return list top three projects with biggest rating
      */
-    Map<Integer, Map<User, Project>> getTopThree();
+    List<Project> getTopThree();
 
     /**
      * Encapsulates same method in {@code ProjectDao}

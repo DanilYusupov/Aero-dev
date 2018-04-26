@@ -11,6 +11,7 @@ import com.gdc.aerodev.service.ProjectService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +20,9 @@ import java.util.Map;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDao dao;
-    private final UserDao userDao;
 
-    public ProjectServiceImpl(ProjectDao dao, UserDao userDao) {
+    public ProjectServiceImpl(ProjectDao dao) {
         this.dao = dao;
-        this.userDao = userDao;
     }
 
     @Override
@@ -91,16 +90,7 @@ public class ProjectServiceImpl implements ProjectService {
         return dao.getByName(projectName) != null;
     }
 
-    public Map<Integer, Map<User, Project>> getTopThree() {
-        int n = 3;
-        Map<Integer, Map<User, Project>> map = new HashMap<>(n);
-        List<Project> projects = dao.getTopThree();
-        for (int i = 0; i < n; i++) {
-            Map<User, Project> uPMap = new HashMap<>(1);
-            Project project = projects.get(i);
-            uPMap.put(userDao.getById(project.getProjectOwner()), project);
-            map.put(i, uPMap);
-        }
-        return map;
+    public List<Project> getTopThree() {
+        return dao.getTopThree();
     }
 }

@@ -1,15 +1,11 @@
 package com.gdc.aerodev.web.controllers;
 
 import com.gdc.aerodev.model.Project;
-import com.gdc.aerodev.model.ProjectContent;
-import com.gdc.aerodev.model.ProjectImage;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.ProjectContentService;
 import com.gdc.aerodev.service.ProjectImageService;
 import com.gdc.aerodev.service.ProjectService;
 import com.gdc.aerodev.service.UserService;
-import com.gdc.aerodev.service.impl.ProjectServiceImpl;
-import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -23,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 public class ProjectController implements LoggingWeb{
@@ -71,23 +66,27 @@ public class ProjectController implements LoggingWeb{
     @RequestMapping(method = RequestMethod.POST, path = "/project/logo")
     public String setLogo(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         Long projectId = Long.valueOf(request.getParameter("project-id"));
-        log.debug("Received project id: '" + projectId + "'.");
-        contentService.updateProjectContent(
-                projectId,
-                file.getBytes(),
-                ""
-        );
+        log.debug("Received project id: '" + projectId + "' for logo uploading.");
+        contentService.updateProjectContent(projectId, file.getBytes(), "");
         return "redirect:/project/" + projectId;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/project/description")
     public String changeDescription(HttpServletRequest request){
         Long projectId = Long.valueOf(request.getParameter("project-id"));
-        log.debug("Received project id: '" + projectId + "'.");
+        log.debug("Received project id: '" + projectId + "' for description changing.");
         String description = request.getParameter("description");
         log.debug("New description is: '" + description + "'.");
         contentService.updateProjectContent(projectId, new byte[0], description);
         return "redirect:/project/" + projectId;
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/project/image")
+    public String uploadImage(@RequestParam("image") MultipartFile file, HttpServletRequest request) throws IOException {
+        Long projectId = Long.valueOf(request.getParameter("project-id"));
+        log.debug("Received project id: '" + projectId + "'for image uploading.");
+        Long id = imageService.createImage(projectId, file.getBytes(), file.getContentType());
+        log.info("Saved new image with id: " + id + " for project with id: " + projectId + ".");
+        return "redirect:/project/" + projectId;
+    }
 }

@@ -111,24 +111,25 @@
         top three projects
     </div>
     <div class="row">
-        <div class="col" th:each="i : ${#numbers.sequence(0, 2, 1)}">
-            <div class="card text-white bg-dark border-0" th:with="project=${top_prj[i]}}">
-                <div class="blackout">
-                    <a th:href="@{'/project/'">
+        <div class="col" th:each="project: ${top_prj}">
+            <div class="card text-white bg-dark border-0">
+                <div class="blackout" style="position: relative;">
+                    <a th:href="@{'/project/' + ${project.getProjectId()}}">
                         <div class="image">
-                            <img class="card-img-top" th:src="@{'/project/logo/' + ${prj.getProjectId()}}"
+                            <img class="card-img-top" th:src="@{'/project/logo/' + ${project.getProjectId()}}"
                                  src="../static/img/project_face_example.jpg"
                                  alt="Project's face image"
-                                 style="object-fit: cover; height: 15em;">
+                                 style="max-height: 15em; display: block; object-fit: cover;">
                         </div>
                     </a>
+                    <div class="card-img-overlay" style="margin-top: -15px; max-height: 80px;">
+                        <a href="#" class="badge badge-dark" style="margin-left: -10px; background-color: #1b1e21;"
+                           th:text="${project.getProjectType()}"></a>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${prj.getProjectName()}"></h5>
+                    <h5 class="card-title" th:text="${project.getProjectName()}"></h5>
                     <p class="card-text">Small description of project</p>
-                    <p class="card-text">
-                        <small class="text-muted">Author's name</small>
-                    </p>
                 </div>
             </div>
         </div>
