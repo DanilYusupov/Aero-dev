@@ -13,18 +13,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
-public class CreateProjectController implements LoggingWeb{
+public class CreateProjectController implements LoggingWeb {
 
     private final ProjectService prjService;
+    private final ProjectContentService contentService;
 
-    public CreateProjectController(ProjectServiceImpl prjService) {
+    public CreateProjectController(ProjectService prjService, ProjectContentService contentService) {
         this.prjService = prjService;
+        this.contentService = contentService;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/create_prj")
-    public ModelAndView getPage(HttpSession session){
+    public ModelAndView getPage(HttpSession session) {
         User user = (User) session.getAttribute("client");
         log.debug("Received user '" + user.getUserName() + "'.");
         ModelAndView mav = new ModelAndView("create_prj");
@@ -33,12 +36,19 @@ public class CreateProjectController implements LoggingWeb{
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/create_prj")
-    public String createProject(HttpServletRequest request){
+    public String createProject(HttpServletRequest request) {
         Long owner = Long.valueOf(request.getParameter("usrId"));
+        String description = request.getParameter("description");
+        ProjectType type = ProjectType.valueOf(request.getParameter("type").toUpperCase());
+        log.debug("Received params from request:\n" + "User id = " + owner + "\nDescription: " + description + "\nType: " + type);
         Long id = prjService.createProject(request.getParameter("name"),
                 owner,
-                ProjectType.valueOf(request.getParameter("type").toUpperCase()));
-        if  (id != null){
+                type);
+        if (id != null) {
+            contentService.createProjectContent(id,
+                    new byte[0],
+                    description,
+                    new Date());
             log.info("Created project with id " + id + ". Owner id " + owner + ".");
             return "redirect:/profile";
         } else {

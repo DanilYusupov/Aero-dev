@@ -36,9 +36,9 @@ public interface ProjectImageService extends LoggingService{
     /**
      * Takes all images bind with one project
      * @param projectId id of target project
-     * @return list of existent images
+     * @return list of images id!
      */
-    List<ProjectImage> getAll(Long projectId);
+    List<Long> getAll(Long projectId);
 
     /**
      * Gives image by it's id

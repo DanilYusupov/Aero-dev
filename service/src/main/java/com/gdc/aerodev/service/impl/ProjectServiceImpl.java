@@ -1,26 +1,29 @@
 package com.gdc.aerodev.service.impl;
 
 import com.gdc.aerodev.dao.ProjectDao;
+import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.ProjectService;
 import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectDao dao;
 
-    public ProjectServiceImpl(PostgresProjectDao dao) {
+    public ProjectServiceImpl(ProjectDao dao) {
         this.dao = dao;
     }
-
-    //TODO: add createProjectContent() method from ProjectContentService
 
     @Override
     public Long createProject(String projectName, Long projectOwner, ProjectType projectType) {
@@ -52,10 +55,10 @@ public class ProjectServiceImpl implements ProjectService {
             project.setProjectName(projectName);
         }
         project.setProjectType(projectType);
-        try{
+        try {
             log.info("Project '" + projectName + "' successfully updated.");
             return dao.save(project);
-        } catch (DaoException e){
+        } catch (DaoException e) {
             return null;
         }
     }
@@ -70,11 +73,16 @@ public class ProjectServiceImpl implements ProjectService {
         return dao.getById(id);
     }
 
-    public List<Project> getByUserId(Long id){
+    @Override
+    public boolean isOwner(Project project, Long userId) {
+        return project.getProjectOwner().equals(userId);
+    }
+
+    public List<Project> getByUserId(Long id) {
         return dao.getByUserId(id);
     }
 
-    public int countProjects(){
+    public int countProjects() {
         return dao.count();
     }
 

@@ -120,7 +120,6 @@ public class PostgresProjectContentDao implements ProjectContentDao {
 
         @Override
         public ProjectContent mapRow(ResultSet rs, int rowNum) throws SQLException {
-            List<byte[]> imgs;
             return new ProjectContent(
                     rs.getLong("prj_id"),
                     toByteArray(rs.getBinaryStream("prj_logo")),

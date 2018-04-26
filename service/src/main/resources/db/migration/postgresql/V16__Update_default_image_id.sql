@@ -1,0 +1,1 @@
+UPDATE aero.project_images SET img_id = 0 WHERE img_id = 1;

@@ -1,13 +1,11 @@
 package com.gdc.aerodev.web.controllers;
 
+import com.gdc.aerodev.model.Avatar;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.AvatarService;
 import com.gdc.aerodev.service.impl.AvatarServiceImpl;
 import com.gdc.aerodev.web.logging.LoggingWeb;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +28,10 @@ public class AvatarController implements LoggingWeb{
     @RequestMapping(method = RequestMethod.GET, path = "/avatar/{id}")
     public ResponseEntity<byte[]> getAvatar(@PathVariable Long id){
         HttpHeaders headers = new HttpHeaders();
+        Avatar avatar = service.getAvatar(id);
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-        return new ResponseEntity<>(service.getAvatar(id).getAvatarData(), headers, HttpStatus.OK);
+        headers.setContentType(MediaType.valueOf(avatar.getContentType()));
+        return new ResponseEntity<>(avatar.getAvatarData(), headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/avatar")

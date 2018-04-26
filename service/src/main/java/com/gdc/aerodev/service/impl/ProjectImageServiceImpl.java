@@ -12,6 +12,7 @@ import java.util.List;
 public class ProjectImageServiceImpl implements ProjectImageService {
 
     private ProjectImageDao imageDao;
+    private final Long DEFAULT_IMAGE = 1L;
 
     public ProjectImageServiceImpl(PostgresProjectImageDao imageDao) {
         this.imageDao = imageDao;
@@ -27,12 +28,21 @@ public class ProjectImageServiceImpl implements ProjectImageService {
 
     @Override
     public boolean deleteImage(Long imageId) {
+        if (imageId == 0L){
+            return false;
+        }
         return imageDao.delete(imageId);
     }
 
     @Override
-    public List<ProjectImage> getAll(Long projectId) {
-        return imageDao.getAll(projectId);
+    public List<Long> getAll(Long projectId) {
+        List<Long> imagesId = imageDao.getAll(projectId);
+        if (imagesId.isEmpty()){
+            log.debug("No images for project with id: " + projectId + ".");
+            imagesId.add(DEFAULT_IMAGE);
+            log.debug("Added default image's id to empty list.");
+        }
+        return imagesId;
     }
 
     @Override

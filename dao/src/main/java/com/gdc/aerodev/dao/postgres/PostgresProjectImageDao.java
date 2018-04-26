@@ -45,10 +45,11 @@ public class PostgresProjectImageDao implements ProjectImageDao {
     }
 
     @Override
-    public List<ProjectImage> getAll(Long projectId) {
+    public List<Long> getAll(Long projectId) {
         return jdbcTemplate.query(
-                SELECT_QUERY + tableName + " WHERE prj_id = ?;",
-                new ProjectImageRowMapper(), projectId);
+                "SELECT img_id FROM " + tableName + " WHERE prj_id = ?;",
+                (RowMapper<Long>) (rs, rowNum) -> rs.getLong("img_id")
+                , projectId);
     }
 
     @Override
