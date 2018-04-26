@@ -1,6 +1,8 @@
 package com.gdc.aerodev.web.controllers;
 
+import com.gdc.aerodev.model.Avatar;
 import com.gdc.aerodev.model.Project;
+import com.gdc.aerodev.model.ProjectImage;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.ProjectContentService;
 import com.gdc.aerodev.service.ProjectImageService;
@@ -59,8 +61,10 @@ public class ProjectController implements LoggingWeb{
     @RequestMapping(method = RequestMethod.GET, path = "/project/image/{imageId}")
     public ResponseEntity<byte[]> getImage(@PathVariable Long imageId){
         HttpHeaders headers = new HttpHeaders();
+        ProjectImage image = imageService.get(imageId);
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-        return new ResponseEntity<>(imageService.get(imageId).getProjectImage(), headers, HttpStatus.OK);
+        headers.setContentType(MediaType.valueOf(image.getContentType()));
+        return new ResponseEntity<>(image.getProjectImage(), headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/project/logo")
