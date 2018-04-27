@@ -5,14 +5,26 @@ package com.gdc.aerodev.model;
  * Image data stores as byte array in {@code avatarData} field.
  * To bind {@code User} with his {@code Avatar} there is {@code avatarOwner} parameter.
  *
- * @see com.gdc.aerodev.model.User
  * @author Yusupov Danil
+ * @see com.gdc.aerodev.model.User
  */
 public class Avatar {
 
     private Long avatarId;
+
+    /**
+     * {@code userId} as {@code FOREIGN KEY} and {@code PRIMARY KEY}
+     */
     private Long avatarOwner;
+
+    /**
+     * Image as array of bytes
+     */
     private byte[] avatarData;
+
+    /**
+     * MIME type of avatar image
+     */
     private String contentType;
 
     public Avatar() {

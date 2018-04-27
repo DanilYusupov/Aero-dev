@@ -5,11 +5,20 @@ package com.gdc.aerodev.model;
  * links: {@param offeredUserId} to {@code User} and {@param offeredCrId} to {@code Cr}.
  *
  * @author Yusupov Danil
+ * @see User
+ * @see Cr
  */
 public class Offer {
-
     private Long offerId;
+
+    /**
+     * Refers to {@code userId} of {@code User}
+     */
     private Long offeredUserId;
+
+    /**
+     * Refers to {@code crId} of {@code Cr}
+     */
     private Long offeredCrId;
     private String offerDescription;
 

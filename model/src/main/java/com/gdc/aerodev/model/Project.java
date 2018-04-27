@@ -5,12 +5,22 @@ package com.gdc.aerodev.model;
  * {@code User} and {@code Cr} in future versions.
  *
  * @author Yusupov Danil
+ * @see User
+ * @see ProjectType
  */
 public class Project {
-
+    /**
+     * {@code PRIMARY KEY} for this entity
+     */
     private Long projectId;
     private String projectName;
+    /**
+     * Refers to {@code User} entity
+     */
     private Long projectOwner;
+    /**
+     * {@code NOT NULL} from {@code ProjectType} enum
+     */
     private ProjectType projectType;
 
     public Project() {

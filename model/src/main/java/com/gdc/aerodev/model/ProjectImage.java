@@ -3,12 +3,13 @@ package com.gdc.aerodev.model;
 /**
  * Entity contains image of {@code Project} entity
  *
- * @see Project
  * @author Yusupov Danil
+ * @see Project
  */
 public class ProjectImage {
 
     private Long imageId;
+
     /**
      * This is {@code FOREIGN KEY} to {@code Project} entity.
      */
@@ -18,6 +19,10 @@ public class ProjectImage {
      * Image of {@code Project}
      */
     private byte[] projectImage;
+
+    /**
+     * MIME type of image
+     */
     private String contentType;
 
     public ProjectImage(Long projectId, byte[] projectImage, String contentType) {

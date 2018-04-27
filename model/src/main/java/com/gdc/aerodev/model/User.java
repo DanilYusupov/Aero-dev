@@ -10,12 +10,14 @@ package com.gdc.aerodev.model;
 public class User {
 
     private Long userId;
+
     /**
      * @param userName used as <b>nickname</b> to get access to user's profile
      */
     private String userName;
     private String userPassword;
     private String userEmail;
+
     /**
      * @param userLevel describes summary user's competence
      */
@@ -23,12 +25,17 @@ public class User {
     private String userFirstName;
     private String userLastName;
     private String userBiography;
+
     /**
      * @param userRating counts according to his activity.
      */
     private int userRating;
     private String userCountry;
     private String userCity;
+
+    /**
+     * Gender indicator also helps to chose default {@code Avatar}
+     */
     private boolean isMale;
 
     public User() {
@@ -40,22 +47,22 @@ public class User {
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userLevel = userLevel;
-        this.userFirstName="";
-        this.userLastName="";
-        this.userBiography="";
-        this.userCountry="";
-        this.userCity="";
+        this.userFirstName = "";
+        this.userLastName = "";
+        this.userBiography = "";
+        this.userCountry = "";
+        this.userCity = "";
     }
 
     public User(String userName, String userPassword, String userEmail, boolean isMale) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
-        this.userFirstName="";
-        this.userLastName="";
-        this.userBiography="";
-        this.userCountry="";
-        this.userCity="";
+        this.userFirstName = "";
+        this.userLastName = "";
+        this.userBiography = "";
+        this.userCountry = "";
+        this.userCity = "";
         this.isMale = isMale;
     }
 

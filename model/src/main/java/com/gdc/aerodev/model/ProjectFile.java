@@ -3,8 +3,8 @@ package com.gdc.aerodev.model;
 /**
  * This sub entity contains an array of any project file
  *
- * @see Project
  * @author Yusupov Danil
+ * @see Project
  */
 public class ProjectFile {
 
@@ -17,6 +17,10 @@ public class ProjectFile {
      * This is an array of project's file
      */
     private byte[] file;
+
+    /**
+     * MIME type of file
+     */
     private String contentType;
 
     public ProjectFile(Long projectId, byte[] file, String contentType) {
