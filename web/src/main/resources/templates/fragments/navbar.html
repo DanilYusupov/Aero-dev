@@ -12,8 +12,7 @@
     <div class="pos-f-t fixed-top">
         <div class="collapse" id="navbarToggleExternalContent">
             <div class="bg-dark p-4">
-                <h4 class="text-white">Here will be more menu's buttons</h4>
-                <span class="text-muted">Not a joke/</span>
+                <div th:replace="fragments/navbar :: buttons"></div>
             </div>
         </div>
         <nav class="navbar navbar-light" style="background-color: #f8f9fa">
@@ -53,7 +52,9 @@
                                          title="Your name">
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item disabled" th:href="@{'/user/' + ${session.client.getUserId()}}" th:text="${session.client.getUserName()}"></a>
+                                    <a class="dropdown-item disabled"
+                                       th:href="@{'/user/' + ${session.client.getUserId()}}"
+                                       th:text="${session.client.getUserName()}"></a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/profile">Settings</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
@@ -91,8 +92,7 @@
     <div class="pos-f-t fixed-top">
         <div class="collapse" id="navbarToggle">
             <div class="bg-dark p-4">
-                <h4 class="text-white">Here will be more menu's buttons</h4>
-                <span class="text-muted">Not a joke/</span>
+                <div th:replace="fragments/navbar :: buttons"></div>
             </div>
         </div>
         <nav class="navbar navbar-light" style="background-color: #f8f9fa">
@@ -132,6 +132,45 @@
             </div>
         </nav>
     </div>
+</div>
+
+<div th:fragment="buttons">
+    <div class="row">
+        <div class="col">
+            <div class="card-title lead text-light">
+                Community
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;" >Engineers</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Teams</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Companies</button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-title lead text-light">
+                Resources
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Top</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Projects</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Idea playground</button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-title lead text-light">
+                Basics
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Documentation</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Tutorials</button>
+                <br>
+                <button class="btn btn-dark btn-sm" style="width: 115px; text-align: left;">Blogs</button>
+            </div>
+        </div>
+    </div>
+    <small class="text-muted text-light ml-2">Buttons aren't realized yet! Soon...</small>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
