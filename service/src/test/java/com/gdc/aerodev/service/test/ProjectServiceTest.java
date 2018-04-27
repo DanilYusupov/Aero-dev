@@ -15,7 +15,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.junit.Assert.*;
 
 public class ProjectServiceTest {
-
+    /**
+     * Name of table according to classpath:/project-service/V1__Create_test_table.sql
+     */
     private String tableName = "project_test";
     private String projectName = "Project";
     private Long projectOwner = 1L;

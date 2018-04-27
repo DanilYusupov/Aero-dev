@@ -5,24 +5,32 @@ import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.UserService;
-import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of service for managing users in database
+ *
+ * @author Yusupov Danil
+ * @see UserService
+ * @see UserDao
+ * @see User
+ */
 @Service
 public class UserServiceImpl implements UserService {
-
     private final UserDao dao;
 
     public UserServiceImpl(PostgresUserDao dao) {
         this.dao = dao;
     }
 
+    @Override
     public List<User> getTopThree() {
         return dao.getTopThree();
     }
 
+    @Override
     public void updateInfo(Long id, String firstName, String lastName, String biography, String userCountry, String userCity) {
         User user = dao.getById(id);
         user.setUserFirstName(firstName);
@@ -30,7 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setUserBiography(biography);
         user.setUserCountry(userCountry);
         user.setUserCity(userCity);
-        if (dao.save(user) == null){
+        if (dao.save(user) == null) {
             log.error("Nothing to update for user '" + getUser(id).getUserName() + "'.");
         } else {
             log.info("Updated info for user '" + getUser(id).getUserName() + "'.");
@@ -101,10 +109,18 @@ public class UserServiceImpl implements UserService {
         return dao.getById(id);
     }
 
+    @Override
     public int countUsers() {
         return dao.count();
     }
 
+    /**
+     * Check name existence for avoid name duplicating
+     *
+     * @param userName name for search
+     * @return (0) {@code true} if there is already got user with this name <br>
+     * (1) {@code false} if there is no user with matching name
+     */
     private boolean isExistentName(String userName) {
         return dao.getByName(userName) != null;
     }

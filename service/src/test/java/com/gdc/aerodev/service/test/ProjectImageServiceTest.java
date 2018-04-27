@@ -1,7 +1,6 @@
 package com.gdc.aerodev.service.test;
 
 import com.gdc.aerodev.dao.postgres.PostgresProjectImageDao;
-import com.gdc.aerodev.model.ProjectImage;
 import com.gdc.aerodev.service.ProjectImageService;
 import com.gdc.aerodev.service.impl.ProjectImageServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -16,8 +15,10 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class ProjectImageServiceTest extends WithFiles{
-
+public class ProjectImageServiceTest extends WithFiles {
+    /**
+     * Name of table according to classpath:/project-image-service/V1__Create_test_table.sql
+     */
     private String tableName = "aero.project_image_test";
     private Long projectId = 1L;
     private String contentType = "image";
@@ -53,14 +54,14 @@ public class ProjectImageServiceTest extends WithFiles{
         assertEquals(getImage().length, service.get(imgId0).getProjectImage().length);
     }
 
-    @Test (expected = NullPointerException.class)
-    public void createNullImage(){
+    @Test(expected = NullPointerException.class)
+    public void createNullImage() {
         ProjectImageService service = getService();
         service.createImage(projectId, null, contentType);
     }
 
-    @Test (expected = NullPointerException.class)
-    public void createEmptyImage(){
+    @Test(expected = NullPointerException.class)
+    public void createEmptyImage() {
         ProjectImageService service = getService();
         Long id = service.createImage(projectId, new byte[0], contentType);
         assertTrue(id > 0);
@@ -69,7 +70,7 @@ public class ProjectImageServiceTest extends WithFiles{
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("project-image-service"));
 
-    private ProjectImageService getService(){
+    private ProjectImageService getService() {
         return new ProjectImageServiceImpl(new PostgresProjectImageDao(new JdbcTemplate(db.getTestDatabase()), tableName));
     }
 }

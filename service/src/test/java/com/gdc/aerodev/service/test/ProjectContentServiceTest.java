@@ -19,7 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ProjectContentServiceTest extends WithFiles {
-
+    /**
+     * Name of table according to classpath:/project-content-service/V1__Create_test_table.sql
+     */
     private String tableName = "aero.project_content";
     private final Long DEFAULT_PROJECT_ID = 1L;
     private final int DEFAULT_LOGO_SIZE = 39576;
@@ -74,7 +76,7 @@ public class ProjectContentServiceTest extends WithFiles {
     }
 
     @Test
-    public void getNullLogo(){
+    public void getNullLogo() {
         ProjectContentService service = getService();
         boolean create = service.createProjectContent(projectId, new byte[0], description, new Date());
         assertTrue(create);

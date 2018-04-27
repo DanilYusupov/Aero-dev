@@ -3,17 +3,27 @@ package com.gdc.aerodev.service.impl;
 import com.gdc.aerodev.dao.ProjectContentDao;
 import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.dao.postgres.PostgresProjectContentDao;
-import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectContent;
 import com.gdc.aerodev.service.ProjectContentService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Implementation os service for managing project's info as referenced entity in database
+ *
+ * @author Yusupov Danil
+ * @see ProjectContentService
+ * @see com.gdc.aerodev.model.Project
+ * @see ProjectContent
+ */
 @Service
 public class ProjectContentServiceImpl implements ProjectContentService {
-
     private ProjectContentDao contentDao;
+
+    /**
+     * Id of default project, which id already exists in database for development purposes
+     */
     private final Long DEFAULT_PROJECT = 1L;
 
     public ProjectContentServiceImpl(PostgresProjectContentDao contentDao) {
@@ -23,10 +33,10 @@ public class ProjectContentServiceImpl implements ProjectContentService {
     @Override
     public boolean createProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirth) {
         try {
-            if (projectDescription.equals("")){
+            if (projectDescription.equals("")) {
                 return false;
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return false;
         }
         try {
@@ -40,16 +50,16 @@ public class ProjectContentServiceImpl implements ProjectContentService {
     @Override
     public boolean updateProjectContent(Long projectId, byte[] projectLogo, String projectDescription) {
         ProjectContent content = contentDao.getById(projectId);
-        if (projectLogo.length != 0){
+        if (projectLogo.length != 0) {
             content.setProjectLogo(projectLogo);
         }
-        if (!projectDescription.equals("")){
+        if (!projectDescription.equals("")) {
             content.setProjectDescription(projectDescription);
         }
         try {
             contentDao.save(content);
             return true;
-        } catch (DaoException e){
+        } catch (DaoException e) {
             return false;
         }
     }
@@ -59,7 +69,7 @@ public class ProjectContentServiceImpl implements ProjectContentService {
         ProjectContent content = contentDao.getById(projectId);
         if (content.getProjectLogo() == null || content.getProjectLogo().length == 0) {
             log.debug("No project logo for project with id: " + projectId);
-            byte [] logo = contentDao.getById(DEFAULT_PROJECT).getProjectLogo();
+            byte[] logo = contentDao.getById(DEFAULT_PROJECT).getProjectLogo();
             log.debug("Loaded default logo: " + logo.length + " bytes.");
             content.setProjectLogo(logo);
         }

@@ -1,21 +1,22 @@
 package com.gdc.aerodev.service.impl;
 
 import com.gdc.aerodev.dao.ProjectDao;
-import com.gdc.aerodev.dao.UserDao;
 import com.gdc.aerodev.dao.exception.DaoException;
-import com.gdc.aerodev.dao.postgres.PostgresProjectDao;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
-import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.ProjectService;
-import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Implementation of service for managing projects in database
+ *
+ * @author Yusupov Danil
+ * @see ProjectService
+ * @see ProjectDao
+ * @see Project
+ */
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -78,19 +79,29 @@ public class ProjectServiceImpl implements ProjectService {
         return project.getProjectOwner().equals(userId);
     }
 
+    @Override
     public List<Project> getByUserId(Long id) {
         return dao.getByUserId(id);
     }
 
+    @Override
     public int countProjects() {
         return dao.count();
     }
 
-    private boolean isExistentName(String projectName) {
-        return dao.getByName(projectName) != null;
-    }
-
+    @Override
     public List<Project> getTopThree() {
         return dao.getTopThree();
+    }
+
+    /**
+     * Check name existence for avoid name duplicating
+     *
+     * @param projectName name for search
+     * @return (0) {@code true} if there is already got project with this name <br>
+     * (1) {@code false} if there is no project with matching name
+     */
+    private boolean isExistentName(String projectName) {
+        return dao.getByName(projectName) != null;
     }
 }
