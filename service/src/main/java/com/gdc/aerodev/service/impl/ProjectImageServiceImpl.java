@@ -12,7 +12,7 @@ import java.util.List;
 public class ProjectImageServiceImpl implements ProjectImageService {
 
     private ProjectImageDao imageDao;
-    private final Long DEFAULT_IMAGE = 1L;
+    private final Long DEFAULT_IMAGE = 0L;
 
     public ProjectImageServiceImpl(PostgresProjectImageDao imageDao) {
         this.imageDao = imageDao;
