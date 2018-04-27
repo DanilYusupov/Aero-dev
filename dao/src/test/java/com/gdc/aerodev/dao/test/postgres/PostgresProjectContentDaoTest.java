@@ -17,7 +17,9 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.*;
 
 public class PostgresProjectContentDaoTest extends WithFiles {
-
+    /**
+     * Name of table according to classpath:/project_content/V1__Create_test_table.sql
+     */
     private final String tableName = "aero.project_content";
     private Long projectId = 1L;
     private String projectDescription = "Some description";

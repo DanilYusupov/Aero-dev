@@ -19,9 +19,17 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
 
 @Repository
 public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long> {
-
+    /**
+     * Autowired on application run, but initialized evidently in test cases
+     */
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * Gets from classpath:/db.properties as 'avatar.table' property. <br>
+     * For test cases initializes evidently according to migration files
+     */
     private String tableName;
+
     private final String SELECT_QUERY = "SELECT av_id, av_owner, av_data, av_type FROM ";
 
     @Autowired
@@ -45,7 +53,8 @@ public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long
     @Override
     public Avatar getById(Long id) {
         try {
-            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_owner = ?;", new AvatarRowMapper(), id);
+            return jdbcTemplate.queryForObject(SELECT_QUERY + tableName + " WHERE av_owner = ?;",
+                    new AvatarRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -69,7 +78,8 @@ public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
-                    PreparedStatement ps = con.prepareStatement("INSERT INTO " + tableName + " (av_owner, av_data, av_type) VALUES (?, ?, ?);", new String[]{"av_id"});
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO " + tableName +
+                            " (av_owner, av_data, av_type) VALUES (?, ?, ?);", new String[]{"av_id"});
                     ps.setLong(1, entity.getAvatarOwner());
                     log.info("Received new avatar with size: " + entity.getAvatarData().length + " bytes.");
                     ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()));
@@ -88,12 +98,14 @@ public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long
         Long id = entity.getAvatarId();
         int rows = jdbcTemplate.update(
                 con -> {
-                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName + " SET av_owner=?, av_data=?, av_type=? WHERE av_id=?;");
+                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName +
+                            " SET av_owner=?, av_data=?, av_type=? WHERE av_id=?;");
                     ps.setLong(1, entity.getAvatarOwner());
                     if (entity.getAvatarData() == null) {
                         throw new DaoException("Empty byte array!");
                     } else {
-                        ps.setBinaryStream(2, new ByteArrayInputStream(entity.getAvatarData()), entity.getAvatarData().length);
+                        ps.setBinaryStream(2,
+                                new ByteArrayInputStream(entity.getAvatarData()), entity.getAvatarData().length);
                     }
                     ps.setString(3, entity.getContentType());
                     ps.setLong(4, id);
@@ -115,7 +127,13 @@ public class PostgresAvatarDao implements AvatarDao, Postgresqlable<Avatar, Long
     }
 
     private static class AvatarRowMapper implements RowMapper<Avatar> {
-
+        /**
+         * Utility method, which builds {@code Avatar} entity from inserted {@code ResultSet}
+         *
+         * @param resultSet incoming {@code ResultSet}
+         * @return built {@code Avatar} entity
+         * @throws SQLException if build was performed incorrectly (see stacktrace)
+         */
         @Override
         public Avatar mapRow(ResultSet resultSet, int i) throws SQLException {
             Avatar avatar = new Avatar();

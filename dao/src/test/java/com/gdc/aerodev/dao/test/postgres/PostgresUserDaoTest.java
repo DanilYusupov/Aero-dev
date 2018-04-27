@@ -17,7 +17,9 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.*;
 
 public class PostgresUserDaoTest {
-
+    /**
+     * Name of table according to classpath:/user/V1__Create_test_table.sql
+     */
     private String tableName = "user_test";
     private String name = "Novichok";
     private String password = "p@ssw0rd";

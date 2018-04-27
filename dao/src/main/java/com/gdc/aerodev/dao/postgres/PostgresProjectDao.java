@@ -21,14 +21,22 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
 /**
  * Realization of data access object for working with {@code Project} instance
  *
- * @see Project
  * @author Yusupov Danil
+ * @see Project
  */
 @Repository
 public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, Long> {
-
+    /**
+     * Autowired on application run, but initialized evidently in test cases
+     */
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * Gets from classpath:/db.properties as 'project.table' property. <br>
+     * For test cases initializes evidently according to migration files
+     */
     private String tableName;
+
     private final String SELECT_QUERY = "SELECT prj_id, prj_name, prj_owner, prj_type FROM ";
 
     @Autowired
@@ -42,11 +50,13 @@ public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, L
         this.tableName = tableName;
     }
 
-    public List<Project> getByUserId(Long usrId){
-            return jdbcTemplate.query(SELECT_QUERY + tableName + " WHERE prj_owner = ?;",
-                    new ProjectRowMapper(), usrId);
+    @Override
+    public List<Project> getByUserId(Long usrId) {
+        return jdbcTemplate.query(SELECT_QUERY + tableName + " WHERE prj_owner = ?;",
+                new ProjectRowMapper(), usrId);
     }
 
+    @Override
     public List<Project> getTopThree() {
         return jdbcTemplate.query(SELECT_QUERY + tableName + " LIMIT 3;", new ProjectRowMapper());
         //TODO: add rating logic
@@ -78,6 +88,7 @@ public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, L
                 new ProjectRowMapper());
     }
 
+    @Override
     public Long insert(Project entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_name, prj_owner, prj_type) VALUES (?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -94,6 +105,7 @@ public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, L
         return keyHolder.getKey().longValue();
     }
 
+    @Override
     public Long update(Project entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
                         " SET prj_name=?, prj_owner=?, prj_type=? WHERE prj_id = "
@@ -115,13 +127,15 @@ public class PostgresProjectDao implements ProjectDao, Postgresqlable<Project, L
         return entity.getProjectId() == null;
     }
 
+    @Override
     public int count() {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
 
-    private static class ProjectRowMapper implements RowMapper<Project>{
+    private static class ProjectRowMapper implements RowMapper<Project> {
         /**
          * Utility method, which builds {@code Project} entity from inserted {@code ResultSet}
+         *
          * @param resultSet incoming {@code ResultSet}
          * @return built {@code Project} entity
          * @throws SQLException if build was performed incorrectly (see stacktrace)

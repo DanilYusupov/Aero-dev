@@ -28,9 +28,17 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
  */
 @Repository
 public class PostgresProjectImageDao implements ProjectImageDao {
-
+    /**
+     * Autowired on application run, but initialized evidently in test cases
+     */
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * Gets from classpath:/db.properties as 'project.images.table' property. <br>
+     * For test cases initializes evidently according to migration files
+     */
     private String tableName;
+
     private final String SELECT_QUERY = "SELECT img_id, prj_id, prj_image, img_type FROM ";
 
     @Autowired
@@ -90,7 +98,13 @@ public class PostgresProjectImageDao implements ProjectImageDao {
     }
 
     private static class ProjectImageRowMapper implements RowMapper<ProjectImage> {
-
+        /**
+         * Utility method, which builds {@code ProjectImage} entity from inserted {@code ResultSet}
+         *
+         * @param rs incoming {@code ResultSet}
+         * @return built {@code ProjectImage} entity
+         * @throws SQLException if build was performed incorrectly (see stacktrace)
+         */
         @Override
         public ProjectImage mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new ProjectImage(

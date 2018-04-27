@@ -17,7 +17,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class PostgresAvatarDaoTest extends WithFiles {
-
+    /**
+     * Name of table according to classpath:/avatar/V1__Create_test_table.sql
+     */
     private final String tableName = "avatar_test";
     private Long id = 1L;
     private Long owner = 5L;
@@ -33,7 +35,7 @@ public class PostgresAvatarDaoTest extends WithFiles {
         assertEquals(id, dao.save(avatar));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void testInsertNullImage() {
         AvatarDao dao = getDao();
         Avatar avatar = new Avatar(owner, null, "image");
@@ -51,7 +53,7 @@ public class PostgresAvatarDaoTest extends WithFiles {
     }
 
     @Test
-    public void testGetNonExistentImage(){
+    public void testGetNonExistentImage() {
         AvatarDao dao = getDao();
         assertNull(dao.getById(owner));
     }

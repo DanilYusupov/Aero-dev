@@ -19,7 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PostgresProjectImageDaoTest extends WithFiles{
-
+    /**
+     * Name of table according to classpath:/project_image/V1__Create_test_table.sql
+     */
     private final String tableName = "aero.project_image_test";
     private Long imageId = 1L;
     private Long projectId = 1L;
