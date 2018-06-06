@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" href="../static/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/my-blackout.css}" href="../static/css/my-blackout.css">
     <title>Aero-dev</title>
@@ -173,10 +173,18 @@
 
 <!-- Footer -->
 
-<div class="container-fluid mt-5 bg-dark text-white" style="height: 150px">
-    <div class="row">
+<div class="container-fluid mt-5">
+    <div class="row bg-dark text-white p-2">
+        <div class="col-sm-2">
+            <a href="https://www.testdome.com/cert/d4d32974f6fb489cb52ac0167cf4f91d"
+               class="testdome-certificate-stamp gold"><span class="testdome-certificate-name">Yusupov Danil</span><span
+                    class="testdome-certificate-test-name">Java </span><span class="testdome-certificate-card-logo">TestDome<br/>Certificate</span></a>
+            <script type="text/javascript">var stylesheet = 'https://www.testdome.com/content/source/stylesheets/embed.css',
+                link = document.createElement('link');
+            link.href = stylesheet, link.type = 'text/css', link.rel = 'stylesheet', link.media = 'screen,print', document.getElementsByTagName('head')[0].appendChild(link);</script>
+        </div>
         <div class="col mt-4">
-            <div class="text-center">
+            <div class="text-lg-right">
                 <h4>Made by Yusupov Danil</h4>
                 <h5>For educational purposes only</h5>
                 <h6>Kazan 2018</h6>
