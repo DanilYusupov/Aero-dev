@@ -25,17 +25,26 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
  */
 @Repository
 public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
-
+    /**
+     * Autowired on application run, but initialized evidently in test cases
+     */
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * Gets from classpath:/db.properties as 'user.table' property. <br>
+     * For test cases initializes evidently according to migration files
+     */
     private String tableName;
+
     private final String SELECT_QUERY = "SELECT usr_id, usr_name, usr_password, usr_email, usr_level," +
             " usr_first_name, usr_last_name, usr_biography, usr_rating, usr_country, usr_city, usr_is_male FROM ";
 
     private final String INSERT_PARAMS = " (usr_name, usr_password, usr_email," +
-            " usr_first_name, usr_last_name, usr_biography, usr_country, usr_city, usr_is_male) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            " usr_first_name, usr_last_name, usr_biography, usr_country, usr_city, usr_is_male)" +
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-    private final String UPDATE_PARAMS = " SET usr_name=?, usr_password=?, usr_email=?, usr_level=?," +
-            " usr_first_name=?, usr_last_name=?, usr_biography=?, usr_rating=?, usr_country=?, usr_city=?, usr_is_male=?";
+    private final String UPDATE_PARAMS = " SET usr_name=?, usr_password=?, usr_email=?, usr_level=?, usr_first_name=?," +
+            " usr_last_name=?, usr_biography=?, usr_rating=?, usr_country=?, usr_city=?, usr_is_male=?";
 
     @Autowired
     public PostgresUserDao(JdbcTemplate jdbcTemplate) {
@@ -58,7 +67,6 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         }
     }
 
-
     @Override
     public User getByName(String name) {
         try {
@@ -74,6 +82,7 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         return jdbcTemplate.query(SELECT_QUERY + tableName + ";", new UserRowMapper());
     }
 
+    @Override
     public Long insert(User entity) {
         final String INSERT_SQL = "INSERT INTO " + tableName + INSERT_PARAMS;
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -96,6 +105,7 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         return keyHolder.getKey().longValue();
     }
 
+    @Override
     public Long update(User entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName + UPDATE_PARAMS + " WHERE usr_id = "
                         + entity.getUserId() + ";",
@@ -114,7 +124,6 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         return (rows > 0) ? entity.getUserId() : null;
     }
 
-
     @Override
     public boolean delete(Long id) {
         int rows = jdbcTemplate.update("DELETE FROM " + tableName + " WHERE usr_id = ?;", id);
@@ -131,6 +140,7 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM " + tableName + ";", Integer.class);
     }
 
+    @Override
     public String existentEmail(String userEmail) {
         try {
             return jdbcTemplate.queryForObject(
@@ -142,6 +152,7 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
         }
     }
 
+    @Override
     public List<User> getTopThree() {
         return jdbcTemplate.query(SELECT_QUERY + tableName + " ORDER BY usr_rating DESC LIMIT 3;", new UserRowMapper());
         //TODO: add rating logic!
@@ -150,7 +161,6 @@ public class PostgresUserDao implements UserDao, Postgresqlable<User, Long> {
     private static class UserRowMapper implements RowMapper<User> {
         /**
          * Utility method, which builds {@code User} entity from inserted {@code ResultSet}
-         *
          * @param resultSet incoming {@code ResultSet}
          * @return built {@code User} entity
          * @throws SQLException if build was performed incorrectly (see stacktrace)

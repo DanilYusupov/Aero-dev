@@ -6,8 +6,16 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * My simple password encryptor =)
+ */
 public class Hasher {
 
+    /**
+     * Encrypts password
+     * @param target clear password
+     * @return {@code String} with encrypted result
+     */
     public static String hash(String target){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

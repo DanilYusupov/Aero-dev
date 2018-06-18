@@ -19,7 +19,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class PostgresProjectDaoTest {
-
+    /**
+     * Name of table according to classpath:/project/V1__Create_test_table.sql
+     */
     private String tableName = "project_test";
     private String name = "start-up";
     private Long owner = 1L;

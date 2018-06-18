@@ -11,7 +11,6 @@ import com.gdc.aerodev.service.logging.LoggingService;
  * @author Yusupov Danil
  */
 public interface AvatarService extends LoggingService{
-
     /**
      * Inserts avatar into database
      * @param userId owner
@@ -24,8 +23,8 @@ public interface AvatarService extends LoggingService{
     /**
      * Gives {@code Avatar} by {@code User} id
      * @param id of avatar's owner
-     * @return (0) {@code Avatar} or
-     *         (1) {@code null}
+     * @return (0) {@code Avatar} or <br>
+     *         (1) {@code null} if there is no avatar for this user
      */
     Avatar getAvatar(Long id);
 }

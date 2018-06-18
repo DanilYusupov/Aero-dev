@@ -1,13 +1,12 @@
 package com.gdc.aerodev.model;
 
-
 import java.util.Date;
 
 /**
  * This entity is strictly related to {@code Project} one and details it.
  *
- * @see Project
  * @author Yusupov Danil
+ * @see Project
  */
 public class ProjectContent {
 

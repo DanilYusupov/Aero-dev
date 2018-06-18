@@ -14,7 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.junit.Assert.*;
 
 public class UserServiceTest {
-
+    /**
+     * Name of table according to classpath:/user-service/V1__Create_test_table.sql
+     */
     private String tableName = "user_test";
     private String userName = "Bob";
     private String userPassword = "p@ssw0rd";
@@ -33,7 +35,7 @@ public class UserServiceTest {
     //Create User tests
 
     @Test
-    public void testCreateUser(){
+    public void testCreateUser() {
         UserService service = getService();
         int size = service.countUsers();
         service.createUser(userName, userPassword, userEmail, isMale);
@@ -42,7 +44,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateExistentUser(){
+    public void testCreateExistentUser() {
         UserService service = getService();
         assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
@@ -51,7 +53,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateEmptyName(){
+    public void testCreateEmptyName() {
         UserService service = getService();
         int size = service.countUsers();
         assertNull(service.createUser("", userPassword, userEmail, isMale));
@@ -59,7 +61,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateExistentEmail(){
+    public void testCreateExistentEmail() {
         UserService service = getService();
         assertNotNull(service.createUser(userName, userPassword, userEmail, isMale));
         int size = service.countUsers();
@@ -70,7 +72,7 @@ public class UserServiceTest {
     //Update User tests
 
     @Test
-    public void testUpdateUser(){
+    public void testUpdateUser() {
         UserService service = getService();
         User before = service.getUser(1L);
         assertNotNull(service.updateUser(1L, userName, userPassword, userEmail, level));
@@ -78,7 +80,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateWithEmptyParams(){
+    public void testUpdateWithEmptyParams() {
         UserService service = getService();
         Long id = service.createUser(userName, userPassword, userEmail, isMale);
         User before = service.getUser(id);
@@ -91,7 +93,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUpdateInfo(){
+    public void testUpdateInfo() {
         UserService service = getService();
         Long id = service.createUser(userName, userPassword, userEmail, isMale);
         service.updateInfo(id, userFirstName, userLastName, "", userCountry, userCity);
@@ -100,7 +102,7 @@ public class UserServiceTest {
 
     }
 
-    private UserService getService(){
+    private UserService getService() {
         return new UserServiceImpl(new PostgresUserDao(new JdbcTemplate(db.getTestDatabase()), tableName));
     }
 

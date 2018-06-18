@@ -11,19 +11,22 @@ import java.util.Properties;
  * Utility class to work with files
  *
  * @author Yusupov Danil
+ * @see PostgresAvatarDao
+ * @see PostgresProjectContentDao
+ * @see PostgresProjectImageDao
  */
 class DaoMaintenance {
-
     /**
      * Collects bytes from {@code InputStream} into bytes array
+     *
      * @param inputStream target source
      * @return array of bytes
      */
-    static byte[] toByteArray(InputStream inputStream){
-        try(InputStream in = inputStream;
-            ByteArrayOutputStream out = new ByteArrayOutputStream()){
+    static byte[] toByteArray(InputStream inputStream) {
+        try (InputStream in = inputStream;
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             int a;
-            while ((a = in.read()) != -1){
+            while ((a = in.read()) != -1) {
                 out.write(a);
             }
             return out.toByteArray();
@@ -32,7 +35,13 @@ class DaoMaintenance {
         }
     }
 
-    static String getTableName(String propertyName){
+    /**
+     * Gets name of target table for using in SQL queries
+     *
+     * @param propertyName name of target table name
+     * @return name of table
+     */
+    static String getTableName(String propertyName) {
         Properties properties = new Properties();
         try {
             properties.load(DaoMaintenance.class.getResourceAsStream("/db.properties"));

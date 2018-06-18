@@ -16,7 +16,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import static com.gdc.aerodev.dao.postgres.DaoMaintenance.getTableName;
 import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
@@ -29,9 +28,17 @@ import static com.gdc.aerodev.dao.postgres.DaoMaintenance.toByteArray;
  */
 @Repository
 public class PostgresProjectContentDao implements ProjectContentDao {
-
+    /**
+     * Autowired on application run, but initialized evidently in test cases
+     */
     private JdbcTemplate jdbcTemplate;
+
+    /**
+     * Gets from classpath:/db.properties as 'project.content.table' property. <br>
+     * For test cases initializes evidently according to migration files
+     */
     private String tableName;
+
     private final String SELECT_QUERY = "SELECT prj_id, prj_logo, prj_description, prj_date FROM ";
 
     @Autowired
@@ -58,13 +65,15 @@ public class PostgresProjectContentDao implements ProjectContentDao {
 
     @Override
     public Long insert(ProjectContent entity) {
-        final String INSERT_SQL = "INSERT INTO " + tableName + " (prj_id, prj_logo, prj_description, prj_date) VALUES (?, ?, ?, ?);";
+        final String INSERT_SQL = "INSERT INTO " + tableName +
+                " (prj_id, prj_logo, prj_description, prj_date) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
                     PreparedStatement ps = con.prepareStatement(INSERT_SQL, new String[]{"prj_id"});
                     ps.setLong(1, entity.getProjectId());
-                    log.info("Received new project logo for project with id: " + entity.getProjectId() + ". Size: " + entity.getProjectLogo().length + " bytes.");
+                    log.info("Received new project logo for project with id: " +
+                            entity.getProjectId() + ". Size: " + entity.getProjectLogo().length + " bytes.");
                     ps.setBinaryStream(2, new ByteArrayInputStream(entity.getProjectLogo()));
                     ps.setString(3, entity.getProjectDescription());
                     ps.setDate(4, new Date(entity.getProjectBirthDay().getTime()));
@@ -74,7 +83,7 @@ public class PostgresProjectContentDao implements ProjectContentDao {
         );
         long id = keyHolder.getKey().longValue();
         log.info("Inserted project logo with project id: " + id);
-         return id;
+        return id;
     }
 
     @Override
@@ -82,8 +91,10 @@ public class PostgresProjectContentDao implements ProjectContentDao {
         Long id = entity.getProjectId();
         int rows = jdbcTemplate.update(
                 con -> {
-                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName + " SET prj_logo=?, prj_description=? WHERE prj_id = ?;");
-                    ps.setBinaryStream(1, new ByteArrayInputStream(entity.getProjectLogo()), entity.getProjectLogo().length);
+                    PreparedStatement ps = con.prepareStatement("UPDATE " + tableName +
+                            " SET prj_logo=?, prj_description=? WHERE prj_id = ?;");
+                    ps.setBinaryStream(1,
+                            new ByteArrayInputStream(entity.getProjectLogo()), entity.getProjectLogo().length);
                     ps.setString(2, entity.getProjectDescription());
                     ps.setLong(3, id);
                     return ps;
@@ -117,7 +128,13 @@ public class PostgresProjectContentDao implements ProjectContentDao {
     }
 
     private static class ProjectContentRowMapper implements RowMapper<ProjectContent> {
-
+        /**
+         * Utility method, which builds {@code ProjectContent} entity from inserted {@code ResultSet}
+         *
+         * @param rs incoming {@code ResultSet}
+         * @return built {@code ProjectContent} entity
+         * @throws SQLException if build was performed incorrectly (see stacktrace)
+         */
         @Override
         public ProjectContent mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new ProjectContent(

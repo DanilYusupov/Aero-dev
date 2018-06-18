@@ -6,15 +6,36 @@ import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
 import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.Avatar;
 import com.gdc.aerodev.service.AvatarService;
-import com.gdc.aerodev.service.logging.LoggingService;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of service for managing user's avatars in database
+ *
+ * @author Yusupov Danil
+ * @see AvatarService
+ * @see com.gdc.aerodev.model.User
+ * @see Avatar
+ */
 @Service
 public class AvatarServiceImpl implements AvatarService {
-
+    /**
+     * DAO for managing {@code Avatar}
+     */
     private final AvatarDao avDao;
+
+    /**
+     * DAO for managing {@code User} especially {@code userId}
+     */
     private final UserDao usrDao;
+
+    /**
+     * Id of default avatar for male user
+     */
     private final Long DEFAULT_MAN_AVATAR = 1L;
+
+    /**
+     * Id of default avatar for female user
+     */
     private final Long DEFAULT_WOMAN_AVATAR = 2L;
 
     public AvatarServiceImpl(PostgresAvatarDao avDao, PostgresUserDao usrDao) {
@@ -33,29 +54,21 @@ public class AvatarServiceImpl implements AvatarService {
         return avDao.getById(userId) != null;
     }
 
-
-    /**
-     * Selects user's avatar from DB
-     *
-     * @param userId of avatar's owner
-     * @return (0) {@code Avatar} or
-     * (1) {@code null}
-     */
     @Override
     public Avatar getAvatar(Long userId) {
         Avatar avatar = avDao.getById(userId);
         if (avatar == null) {
-            if (usrDao.getById(userId).isMale()){
+            if (usrDao.getById(userId).isMale()) {
                 return avDao.getById(DEFAULT_MAN_AVATAR);
             } else {
                 return avDao.getById(DEFAULT_WOMAN_AVATAR);
-                //TODO: hide man and woman from database!
             }
         } else {
             return avatar;
         }
     }
 
+    @Override
     public Long uploadAvatar(Long userId, byte[] bytes, String contentType) {
         try {
             Long avatarId = avDao.getById(userId).getAvatarId();
