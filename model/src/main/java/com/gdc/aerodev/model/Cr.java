@@ -13,15 +13,17 @@ public class Cr {
     private String crName;
     private String crPassword;
     private String crEmail;
+    private Long companyId;
 
     public Cr() {
     }
 
-    public Cr(Long crId, String crName, String crPassword, String crEmail) {
+    public Cr(Long crId, String crName, String crPassword, String crEmail, Long companyId) {
         this.crId = crId;
         this.crName = crName;
         this.crPassword = crPassword;
         this.crEmail = crEmail;
+        this.companyId = companyId;
     }
 
     public Long getCrId() {

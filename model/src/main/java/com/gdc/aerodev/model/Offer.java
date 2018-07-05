@@ -32,6 +32,12 @@ public class Offer {
         this.offerDescription = offerDescription;
     }
 
+    public Offer(Long offeredUserId, Long offeredCrId, String offerDescription) {
+        this.offeredUserId = offeredUserId;
+        this.offeredCrId = offeredCrId;
+        this.offerDescription = offerDescription;
+    }
+
     public Long getOfferId() {
         return offerId;
     }
@@ -46,5 +52,25 @@ public class Offer {
 
     public String getOfferDescription() {
         return offerDescription;
+    }
+
+    public Offer setOfferId(Long offerId) {
+        this.offerId = offerId;
+        return this;
+    }
+
+    public Offer setOfferedUserId(Long offeredUserId) {
+        this.offeredUserId = offeredUserId;
+        return this;
+    }
+
+    public Offer setOfferedCrId(Long offeredCrId) {
+        this.offeredCrId = offeredCrId;
+        return this;
+    }
+
+    public Offer setOfferDescription(String offerDescription) {
+        this.offerDescription = offerDescription;
+        return this;
     }
 }
