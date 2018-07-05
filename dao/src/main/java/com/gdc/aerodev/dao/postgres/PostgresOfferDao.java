@@ -34,7 +34,7 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
      * For test cases initializes evidently according to migration files
      */
     private String tableName;
-    private final String SELECT_QUERY = "SELECT off_id, off_usr_id, off_cr_id, off_description FROM ";
+    private final String SELECT_QUERY = "SELECT off_id, off_usr_id, off_cr_id, off_description, status FROM ";
 
     @Autowired
     public PostgresOfferDao(JdbcTemplate jdbcTemplate) {
@@ -49,7 +49,7 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
 
     @Override
     public Long insert(Offer entity) {
-        final String INSERT_SQL = "INSERT INTO " + tableName + " (off_usr_id, off_cr_id, off_description) VALUES (?, ?, ?);";
+        final String INSERT_SQL = "INSERT INTO " + tableName + " (off_usr_id, off_cr_id, off_description, status) VALUES (?, ?, ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 con -> {
@@ -57,6 +57,7 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
                     ps.setLong(1, entity.getOfferedUserId());
                     ps.setLong(2, entity.getOfferedCrId());
                     ps.setString(3, entity.getOfferDescription());
+                    ps.setString(4, String.valueOf(entity.getStatus()).toUpperCase());
                     return ps;
                 },
                 keyHolder
@@ -67,11 +68,9 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
     @Override
     public Long update(Offer entity) {
         int rows = jdbcTemplate.update("UPDATE " + tableName +
-                        " SET off_usr_id=?, off_cr_id=?, off_description=? WHERE off_id = "
+                        " SET status=? WHERE off_id = "
                         + entity.getOfferId() + ";",
-                entity.getOfferedUserId(),
-                entity.getOfferedCrId(),
-                entity.getOfferDescription());
+                String.valueOf(entity.getStatus()).toUpperCase());
         return (rows > 0) ? entity.getOfferId() : null;
     }
 
@@ -108,6 +107,12 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
         return rows > 0;
     }
 
+    @Override
+    public List<Offer> getByUserId(Long userId) {
+        return jdbcTemplate.query(SELECT_QUERY + tableName + " WHERE off_usr_id=?;",
+                new OfferRowMapper(), userId);
+    }
+
     private static class OfferRowMapper implements RowMapper<Offer> {
         /**
          * Utility method, which builds {@code Offer} entity from inserted {@code ResultSet}
@@ -123,6 +128,7 @@ public class PostgresOfferDao implements OfferDao, Postgresqlable<Offer, Long> {
             offer.setOfferedUserId(resultSet.getLong("off_usr_id"));
             offer.setOfferedCrId(resultSet.getLong("off_cr_id"));
             offer.setOfferDescription(resultSet.getString("off_description"));
+            offer.setStatus(Offer.Status.valueOf(resultSet.getString("status")));
             return offer;
         }
     }

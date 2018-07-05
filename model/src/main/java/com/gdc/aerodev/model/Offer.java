@@ -21,21 +21,28 @@ public class Offer {
      */
     private Long offeredCrId;
     private String offerDescription;
+    private Status status;
+
+    public enum Status{
+        INITIATED, CONFIRMED, CANCELED, EXPIRED
+    }
 
     public Offer() {
     }
 
-    public Offer(Long offerId, Long offeredUserId, Long offeredCrId, String offerDescription) {
+    public Offer(Long offerId, Long offeredUserId, Long offeredCrId, String offerDescription, Status status) {
         this.offerId = offerId;
         this.offeredUserId = offeredUserId;
         this.offeredCrId = offeredCrId;
         this.offerDescription = offerDescription;
+        this.status = status;
     }
 
-    public Offer(Long offeredUserId, Long offeredCrId, String offerDescription) {
+    public Offer(Long offeredUserId, Long offeredCrId, String offerDescription, Status status) {
         this.offeredUserId = offeredUserId;
         this.offeredCrId = offeredCrId;
         this.offerDescription = offerDescription;
+        this.status = status;
     }
 
     public Long getOfferId() {
@@ -71,6 +78,15 @@ public class Offer {
 
     public Offer setOfferDescription(String offerDescription) {
         this.offerDescription = offerDescription;
+        return this;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Offer setStatus(Status status) {
+        this.status = status;
         return this;
     }
 }

@@ -23,7 +23,7 @@ public class PostgresOfferDaoTest {
     private Long userId = 49L;
     private Long crId = 2L;
     private String text = "Some text...";
-    private Offer offer = new Offer(userId, crId, text);
+    private Offer offer = new Offer(userId, crId, text, Offer.Status.INITIATED);
 
     @Rule
     public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("offers"));
@@ -35,6 +35,13 @@ public class PostgresOfferDaoTest {
         OfferDao dao = getDao();
         Offer offer = dao.getById(1L);
         assertEquals(Long.valueOf(21), offer.getOfferedUserId());
+    }
+
+    @Test
+    public void testGetByUserId(){
+        OfferDao dao = getDao();
+        List<Offer> offers = dao.getByUserId(21L);
+        assertEquals(2, offers.size());
     }
 
     @Test
@@ -57,13 +64,12 @@ public class PostgresOfferDaoTest {
     public void testUpdate() {
         OfferDao dao = getDao();
         Long id = 1L;
-        String text = "Denis";
         Offer offer = dao.getById(id);
         assertEquals(Long.valueOf(21L), offer.getOfferedUserId());
-        offer.setOfferDescription(text);
+        offer.setStatus(Offer.Status.EXPIRED);
         dao.save(offer);
         Offer newOffer = dao.getById(id);
-        assertEquals(text, newOffer.getOfferDescription());
+        assertEquals(Offer.Status.EXPIRED, newOffer.getStatus());
         assertNotNull(newOffer.getOfferedUserId());
     }
 
