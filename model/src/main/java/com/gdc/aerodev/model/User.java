@@ -12,7 +12,7 @@ public class User {
     private Long userId;
 
     /**
-     * @param userName used as <b>nickname</b> to get access to user's profile
+     * userName used as <b>nickname</b> to get access to user's profile
      */
     private String userName;
     private String userPassword;

@@ -17,7 +17,7 @@ public interface GenericDao<T, V> {
      *
      * @param id identifier of target {@code T}
      * @return (0) found {@code T} with matched {@param id} <br>
-     * (1) null if there is no such {@code T}
+     * (1) {@code null} if there is no such {@code T}
      */
     T getById(V id);
 
