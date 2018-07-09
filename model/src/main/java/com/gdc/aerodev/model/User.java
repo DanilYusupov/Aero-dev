@@ -1,5 +1,8 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+import javax.persistence.Table;
+
 /**
  * This class describes engineer in web-portal. Every newcomers can register in web-service as {@code User}.
  * Strictly {@code User} can create {@code Project} and in future add files there. Bind between {@code User}
@@ -7,35 +10,51 @@ package com.gdc.aerodev.model;
  *
  * @author Yusupov Danil
  */
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usr_id")
     private Long userId;
 
     /**
      * userName used as <b>nickname</b> to get access to user's profile
      */
+    @Column(name = "usr_name", nullable = false)
     private String userName;
+    @Column(name = "usr_password", nullable = false)
     private String userPassword;
+    @Column(name = "usr_email", nullable = false)
     private String userEmail;
 
     /**
      * @param userLevel describes summary user's competence
      */
+    @Column(name = "usr_level")
     private short userLevel;
+    @Column(name = "usr_first_name", nullable = false)
     private String userFirstName;
+    @Column(name = "usr_last_name", nullable = false)
     private String userLastName;
+    @Column(name = "usr_biography", nullable = false)
     private String userBiography;
 
     /**
      * @param userRating counts according to his activity.
      */
+    @Column(name = "usr_rating")
     private int userRating;
+    @Column(name = "usr_country", nullable = false)
     private String userCountry;
+    @Column(name = "usr_city", nullable = false)
     private String userCity;
 
     /**
      * Gender indicator also helps to chose default {@code Avatar}
      */
+    @Column(name = "usr_is_male")
     private boolean isMale;
 
     public User() {

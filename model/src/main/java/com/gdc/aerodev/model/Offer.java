@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+
 /**
  * This is offer between {@code User} and {@code Cr}. Offer initiator can be only {@code Cr}. {@code Offer} has
  * links: {@param offeredUserId} to {@code User} and {@param offeredCrId} to {@code Cr}.
@@ -8,18 +10,29 @@ package com.gdc.aerodev.model;
  * @see User
  * @see Cr
  */
+@Entity
+@Table(name = "offers")
 public class Offer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "off_id")
     private Long offerId;
 
     /**
      * Refers to {@code userId} of {@code User}
      */
+    @Column(name = "off_usr_id")
+    @ManyToOne
     private Long offeredUserId;
 
     /**
      * Refers to {@code crId} of {@code Cr}
      */
+    @Column(name = "off_cr_id")
+    @ManyToOne
     private Long offeredCrId;
+    @Column(name = "off_description")
     private String offerDescription;
     private Status status;
 

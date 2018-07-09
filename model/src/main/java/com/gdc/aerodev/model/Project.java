@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+
 /**
  * This entity can be created only by {@code User}. But {@code Cr} can review it. Also any project can be rated by
  * {@code User} and {@code Cr} in future versions.
@@ -8,19 +10,28 @@ package com.gdc.aerodev.model;
  * @see User
  * @see ProjectType
  */
+@Entity
+@Table(name = "projects")
 public class Project {
     /**
      * {@code PRIMARY KEY} for this entity
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "prj_id")
     private Long projectId;
+    @Column(name = "prj_name",  nullable = false)
     private String projectName;
     /**
      * Refers to {@code User} entity
      */
+    @Column(name = "prj_owner")
+    @ManyToOne
     private Long projectOwner;
     /**
      * {@code NOT NULL} from {@code ProjectType} enum
      */
+    @Column(name = "prj_type")
     private ProjectType projectType;
 
     public Project() {

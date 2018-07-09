@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+
 /**
  * This entity's goal is to contain {@code User}'s profile image.
  * Image data stores as byte array in {@code avatarData} field.
@@ -8,23 +10,32 @@ package com.gdc.aerodev.model;
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.User
  */
+@Entity
+@Table(name = "avatars")
 public class Avatar {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "av_id")
     private Long avatarId;
 
     /**
      * {@code userId} as {@code FOREIGN KEY} and {@code PRIMARY KEY}
      */
+    @Column(name = "av_owner")
+    @ManyToOne
     private Long avatarOwner;
 
     /**
      * Image as array of bytes
      */
+    @Column(name = "av_data")
     private byte[] avatarData;
 
     /**
      * MIME type of avatar image
      */
+    @Column(name = "av_type")
     private String contentType;
 
     public Avatar() {

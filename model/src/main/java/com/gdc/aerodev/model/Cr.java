@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+
 /**
  * {@code Cr} is the company representative. Only checked persons can register as {@code Cr} from his company.
  * Being interested {@code Cr} can make offer to {@code User} to make some {@code Project}. All relationships
@@ -7,18 +9,29 @@ package com.gdc.aerodev.model;
  *
  * @author Yusupov Danil
  */
+@Entity
+@Table(name = "company_representatives")
 public class Cr {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cr_id")
     private Long crId;
     /**
      * crName used as <b>nickname</b> to get access to the service
      */
+    @Column(name = "cr_name",  nullable = false)
     private String crName;
+    @Column(name = "cr_pass",  nullable = false)
     private String crPassword;
+    @Column(name = "cr_email", nullable = false)
     private String crEmail;
+    @Column(name = "cr_comp_id")
     private Long companyId;
+    @Column(name = "cr_first_name", nullable = false)
     private String crFirstName;
+    @Column(name = "cr_last_name", nullable = false)
     private String crLastName;
+    @Column(name = "cr_position")
     private String crPosition;
 
     public Cr() {

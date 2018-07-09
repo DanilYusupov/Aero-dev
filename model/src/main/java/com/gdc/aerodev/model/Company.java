@@ -1,10 +1,20 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "companies")
 public class Company {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comp_id")
     Long compId;
+    @Column(name = "comp_name", nullable = false)
     String compName;
+    @Column(name = "comp_website")
     String compWebsite;
+    @Column(name = "comp_logo_url")
     String compLogoUrl;
 
     public Company() {

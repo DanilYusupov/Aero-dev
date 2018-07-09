@@ -65,6 +65,7 @@
     </build>
 
     <modules>
+        <module>repository</module>
         <module>dao</module>
         <module>model</module>
         <module>service</module>
