@@ -10,29 +10,29 @@ import javax.persistence.*;
  * @see User
  * @see Cr
  */
-@Entity
-@Table(name = "offers")
+//@Entity
+//@Table(name = "offers")
 public class Offer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "off_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "off_id")
     private Long offerId;
 
     /**
      * Refers to {@code userId} of {@code User}
      */
-    @Column(name = "off_usr_id")
-    @ManyToOne
+//    @Column(name = "off_usr_id")
+//    @ManyToOne
     private Long offeredUserId;
 
     /**
      * Refers to {@code crId} of {@code Cr}
      */
-    @Column(name = "off_cr_id")
-    @ManyToOne
+//    @Column(name = "off_cr_id")
+//    @ManyToOne
     private Long offeredCrId;
-    @Column(name = "off_description")
+//    @Column(name = "off_description")
     private String offerDescription;
     private Status status;
 

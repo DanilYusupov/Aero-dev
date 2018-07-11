@@ -1,14 +1,21 @@
 package com.gdc.aerodev.repository.postgresql;
 
 import com.gdc.aerodev.model.User;
-import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
-public interface UserRepository extends Repository<User, Long> {
-    List<User> findAll();
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByUserId(Long id);
+
     User findByUserName(String userName);
-    User findByUserId(Long userId);
-    User save(User user);
-    void deleteByUserId(Long userId);
+
+    @Query("SELECT u FROM User u ORDER BY u.userRating DESC")
+    List<User> ratingOrdered(Pageable pageable);
 }

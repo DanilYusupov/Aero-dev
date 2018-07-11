@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * @author Yusupov Danil
  */
 @Entity
-@Table(name = "users")
+@Table(schema = "aero", name = "users")
 public class User {
 
     @Id
@@ -30,7 +30,7 @@ public class User {
     private String userEmail;
 
     /**
-     * @param userLevel describes summary user's competence
+     * userLevel describes summary user's competence
      */
     @Column(name = "usr_level")
     private short userLevel;
@@ -42,7 +42,7 @@ public class User {
     private String userBiography;
 
     /**
-     * @param userRating counts according to his activity.
+     * userRating counts according to his activity.
      */
     @Column(name = "usr_rating")
     private int userRating;

@@ -10,32 +10,32 @@ import javax.persistence.*;
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.User
  */
-@Entity
-@Table(name = "avatars")
+//@Entity
+//@Table(name = "avatars")
 public class Avatar {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "av_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "av_id")
     private Long avatarId;
 
     /**
      * {@code userId} as {@code FOREIGN KEY} and {@code PRIMARY KEY}
      */
-    @Column(name = "av_owner")
-    @ManyToOne
+//    @Column(name = "av_owner")
+//    @ManyToOne
     private Long avatarOwner;
 
     /**
      * Image as array of bytes
      */
-    @Column(name = "av_data")
+//    @Column(name = "av_data")
     private byte[] avatarData;
 
     /**
      * MIME type of avatar image
      */
-    @Column(name = "av_type")
+//    @Column(name = "av_type")
     private String contentType;
 
     public Avatar() {

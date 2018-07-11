@@ -9,29 +9,29 @@ import javax.persistence.*;
  *
  * @author Yusupov Danil
  */
-@Entity
-@Table(name = "company_representatives")
+//@Entity
+//@Table(name = "company_representatives")
 public class Cr {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cr_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "cr_id")
     private Long crId;
     /**
      * crName used as <b>nickname</b> to get access to the service
      */
-    @Column(name = "cr_name",  nullable = false)
+//    @Column(name = "cr_name",  nullable = false)
     private String crName;
-    @Column(name = "cr_pass",  nullable = false)
+//    @Column(name = "cr_pass",  nullable = false)
     private String crPassword;
-    @Column(name = "cr_email", nullable = false)
+//    @Column(name = "cr_email", nullable = false)
     private String crEmail;
-    @Column(name = "cr_comp_id")
+//    @Column(name = "cr_comp_id")
     private Long companyId;
-    @Column(name = "cr_first_name", nullable = false)
+//    @Column(name = "cr_first_name", nullable = false)
     private String crFirstName;
-    @Column(name = "cr_last_name", nullable = false)
+//    @Column(name = "cr_last_name", nullable = false)
     private String crLastName;
-    @Column(name = "cr_position")
+//    @Column(name = "cr_position")
     private String crPosition;
 
     public Cr() {

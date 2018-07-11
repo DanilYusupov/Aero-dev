@@ -8,30 +8,30 @@ import javax.persistence.*;
  * @author Yusupov Danil
  * @see Project
  */
-@Entity
-@Table(name = "project_images")
+//@Entity
+//@Table(name = "project_images")
 public class ProjectImage {
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "img_id")
+//    @Id
+//    @GeneratedValue (strategy = GenerationType.IDENTITY)
+//    @Column(name = "img_id")
     private Long imageId;
 
     /**
      * This is {@code FOREIGN KEY} to {@code Project} entity.
      */
-    @Column(name = "prj_id")
+//    @Column(name = "prj_id")
     private Long projectId;
 
     /**
      * Image of {@code Project}
      */
-    @Column(name = "prj_image", nullable = false)
+//    @Column(name = "prj_image", nullable = false)
     private byte[] projectImage;
 
     /**
      * MIME type of image
      */
-    @Column(name = "img_type")
+//    @Column(name = "img_type")
     private String contentType;
 
     public ProjectImage(Long projectId, byte[] projectImage, String contentType) {

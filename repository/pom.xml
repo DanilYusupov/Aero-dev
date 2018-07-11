@@ -32,6 +32,15 @@
             <groupId>com.opentable.components</groupId>
             <artifactId>otj-pg-embedded</artifactId>
         </dependency>
+        <!--after transfer to jpa-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-database-spring-test</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

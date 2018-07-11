@@ -10,28 +10,28 @@ import javax.persistence.*;
  * @see User
  * @see ProjectType
  */
-@Entity
-@Table(name = "projects")
+//@Entity
+//@Table(name = "projects")
 public class Project {
     /**
      * {@code PRIMARY KEY} for this entity
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "prj_id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "prj_id")
     private Long projectId;
-    @Column(name = "prj_name",  nullable = false)
+//    @Column(name = "prj_name",  nullable = false)
     private String projectName;
     /**
      * Refers to {@code User} entity
      */
-    @Column(name = "prj_owner")
-    @ManyToOne
+//    @Column(name = "prj_owner")
+//    @ManyToOne
     private Long projectOwner;
     /**
      * {@code NOT NULL} from {@code ProjectType} enum
      */
-    @Column(name = "prj_type")
+//    @Column(name = "prj_type")
     private ProjectType projectType;
 
     public Project() {
