@@ -2,6 +2,7 @@ package com.gdc.aerodev.model;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.List;
 
 /**
  * This class describes engineer in web-portal. Every newcomers can register in web-service as {@code User}.
@@ -56,6 +57,11 @@ public class User {
      */
     @Column(name = "usr_is_male")
     private boolean isMale;
+
+    //JPA relations below
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Project> projects;
 
     public User() {
     }
@@ -179,5 +185,14 @@ public class User {
 
     public void setMale(boolean male) {
         isMale = male;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public User setProjects(List<Project> projects) {
+        this.projects = projects;
+        return this;
     }
 }

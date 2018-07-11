@@ -121,17 +121,28 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void getByFakeName(){
+    public void getByFakeNameTest(){
         assertNull(repository.findByUserName(""));
         assertNull(repository.findByUserName(null));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void saveExistentName(){
+    public void saveExistentNameTest(){
         User user = new User(
                 name,
                 password,
                 "e",
+                true
+        );
+        repository.save(user);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void saveExistentEmailTest(){
+        User user = new User(
+                "Bbb",
+                password,
+                email,
                 true
         );
         repository.save(user);

@@ -1,5 +1,8 @@
 package com.gdc.aerodev.model;
 
+import com.sun.istack.internal.NotNull;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 /**
@@ -10,44 +13,44 @@ import javax.persistence.*;
  * @see User
  * @see ProjectType
  */
-//@Entity
-//@Table(name = "projects")
+@Entity
+@Table(schema = "aero", name = "projects")
 public class Project {
     /**
      * {@code PRIMARY KEY} for this entity
      */
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "prj_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "prj_id")
     private Long projectId;
-//    @Column(name = "prj_name",  nullable = false)
+    @Column(name = "prj_name",  nullable = false)
     private String projectName;
-    /**
-     * Refers to {@code User} entity
-     */
-//    @Column(name = "prj_owner")
-//    @ManyToOne
-    private Long projectOwner;
     /**
      * {@code NOT NULL} from {@code ProjectType} enum
      */
-//    @Column(name = "prj_type")
+    @Column(name = "prj_type")
+    @Enumerated(EnumType.STRING)
     private ProjectType projectType;
+
+    //JPA relations below
+    @ManyToOne()
+    @JoinColumn(name = "usr_id", foreignKey = @ForeignKey(name = "owner_id_fk"))
+    @NotNull
+    private User owner;
 
     public Project() {
     }
 
-    public Project(Long projectId, String projectName, Long projectOwner, ProjectType projectType) {
+    public Project(Long projectId, String projectName, ProjectType projectType) {
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectOwner = projectOwner;
         this.projectType = projectType;
     }
 
-    public Project(String projectName, Long projectOwner, ProjectType projectType) {
+    public Project(String projectName, ProjectType projectType, User owner) {
         this.projectName = projectName;
-        this.projectOwner = projectOwner;
         this.projectType = projectType;
+        this.owner = owner;
     }
 
     public Long getProjectId() {
@@ -56,10 +59,6 @@ public class Project {
 
     public String getProjectName() {
         return projectName;
-    }
-
-    public Long getProjectOwner() {
-        return projectOwner;
     }
 
     public ProjectType getProjectType() {
@@ -74,11 +73,16 @@ public class Project {
         this.projectName = projectName;
     }
 
-    public void setProjectOwner(Long projectOwner) {
-        this.projectOwner = projectOwner;
-    }
-
     public void setProjectType(ProjectType projectType) {
         this.projectType = projectType;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Project setOwner(User owner) {
+        this.owner = owner;
+        return this;
     }
 }
