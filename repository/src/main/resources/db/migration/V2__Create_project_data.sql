@@ -27,8 +27,16 @@ CREATE TABLE aero.project_content (
 
 CREATE TABLE aero.project_images (
   img_id    SERIAL PRIMARY KEY,
-  prj_id    BIGINT REFERENCES aero.projects (prj_id),
+  prj_id    BIGINT NOT NULL ,
   prj_image BYTEA NOT NULL,
   img_type  VARCHAR(32),
   CONSTRAINT img_fk FOREIGN KEY (prj_id) REFERENCES aero.projects
 );
+
+CREATE TABLE aero.project_files (
+  file_id SERIAL PRIMARY KEY,
+  prj_id BIGINT NOT NULL ,
+  file BYTEA NOT NULL ,
+  content_type VARCHAR(32),
+  CONSTRAINT file_fk FOREIGN KEY (prj_id) REFERENCES aero.projects
+)

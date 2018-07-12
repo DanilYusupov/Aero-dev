@@ -1,7 +1,6 @@
 package com.gdc.aerodev.model;
 
 import com.sun.istack.internal.NotNull;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -45,6 +44,9 @@ public class Project {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ProjectImage> images;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProjectFile> files;
 
     public Project() {
     }
@@ -109,6 +111,15 @@ public class Project {
 
     public Project setImages(List<ProjectImage> images) {
         this.images = images;
+        return this;
+    }
+
+    public List<ProjectFile> getFiles() {
+        return files;
+    }
+
+    public Project setFiles(List<ProjectFile> files) {
+        this.files = files;
         return this;
     }
 }

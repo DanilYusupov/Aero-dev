@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -59,7 +59,7 @@ public class ProjectImageRepositoryTest {
     }
 
     @Test
-    public void deleteByProjectTest(){
+    public void cascadeDeleteTest(){
         for (int i = 0; i < count; i++) {
             createImage();
         }
@@ -81,8 +81,7 @@ public class ProjectImageRepositoryTest {
 
     @Test
     public void getByFakeIdTest(){
-        createImage();
-        assertNull(repository.findByImageId(0L));
+        assertEquals(Optional.empty(), repository.findById(0L));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -93,11 +92,17 @@ public class ProjectImageRepositoryTest {
         repository.save(image);
     }
 
+    @Test(expected = DataIntegrityViolationException.class)
+    public void saveNullProjectTest(){
+        ProjectImage image = new ProjectImage(new byte[]{}, "jpg");
+        repository.save(image);
+    }
+
     private ProjectImage createImage() {
         Project project = projectRepository.findByProjectId(prjThreeId);
         ProjectImage image = new ProjectImage(new byte[]{}, "jpg");
         image.setProject(project);
-        repository.save(image);
+        image = repository.save(image);
         return image;
     }
 
