@@ -22,3 +22,13 @@ CREATE TABLE aero.project_content (
   prj_date        DATE,
   CONSTRAINT content_fk FOREIGN KEY (prj_id) REFERENCES aero.projects
 );
+
+-- Create project's images data
+
+CREATE TABLE aero.project_images (
+  img_id    SERIAL PRIMARY KEY,
+  prj_id    BIGINT REFERENCES aero.projects (prj_id),
+  prj_image BYTEA NOT NULL,
+  img_type  VARCHAR(32),
+  CONSTRAINT img_fk FOREIGN KEY (prj_id) REFERENCES aero.projects
+);

@@ -90,6 +90,12 @@ public class ProjectRepositoryTest {
         assertEquals(ownerPrjsCount - 1, repository.findAllByOwner(userRepository.findByUserId(prjOwnerId)).size());
     }
 
+    @Test
+    public void deleteUserTest(){
+        userRepository.deleteById(prjOwnerId);
+        assertEquals(0, repository.findAll().size());
+    }
+
     //Abnormal tests
 
     @Test

@@ -4,6 +4,8 @@ import com.sun.istack.internal.NotNull;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This entity can be created only by {@code User}. But {@code Cr} can review it. Also any project can be rated by
@@ -40,6 +42,9 @@ public class Project {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)
     private ProjectContent content;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ProjectImage> images;
 
     public Project() {
     }
@@ -95,6 +100,15 @@ public class Project {
 
     public Project setContent(ProjectContent content) {
         this.content = content;
+        return this;
+    }
+
+    public List<ProjectImage> getImages() {
+        return (images == null) ? new ArrayList<>() : images;
+    }
+
+    public Project setImages(List<ProjectImage> images) {
+        this.images = images;
         return this;
     }
 }

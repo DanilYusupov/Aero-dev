@@ -60,7 +60,7 @@ public class User {
 
     //JPA relations below
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Project> projects;
 
     public User() {
