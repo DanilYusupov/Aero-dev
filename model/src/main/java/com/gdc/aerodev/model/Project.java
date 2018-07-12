@@ -38,6 +38,9 @@ public class Project {
     @NotNull
     private User owner;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)
+    private ProjectContent content;
+
     public Project() {
     }
 
@@ -83,6 +86,15 @@ public class Project {
 
     public Project setOwner(User owner) {
         this.owner = owner;
+        return this;
+    }
+
+    public ProjectContent getContent() {
+        return content;
+    }
+
+    public Project setContent(ProjectContent content) {
+        this.content = content;
         return this;
     }
 }
