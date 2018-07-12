@@ -1,5 +1,7 @@
 package com.gdc.aerodev.model;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 
 /**
@@ -10,56 +12,52 @@ import javax.persistence.*;
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.User
  */
-//@Entity
-//@Table(name = "avatars")
+@Entity
+@Table(schema = "aero", name = "avatars")
 public class Avatar {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "av_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "av_id")
     private Long avatarId;
 
     /**
      * {@code userId} as {@code FOREIGN KEY} and {@code PRIMARY KEY}
      */
-//    @Column(name = "av_owner")
-//    @ManyToOne
-    private Long avatarOwner;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usr_id", foreignKey = @ForeignKey(name = "av_fk"))
+    @NotNull
+    private User user;
 
     /**
      * Image as array of bytes
      */
-//    @Column(name = "av_data")
+    @Column(name = "av_data")
+    @NotNull
     private byte[] avatarData;
 
     /**
      * MIME type of avatar image
      */
-//    @Column(name = "av_type")
+    @Column(name = "av_type")
     private String contentType;
 
     public Avatar() {
     }
 
-    public Avatar(Long avatarOwner, byte[] avatarData, String contentType) {
-        this.avatarOwner = avatarOwner;
+    public Avatar(byte[] avatarData, String contentType) {
         this.avatarData = avatarData;
         this.contentType = contentType;
     }
 
-    public Avatar(Long avatarId, Long avatarOwner, byte[] avatarData, String contentType) {
+    public Avatar(Long avatarId, byte[] avatarData, String contentType) {
         this.avatarId = avatarId;
-        this.avatarOwner = avatarOwner;
         this.avatarData = avatarData;
         this.contentType = contentType;
     }
 
     public Long getAvatarId() {
         return avatarId;
-    }
-
-    public Long getAvatarOwner() {
-        return avatarOwner;
     }
 
     public byte[] getAvatarData() {
@@ -74,15 +72,20 @@ public class Avatar {
         this.avatarId = avatarId;
     }
 
-    public void setAvatarOwner(Long avatarOwner) {
-        this.avatarOwner = avatarOwner;
-    }
-
     public void setAvatarData(byte[] avatarData) {
         this.avatarData = avatarData;
     }
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Avatar setUser(User user) {
+        this.user = user;
+        return this;
     }
 }

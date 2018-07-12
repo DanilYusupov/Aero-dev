@@ -63,6 +63,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Project> projects;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Avatar avatar;
+
     public User() {
     }
 
@@ -193,6 +196,15 @@ public class User {
 
     public User setProjects(List<Project> projects) {
         this.projects = projects;
+        return this;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public User setAvatar(Avatar avatar) {
+        this.avatar = avatar;
         return this;
     }
 }
