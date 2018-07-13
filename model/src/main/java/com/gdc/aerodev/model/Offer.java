@@ -10,64 +10,44 @@ import javax.persistence.*;
  * @see User
  * @see Cr
  */
-//@Entity
-//@Table(name = "offers")
+@Entity
+@Table(schema = "aero", name = "offers")
 public class Offer {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "off_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "off_id")
     private Long offerId;
 
     /**
      * Refers to {@code userId} of {@code User}
      */
-//    @Column(name = "off_usr_id")
-//    @ManyToOne
-    private Long offeredUserId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usr_id", foreignKey = @ForeignKey(name = "off_usr_id"))
+    private User offeredUser;
 
     /**
      * Refers to {@code crId} of {@code Cr}
      */
-//    @Column(name = "off_cr_id")
-//    @ManyToOne
-    private Long offeredCrId;
-//    @Column(name = "off_description")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cr_id", foreignKey = @ForeignKey(name = "off_cr_id"))
+    private Cr offeredCr;
+
+    @Column(name = "off_description")
     private String offerDescription;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    public enum Status{
+    public enum Status {
         INITIATED, CONFIRMED, CANCELED, EXPIRED
     }
 
     public Offer() {
     }
 
-    public Offer(Long offerId, Long offeredUserId, Long offeredCrId, String offerDescription, Status status) {
-        this.offerId = offerId;
-        this.offeredUserId = offeredUserId;
-        this.offeredCrId = offeredCrId;
-        this.offerDescription = offerDescription;
-        this.status = status;
-    }
-
-    public Offer(Long offeredUserId, Long offeredCrId, String offerDescription, Status status) {
-        this.offeredUserId = offeredUserId;
-        this.offeredCrId = offeredCrId;
-        this.offerDescription = offerDescription;
-        this.status = status;
-    }
-
     public Long getOfferId() {
         return offerId;
-    }
-
-    public Long getOfferedUserId() {
-        return offeredUserId;
-    }
-
-    public Long getOfferedCrId() {
-        return offeredCrId;
     }
 
     public String getOfferDescription() {
@@ -76,16 +56,6 @@ public class Offer {
 
     public Offer setOfferId(Long offerId) {
         this.offerId = offerId;
-        return this;
-    }
-
-    public Offer setOfferedUserId(Long offeredUserId) {
-        this.offeredUserId = offeredUserId;
-        return this;
-    }
-
-    public Offer setOfferedCrId(Long offeredCrId) {
-        this.offeredCrId = offeredCrId;
         return this;
     }
 
@@ -100,6 +70,24 @@ public class Offer {
 
     public Offer setStatus(Status status) {
         this.status = status;
+        return this;
+    }
+
+    public User getOfferedUser() {
+        return offeredUser;
+    }
+
+    public Offer setOfferedUser(User offeredUser) {
+        this.offeredUser = offeredUser;
+        return this;
+    }
+
+    public Cr getOfferedCr() {
+        return offeredCr;
+    }
+
+    public Offer setOfferedCr(Cr offeredCr) {
+        this.offeredCr = offeredCr;
         return this;
     }
 }
