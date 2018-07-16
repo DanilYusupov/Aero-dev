@@ -1,0 +1,4 @@
+spring:
+  flyway:
+    schemas: aero
+    sql-migration-separator: __

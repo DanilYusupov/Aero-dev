@@ -9,7 +9,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  */
 @SpringBootApplication (scanBasePackages = "com.gdc.aerodev")
 public class WebServiceApp {
-
     public static void main(String[] args) {
         new SpringApplicationBuilder(WebServiceApp.class)
                 .bannerMode(Banner.Mode.OFF)

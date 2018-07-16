@@ -17,7 +17,7 @@ public interface GenericDao<T, V> {
      *
      * @param id identifier of target {@code T}
      * @return (0) found {@code T} with matched {@param id} <br>
-     * (1) null if there is no such {@code T}
+     * (1) {@code null} if there is no such {@code T}
      */
     T getById(V id);
 
@@ -41,7 +41,7 @@ public interface GenericDao<T, V> {
      * Inserts new {@code T} if {@param id} is {@code null} or updates it if {@param id} is {@code !null}
      *
      * @param entity target {@code T} to insert or update in database
-     * @return {@param id} of inserted or updated {@code T}
+     * @return {@code id} of inserted or updated {@code T}
      * @throws DaoException if {@param name} or another params is already registered in database
      */
     V save(T entity);
