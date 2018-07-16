@@ -19,6 +19,7 @@ public interface UserDao extends GenericDao<User, Long> {
      * (1) {@code null} if there is no such email
      */
     String existentEmail(String userEmail);
+    // TODO: 06.07.2018 Logically return boolean!
 
     /**
      * Counts all number of entities in table with simple query which returns {@code int}
