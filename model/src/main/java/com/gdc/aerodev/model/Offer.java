@@ -46,6 +46,13 @@ public class Offer {
     public Offer() {
     }
 
+    public Offer(User offeredUser, Cr offeredCr, String offerDescription, Status status) {
+        this.offeredUser = offeredUser;
+        this.offeredCr = offeredCr;
+        this.offerDescription = offerDescription;
+        this.status = status;
+    }
+
     public Long getOfferId() {
         return offerId;
     }
