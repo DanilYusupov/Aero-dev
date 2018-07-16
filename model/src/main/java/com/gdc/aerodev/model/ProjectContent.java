@@ -1,5 +1,9 @@
 package com.gdc.aerodev.model;
 
+import com.sun.istack.internal.NotNull;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -8,44 +12,48 @@ import java.util.Date;
  * @author Yusupov Danil
  * @see Project
  */
+@Entity
+@Table(schema = "aero", name = "project_content")
 public class ProjectContent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long contentId;
 
     /**
      * This is {@code FOREIGN KEY} to {@code Project} id and also {@code PRIMARY KEY}, because one project can't have
      * two logos, descriptions and so on...
      */
-    private Long projectId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prj_id")
+    private Project project;
 
     /**
      * This param contains representative image of project. If it'll be {@code null}, then default logo will be shown.
      */
+    @Column(name = "prj_logo")
     private byte[] projectLogo;
 
     /**
      * Some information about project
      */
+    @Column(name = "prj_description")
     private String projectDescription;
 
     /**
      * Date of project creation
      */
+    @Column(name = "prj_date")
     private Date projectBirthDay;
 
-    public ProjectContent(Long projectId, byte[] projectLogo, String projectDescription, Date projectBirthDay) {
-        this.projectId = projectId;
+    public ProjectContent() {
+    }
+
+    public ProjectContent(byte[] projectLogo, String projectDescription, Date projectBirthDay) {
         this.projectLogo = projectLogo;
         this.projectDescription = projectDescription;
         this.projectBirthDay = projectBirthDay;
-    }
-
-    public ProjectContent(Long projectId, byte[] projectLogo, String projectDescription) {
-        this.projectId = projectId;
-        this.projectLogo = projectLogo;
-        this.projectDescription = projectDescription;
-    }
-
-    public Long getProjectId() {
-        return projectId;
     }
 
     public byte[] getProjectLogo() {
@@ -66,5 +74,28 @@ public class ProjectContent {
 
     public void setProjectDescription(String projectDescription) {
         this.projectDescription = projectDescription;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public ProjectContent setProject(Project project) {
+        this.project = project;
+        return this;
+    }
+
+    public ProjectContent setProjectBirthDay(Date projectBirthDay) {
+        this.projectBirthDay = projectBirthDay;
+        return this;
+    }
+
+    public Long getContentId() {
+        return contentId;
+    }
+
+    public ProjectContent setContentId(Long contentId) {
+        this.contentId = contentId;
+        return this;
     }
 }

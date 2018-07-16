@@ -1,11 +1,27 @@
 package com.gdc.aerodev.model;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(schema = "aero", name = "companies")
 public class Company {
 
-    Long compId;
-    String compName;
-    String compWebsite;
-    String compLogoUrl;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comp_id")
+    private Long compId;
+    @Column(name = "comp_name", nullable = false)
+    private String compName;
+    @Column(name = "comp_website")
+    private String compWebsite;
+    @Column(name = "comp_logo_url")
+    private String compLogoUrl;
+
+    //Jpa associations
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Cr> companyRepresentatives;
 
     public Company() {
     }
@@ -56,6 +72,15 @@ public class Company {
 
     public Company setCompLogoUrl(String compLogoUrl) {
         this.compLogoUrl = compLogoUrl;
+        return this;
+    }
+
+    public List<Cr> getCompanyRepresentatives() {
+        return companyRepresentatives;
+    }
+
+    public Company setCompanyRepresentatives(List<Cr> companyRepresentatives) {
+        this.companyRepresentatives = companyRepresentatives;
         return this;
     }
 }
