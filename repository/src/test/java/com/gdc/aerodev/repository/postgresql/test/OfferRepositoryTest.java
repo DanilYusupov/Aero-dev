@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -40,9 +40,7 @@ public class OfferRepositoryTest {
     private CrRepository crRepository;
 
     private Long userId = 1L;
-    private String userName = "Aigul";
     private Long crId = 1L;
-    private String crFirstName = "Mattew";
 
     private String description = "Offer #223190. Dear Aigul, we glad to...";
     private Offer.Status status = Offer.Status.INITIATED;
@@ -66,6 +64,7 @@ public class OfferRepositoryTest {
     public void getByIdTest() {
         Offer offer = createOffer();
         assertEquals(offer, repository.findById(offer.getOfferId()).get());
+        assertTrue(repository.findById(offer.getOfferId()).isPresent());
     }
 
     @Test
@@ -101,7 +100,7 @@ public class OfferRepositoryTest {
 
     @Test
     public void getFakeIdTest() {
-        assertEquals(Optional.empty(), repository.findById(0L));
+        assertFalse(repository.findById(0L).isPresent());
     }
 
     @Test

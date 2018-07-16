@@ -18,7 +18,8 @@
         </dependency>
         <dependency>
             <groupId>com.gdc.aero-dev</groupId>
-            <artifactId>dao</artifactId>
+            <artifactId>repository</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.opentable.components</groupId>

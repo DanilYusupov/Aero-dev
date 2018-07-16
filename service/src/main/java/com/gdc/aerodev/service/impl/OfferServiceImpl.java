@@ -1,9 +1,14 @@
 package com.gdc.aerodev.service.impl;
 
-import com.gdc.aerodev.dao.OfferDao;
+import com.gdc.aerodev.model.Cr;
 import com.gdc.aerodev.model.Offer;
+import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.repository.postgresql.CrRepository;
+import com.gdc.aerodev.repository.postgresql.OfferRepository;
+import com.gdc.aerodev.repository.postgresql.UserRepository;
 import com.gdc.aerodev.service.OfferService;
 import com.gdc.aerodev.service.exception.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +16,20 @@ import java.util.List;
 @Service
 public class OfferServiceImpl implements OfferService {
 
-    private OfferDao offerDao;
+    private OfferRepository repository;
+    private UserRepository userRepository;
+    private CrRepository crRepository;
 
-    public OfferServiceImpl(OfferDao offerDao) {
-        this.offerDao = offerDao;
+    @Autowired
+    public OfferServiceImpl(OfferRepository repository, UserRepository userRepository, CrRepository crRepository) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+        this.crRepository = crRepository;
     }
 
     @Override
     public Offer getByOfferId(Long id) {
-        return (id != null || id > 0) ? offerDao.getById(id) : null;
+        return (id != null || id > 0) ? repository.findById(id).get() : null;
     }
 
     @Override
@@ -27,7 +37,12 @@ public class OfferServiceImpl implements OfferService {
         if (userId <= 0 || userId == null || crId <= 0 || crId == null || description == null){
             return null;
         }
-        return offerDao.save(new Offer(userId, crId, description, Offer.Status.INITIATED));
+        User user = userRepository.findByUserId(userId);
+        Cr cr = crRepository.findById(crId).get();
+        if (user == null){
+            throw new ServiceException("There is no engineer with id:" + userId + " for new offer.");
+        }
+        return repository.save(new Offer(user, cr, description, Offer.Status.INITIATED)).getOfferId();
     }
 
     @Override
@@ -35,28 +50,28 @@ public class OfferServiceImpl implements OfferService {
         Offer.Status statusCheck;
         try{
             statusCheck = Offer.Status.valueOf(status);
-            Offer offer = offerDao.getById(offerId);
+            Offer offer = repository.findById(offerId).get();
             offer.setStatus(statusCheck);
-            return offerDao.save(offer);
+            return repository.save(offer).getOfferId();
         } catch (IllegalArgumentException e){
             throw new ServiceException("Wrong status: " + status, e);
         }
     }
 
     @Override
-    public boolean deleteOffer(Long offerId) {
-        return offerDao.delete(offerId);
+    public void deleteOffer(Long offerId) {
+        repository.deleteById(offerId);
     }
 
     @Override
     public List<Offer> getByUserId(Long userId) {
-        // TODO: 05.07.2018 realize
-        return offerDao.getByUserId(userId);
+        User user = userRepository.findByUserId(userId);
+        return repository.findAllByOfferedUser(user);
     }
 
     @Override
     public List<Offer> getByCrId(Long crId) {
-        // TODO: 05.07.2018 realize
-        return null;
+        Cr cr = crRepository.findById(crId).get();
+        return repository.findAllByOfferedCr(cr);
     }
 }

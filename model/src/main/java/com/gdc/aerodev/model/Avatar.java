@@ -56,6 +56,12 @@ public class Avatar {
         this.contentType = contentType;
     }
 
+    public Avatar(User user, byte[] avatarData, String contentType) {
+        this.user = user;
+        this.avatarData = avatarData;
+        this.contentType = contentType;
+    }
+
     public Long getAvatarId() {
         return avatarId;
     }

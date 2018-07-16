@@ -2,6 +2,7 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.logging.LoggingService;
 
 import java.util.List;
@@ -11,7 +12,6 @@ import java.util.List;
  *
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.Project
- * @see com.gdc.aerodev.dao.ProjectDao
  */
 public interface ProjectService extends LoggingService {
     /**
@@ -43,7 +43,6 @@ public interface ProjectService extends LoggingService {
      * @param name of target project
      * @return (0) {@code Project} or <br>
      * (1) {@code null} if there is no such entity
-     * @see com.gdc.aerodev.dao.ProjectDao
      */
     Project getProject(String name);
 
@@ -53,7 +52,6 @@ public interface ProjectService extends LoggingService {
      * @param id of target project
      * @return (0) {@code Project} or <br>
      * (1) {@code null} if there is no such entity
-     * @see com.gdc.aerodev.dao.ProjectDao
      */
     Project getProject(Long id);
 
@@ -61,33 +59,31 @@ public interface ProjectService extends LoggingService {
      * Encapsulates same method in {@code ProjectDao}
      *
      * @return list top three projects with biggest rating
-     * @see com.gdc.aerodev.dao.ProjectDao
      */
     List<Project> getTopThree();
 
     /**
      * Encapsulates same method in {@code ProjectDao}
      *
-     * @param userId owner of searching projects
+     * @param user owner of searching projects
      * @return list of projects created by {@code User} with {@code userId}
-     * @see com.gdc.aerodev.dao.ProjectDao
      */
-    List<Project> getByUserId(Long userId);
+    List<Project> getByUserId(User user);
 
     /**
      * I don't know why I did this two weeks ago...
      *
      * @return number of all projects
      */
-    int countProjects();
+    long countProjects();
 
     /**
      * Checks project owner matching with client
      *
      * @param project target project to check
-     * @param userId  id of current session client
+     * @param user  current session client
      * @return (0) {@code true} if current client is owner of this project or <br>
      * (1) {@code false} if not...
      */
-    boolean isOwner(Project project, Long userId);
+    boolean isOwner(Project project, User user);
 }

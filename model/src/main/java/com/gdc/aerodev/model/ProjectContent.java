@@ -56,6 +56,13 @@ public class ProjectContent {
         this.projectBirthDay = projectBirthDay;
     }
 
+    public ProjectContent(Project project, byte[] projectLogo, String projectDescription, Date projectBirthDay) {
+        this.project = project;
+        this.projectLogo = projectLogo;
+        this.projectDescription = projectDescription;
+        this.projectBirthDay = projectBirthDay;
+    }
+
     public byte[] getProjectLogo() {
         return projectLogo;
     }

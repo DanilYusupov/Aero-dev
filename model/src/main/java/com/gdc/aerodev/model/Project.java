@@ -51,6 +51,7 @@ public class Project {
     public Project() {
     }
 
+
     public Project(Long projectId, String projectName, ProjectType projectType) {
         this.projectId = projectId;
         this.projectName = projectName;

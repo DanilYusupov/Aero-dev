@@ -112,6 +112,8 @@ public class UserRepositoryTest {
         assertEquals(usersCount, repository.findAll().size());
     }
 
+    // TODO: 16.07.2018 test find by email!
+
     //Abnormal tests
 
     @Test
