@@ -2,6 +2,7 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.ProjectImage;
 import com.gdc.aerodev.service.logging.LoggingService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

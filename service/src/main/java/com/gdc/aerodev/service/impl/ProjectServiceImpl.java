@@ -32,6 +32,9 @@ public class ProjectServiceImpl implements ProjectService {
         this.userRepository = userRepository;
     }
 
+    public ProjectServiceImpl() {
+    }
+
     @Override
     public Long createProject(String projectName, Long projectOwner, ProjectType projectType) {
         if (projectName.equals("") || projectOwner == null) {
@@ -110,5 +113,23 @@ public class ProjectServiceImpl implements ProjectService {
      */
     private boolean isExistentName(String projectName) {
         return repository.findByProjectName(projectName) != null;
+    }
+
+    public ProjectRepository getRepository() {
+        return repository;
+    }
+
+    public ProjectServiceImpl setRepository(ProjectRepository repository) {
+        this.repository = repository;
+        return this;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public ProjectServiceImpl setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        return this;
     }
 }
