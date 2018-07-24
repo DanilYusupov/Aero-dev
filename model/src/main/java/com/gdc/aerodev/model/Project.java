@@ -1,7 +1,5 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,6 @@ public class Project {
     //JPA relations below
     @ManyToOne()
     @JoinColumn(name = "usr_id", foreignKey = @ForeignKey(name = "owner_id_fk"))
-    @NotNull
     private User owner;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true)

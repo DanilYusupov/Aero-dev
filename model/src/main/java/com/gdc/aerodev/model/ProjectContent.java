@@ -1,9 +1,6 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 /**

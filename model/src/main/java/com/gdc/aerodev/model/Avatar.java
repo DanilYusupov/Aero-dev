@@ -1,7 +1,5 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
 
 /**
@@ -26,14 +24,12 @@ public class Avatar {
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id", foreignKey = @ForeignKey(name = "av_fk"))
-    @NotNull
     private User user;
 
     /**
      * Image as array of bytes
      */
     @Column(name = "av_data")
-    @NotNull
     private byte[] avatarData;
 
     /**
