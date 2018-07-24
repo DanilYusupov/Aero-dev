@@ -16,4 +16,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByOwner(User user);
 
+    // TODO: 16.07.2018 get top three
 }

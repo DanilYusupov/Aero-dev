@@ -11,7 +11,6 @@ import java.util.Date;
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.Project
  * @see com.gdc.aerodev.model.ProjectContent
- * @see com.gdc.aerodev.dao.ProjectContentDao
  */
 public interface ProjectContentService extends LoggingService {
     /**

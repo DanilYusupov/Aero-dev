@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserName(String userName);
 
+    User findByUserEmail(String email);
+
     @Query("SELECT u FROM User u ORDER BY u.userRating DESC")
     List<User> ratingOrdered(Pageable pageable);
 }

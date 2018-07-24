@@ -13,7 +13,7 @@ public interface OfferService extends LoggingService {
 
     Long updateStatus(Long offerId, String status);
 
-    boolean deleteOffer(Long offerId);
+    void deleteOffer(Long offerId);
 
     List<Offer> getByUserId(Long userId);
 

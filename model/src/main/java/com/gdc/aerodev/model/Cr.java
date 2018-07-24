@@ -1,7 +1,5 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -31,7 +29,6 @@ public class Cr {
 
     @ManyToOne
     @JoinColumn(name = "comp_id", foreignKey = @ForeignKey(name = "comp_fk"))
-    @NotNull
     private Company company;
 
     @Column(name = "cr_first_name", nullable = false)

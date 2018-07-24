@@ -46,6 +46,12 @@ public class ProjectImage {
         this.contentType = contentType;
     }
 
+    public ProjectImage(Project project, byte[] projectImage, String contentType) {
+        this.project = project;
+        this.projectImage = projectImage;
+        this.contentType = contentType;
+    }
+
     public Long getImageId() {
         return imageId;
     }

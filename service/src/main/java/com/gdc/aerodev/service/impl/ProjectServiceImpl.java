@@ -1,10 +1,14 @@
 package com.gdc.aerodev.service.impl;
 
-import com.gdc.aerodev.dao.ProjectDao;
-import com.gdc.aerodev.dao.exception.DaoException;
 import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectType;
+import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.repository.postgresql.ProjectRepository;
+import com.gdc.aerodev.repository.postgresql.UserRepository;
 import com.gdc.aerodev.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +18,21 @@ import java.util.List;
  *
  * @author Yusupov Danil
  * @see ProjectService
- * @see ProjectDao
  * @see Project
  */
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private final ProjectDao dao;
+    private ProjectRepository repository;
+    private UserRepository userRepository;
 
-    public ProjectServiceImpl(ProjectDao dao) {
-        this.dao = dao;
+    @Autowired
+    public ProjectServiceImpl(ProjectRepository repository, UserRepository userRepository) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+    }
+
+    public ProjectServiceImpl() {
     }
 
     @Override
@@ -36,18 +45,19 @@ public class ProjectServiceImpl implements ProjectService {
             return null;
         }
         try {
-            Long id = dao.save(new Project(projectName, projectOwner, projectType));
+            User user = userRepository.findByUserId(projectOwner);
+            Long id = repository.save(new Project(projectName, projectType, user)).getProjectId();
             log.info("Project '" + projectName + "' created with id " + id + ".");
             return id;
-        } catch (DaoException e) {
+        } catch (DataIntegrityViolationException e) {
             return null;
-            //FIXME: fix exception handling
+            //FIXME: No need to return long?!
         }
     }
 
     @Override
     public Long updateProject(Long projectId, String projectName, ProjectType projectType) {
-        Project project = dao.getById(projectId);
+        Project project = repository.findById(projectId).get();
         if (!projectName.equals("")) {
             if (isExistentName(projectName)) {
                 log.error("Project with name '" + projectName + "' is already exists.");
@@ -58,40 +68,40 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProjectType(projectType);
         try {
             log.info("Project '" + projectName + "' successfully updated.");
-            return dao.save(project);
-        } catch (DaoException e) {
+            return repository.save(project).getProjectId();
+        } catch (DataIntegrityViolationException e) {
             return null;
         }
     }
 
     @Override
     public Project getProject(String name) {
-        return dao.getByName(name);
+        return repository.findByProjectName(name);
     }
 
     @Override
     public Project getProject(Long id) {
-        return dao.getById(id);
+        return repository.findByProjectId(id);
     }
 
     @Override
-    public boolean isOwner(Project project, Long userId) {
-        return project.getProjectOwner().equals(userId);
+    public boolean isOwner(Project project, User user) {
+        return project.getOwner().equals(user);
     }
 
     @Override
-    public List<Project> getByUserId(Long id) {
-        return dao.getByUserId(id);
+    public List<Project> getByUserId(User user) {
+        return repository.findAllByOwner(user);
     }
 
     @Override
-    public int countProjects() {
-        return dao.count();
+    public long countProjects() {
+        return repository.count();
     }
 
     @Override
     public List<Project> getTopThree() {
-        return dao.getTopThree();
+        return repository.findAll(new PageRequest(0, 3)).getContent();
     }
 
     /**
@@ -102,6 +112,24 @@ public class ProjectServiceImpl implements ProjectService {
      * (1) {@code false} if there is no project with matching name
      */
     private boolean isExistentName(String projectName) {
-        return dao.getByName(projectName) != null;
+        return repository.findByProjectName(projectName) != null;
+    }
+
+    public ProjectRepository getRepository() {
+        return repository;
+    }
+
+    public ProjectServiceImpl setRepository(ProjectRepository repository) {
+        this.repository = repository;
+        return this;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public ProjectServiceImpl setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        return this;
     }
 }

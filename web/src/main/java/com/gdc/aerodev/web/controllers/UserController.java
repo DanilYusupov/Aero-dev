@@ -30,7 +30,7 @@ public class UserController {
         User user = usr_service.getUser(Long.valueOf(id));
         ModelAndView mav = new ModelAndView("user");
         mav.addObject("user", user);
-        mav.addObject("prjs", prj_service.getByUserId(user.getUserId()));
+        mav.addObject("prjs", prj_service.getByUserId(user));
         mav.addObject("offs", off_service.getByUserId(Long.valueOf(id)));
         return mav;
     }

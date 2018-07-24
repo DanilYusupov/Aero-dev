@@ -1,9 +1,11 @@
 package com.gdc.aerodev.service.impl;
 
-import com.gdc.aerodev.dao.ProjectImageDao;
-import com.gdc.aerodev.dao.postgres.PostgresProjectImageDao;
+import com.gdc.aerodev.model.Project;
 import com.gdc.aerodev.model.ProjectImage;
+import com.gdc.aerodev.repository.postgresql.ProjectImageRepository;
+import com.gdc.aerodev.repository.postgresql.ProjectRepository;
 import com.gdc.aerodev.service.ProjectImageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,9 @@ import java.util.List;
  */
 @Service
 public class ProjectImageServiceImpl implements ProjectImageService {
-    private ProjectImageDao imageDao;
+
+    private ProjectImageRepository repository;
+    private ProjectRepository projectRepository;
 
     /**
      * Id of default image, which is already exists in database. <br>
@@ -26,8 +30,10 @@ public class ProjectImageServiceImpl implements ProjectImageService {
      */
     private final Long DEFAULT_IMAGE = 0L;
 
-    public ProjectImageServiceImpl(PostgresProjectImageDao imageDao) {
-        this.imageDao = imageDao;
+    @Autowired
+    public ProjectImageServiceImpl(ProjectImageRepository repository, ProjectRepository projectRepository) {
+        this.repository = repository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -35,23 +41,25 @@ public class ProjectImageServiceImpl implements ProjectImageService {
         if (image.length == 0 || contentType.equals("")) {
             return null;
         }
-        return imageDao.save(new ProjectImage(projectId, image, contentType));
+        Project project = projectRepository.findByProjectId(projectId);
+        return repository.save(new ProjectImage(project, image, contentType)).getImageId();
     }
 
     @Override
-    public boolean deleteImage(Long imageId) {
+    public void deleteImage(Long imageId) {
         if (imageId == 0L) {
-            return false;
+            return;
         }
-        return imageDao.delete(imageId);
+        repository.deleteById(imageId);
     }
 
     @Override
-    public List<Long> getAll(Long projectId) {
-        List<Long> imagesId = imageDao.getAll(projectId);
+    public List<ProjectImage> getAll(Long projectId) {
+        Project project = projectRepository.findByProjectId(projectId);
+        List<ProjectImage> imagesId = repository.findAllByProject(project);
         if (imagesId.isEmpty()) {
             log.debug("No images for project with id: " + projectId + ".");
-            imagesId.add(DEFAULT_IMAGE);
+            imagesId.add(repository.findById(DEFAULT_IMAGE).get());
             log.debug("Added default image's id to empty list.");
         }
         return imagesId;
@@ -59,6 +67,6 @@ public class ProjectImageServiceImpl implements ProjectImageService {
 
     @Override
     public ProjectImage get(Long imageId) {
-        return imageDao.getById(imageId);
+        return repository.findById(imageId).get();
     }
 }

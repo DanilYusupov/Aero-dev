@@ -1,7 +1,5 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
 
 /**
@@ -29,7 +27,6 @@ public class ProjectFile {
     /**
      * This is an array of project's file
      */
-    @NotNull
     private byte[] file;
 
     /**

@@ -1,12 +1,14 @@
 package com.gdc.aerodev.service.impl;
 
-import com.gdc.aerodev.dao.AvatarDao;
-import com.gdc.aerodev.dao.UserDao;
-import com.gdc.aerodev.dao.postgres.PostgresAvatarDao;
-import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.Avatar;
+import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.repository.postgresql.AvatarRepository;
+import com.gdc.aerodev.repository.postgresql.UserRepository;
 import com.gdc.aerodev.service.AvatarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * Implementation of service for managing user's avatars in database
@@ -21,12 +23,12 @@ public class AvatarServiceImpl implements AvatarService {
     /**
      * DAO for managing {@code Avatar}
      */
-    private final AvatarDao avDao;
+    private final AvatarRepository avatarRepository;
 
     /**
      * DAO for managing {@code User} especially {@code userId}
      */
-    private final UserDao usrDao;
+    private final UserRepository userRepository;
 
     /**
      * Id of default avatar for male user
@@ -38,9 +40,10 @@ public class AvatarServiceImpl implements AvatarService {
      */
     private final Long DEFAULT_WOMAN_AVATAR = 2L;
 
-    public AvatarServiceImpl(PostgresAvatarDao avDao, PostgresUserDao usrDao) {
-        this.avDao = avDao;
-        this.usrDao = usrDao;
+    @Autowired
+    public AvatarServiceImpl(AvatarRepository avatarRepository, UserRepository userRepository) {
+        this.avatarRepository = avatarRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -51,31 +54,29 @@ public class AvatarServiceImpl implements AvatarService {
      * (1) false if not exists
      */
     public boolean isExistent(Long userId) {
-        return avDao.getById(userId) != null;
+        return !avatarRepository.findById(userId).isPresent();
     }
 
     @Override
     public Avatar getAvatar(Long userId) {
-        Avatar avatar = avDao.getById(userId);
-        if (avatar == null) {
-            if (usrDao.getById(userId).isMale()) {
-                return avDao.getById(DEFAULT_MAN_AVATAR);
+        Optional<Avatar> avatar = avatarRepository.findById(userId);
+        User user = userRepository.findByUserId(userId);
+        if (!avatar.isPresent()) {
+            if (user.isMale()) {
+                return avatarRepository.findById(DEFAULT_MAN_AVATAR).get();
             } else {
-                return avDao.getById(DEFAULT_WOMAN_AVATAR);
+                return avatarRepository.findById(DEFAULT_WOMAN_AVATAR).get();
             }
         } else {
-            return avatar;
+            return avatar.get();
         }
     }
 
     @Override
     public Long uploadAvatar(Long userId, byte[] bytes, String contentType) {
-        try {
-            Long avatarId = avDao.getById(userId).getAvatarId();
-            return avDao.save(new Avatar(avatarId, userId, bytes, contentType));
-        } catch (NullPointerException e) {
-            return avDao.save(new Avatar(userId, bytes, contentType));
-        }
+        User user = userRepository.findByUserId(userId);
+        Long avatarId = avatarRepository.findByUser(user).getAvatarId();
+        return avatarRepository.save(new Avatar(user, bytes, contentType)).getAvatarId();
     }
 }
 

@@ -44,8 +44,8 @@ public class ProjectController implements LoggingWeb{
         User user = (User) session.getAttribute("client");
         log.debug("Received project '" + project.getProjectName() + "'.");
         mav.addObject("prj", project);
-        mav.addObject("isOwner", prj_service.isOwner(project, user.getUserId()));
-        mav.addObject("ownerName", usr_service.getUser(project.getProjectOwner()).getUserName());
+        mav.addObject("isOwner", prj_service.isOwner(project, user));
+        mav.addObject("ownerName", usr_service.getUser(project.getOwner().getUserId()).getUserName());
         mav.addObject("content", contentService.get(id));
         mav.addObject("images", imageService.getAll(id));
         return mav;

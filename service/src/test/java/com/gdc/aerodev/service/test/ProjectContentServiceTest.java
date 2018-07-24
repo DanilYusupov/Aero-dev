@@ -1,15 +1,16 @@
 package com.gdc.aerodev.service.test;
 
-import com.gdc.aerodev.dao.postgres.PostgresProjectContentDao;
 import com.gdc.aerodev.model.ProjectContent;
+import com.gdc.aerodev.repository.postgresql.ProjectContentRepository;
+import com.gdc.aerodev.repository.postgresql.ProjectRepository;
 import com.gdc.aerodev.service.ProjectContentService;
-import com.gdc.aerodev.service.impl.ProjectContentServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.util.Date;
@@ -19,6 +20,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ProjectContentServiceTest extends WithFiles {
+
+    @Autowired
+    private ProjectContentService service;
+
+    @MockBean
+    private ProjectContentRepository repository;
+    @MockBean
+    private ProjectRepository projectRepository;
+
     /**
      * Name of table according to classpath:/project-content-service/V1__Create_test_table.sql
      */
@@ -33,13 +43,11 @@ public class ProjectContentServiceTest extends WithFiles {
 
     @Test
     public void createProjectContentTest() throws IOException {
-        ProjectContentService service = getService();
         assertTrue(service.createProjectContent(projectId, getImage(), description, new Date()));
     }
 
     @Test
     public void updateProjectContentTest() throws IOException {
-        ProjectContentService service = getService();
         service.createProjectContent(projectId, getImage(), description, new Date());
         String newDescription = "New description...";
         assertTrue(service.updateProjectContent(projectId, getImage(), newDescription));
@@ -47,7 +55,6 @@ public class ProjectContentServiceTest extends WithFiles {
 
     @Test
     public void getProjectContentTest() throws IOException {
-        ProjectContentService service = getService();
         service.createProjectContent(projectId, getImage(), description, new Date());
         ProjectContent content = service.get(projectId);
 //        System.out.println(content.getProjectBirthDay());
@@ -57,27 +64,23 @@ public class ProjectContentServiceTest extends WithFiles {
 
     @Test(expected = NullPointerException.class)
     public void createProjectContentWithEmptyId() throws IOException {
-        ProjectContentService service = getService();
         service.createProjectContent(null, getImage(), description, new Date());
     }
 
     @Test
     public void createProjectContentWithEmptyField() throws IOException {
-        ProjectContentService service = getService();
         service.createProjectContent(projectId, getImage(), null, new Date());
         assertFalse(service.createProjectContent(projectId, getImage(), "", new Date()));
     }
 
     @Test
     public void createProjectContentTwice() throws IOException {
-        ProjectContentService service = getService();
         service.createProjectContent(projectId, getImage(), description, new Date());
         service.createProjectContent(projectId, getImage(), description, new Date());
     }
 
     @Test
     public void getNullLogo() {
-        ProjectContentService service = getService();
         boolean create = service.createProjectContent(projectId, new byte[0], description, new Date());
         assertTrue(create);
         ProjectContent content = service.get(projectId);
@@ -85,7 +88,7 @@ public class ProjectContentServiceTest extends WithFiles {
         assertTrue(content.getProjectLogo().length == DEFAULT_LOGO_SIZE);
     }
 
-    ProjectContentService getService() {
-        return new ProjectContentServiceImpl(new PostgresProjectContentDao(new JdbcTemplate(db.getTestDatabase()), tableName));
-    }
+//    ProjectContentService getService() {
+//        return new ProjectContentServiceImpl(new PostgresProjectContentDao(new JdbcTemplate(db.getTestDatabase()), tableName));
+//    }
 }

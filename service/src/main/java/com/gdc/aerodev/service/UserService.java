@@ -10,7 +10,6 @@ import java.util.List;
  *
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.User
- * @see com.gdc.aerodev.dao.UserDao
  */
 public interface UserService extends LoggingService {
     /**
@@ -45,7 +44,6 @@ public interface UserService extends LoggingService {
      * @param name user's nickname
      * @return (0) {@code User} or <br>
      * (1) {@code null} if there is no such user
-     * @see com.gdc.aerodev.dao.UserDao
      */
     User getUser(String name);
 
@@ -55,7 +53,6 @@ public interface UserService extends LoggingService {
      * @param id user's id
      * @return (0) {@code User} or <br>
      * (1) {@code null} if there is no such user
-     * @see com.gdc.aerodev.dao.UserDao
      */
     User getUser(Long id);
 
@@ -63,7 +60,6 @@ public interface UserService extends LoggingService {
      * Encapsulates same method in {@code UserDao}
      *
      * @return list of top three users with biggest rating
-     * @see com.gdc.aerodev.dao.UserDao
      */
     List<User> getTopThree();
 
@@ -84,5 +80,5 @@ public interface UserService extends LoggingService {
      *
      * @return number of users
      */
-    int countUsers();
+    long countUsers();
 }

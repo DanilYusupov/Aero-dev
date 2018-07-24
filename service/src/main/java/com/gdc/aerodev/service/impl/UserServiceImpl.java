@@ -1,10 +1,11 @@
 package com.gdc.aerodev.service.impl;
 
-import com.gdc.aerodev.dao.UserDao;
-import com.gdc.aerodev.dao.exception.DaoException;
-import com.gdc.aerodev.dao.postgres.PostgresUserDao;
 import com.gdc.aerodev.model.User;
+import com.gdc.aerodev.repository.postgresql.UserRepository;
 import com.gdc.aerodev.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,31 +15,32 @@ import java.util.List;
  *
  * @author Yusupov Danil
  * @see UserService
- * @see UserDao
  * @see User
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDao dao;
 
-    public UserServiceImpl(PostgresUserDao dao) {
-        this.dao = dao;
+    private final UserRepository repository;
+
+    @Autowired
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<User> getTopThree() {
-        return dao.getTopThree();
+        return repository.findAll(new PageRequest(0, 3)).getContent();
     }
 
     @Override
     public void updateInfo(Long id, String firstName, String lastName, String biography, String userCountry, String userCity) {
-        User user = dao.getById(id);
+        User user = repository.findByUserId(id);
         user.setUserFirstName(firstName);
         user.setUserLastName(lastName);
         user.setUserBiography(biography);
         user.setUserCountry(userCountry);
         user.setUserCity(userCity);
-        if (dao.save(user) == null) {
+        if (repository.save(user) == null) {
             log.error("Nothing to update for user '" + getUser(id).getUserName() + "'.");
         } else {
             log.info("Updated info for user '" + getUser(id).getUserName() + "'.");
@@ -54,23 +56,23 @@ public class UserServiceImpl implements UserService {
             log.error("User with name '" + userName + "' is already exists.");
             return null;
         }
-        String emailOwner = dao.existentEmail(userEmail);
+        User emailOwner = repository.findByUserEmail(userEmail);
         if (emailOwner != null) {
-            log.error("This email is already used by '" + emailOwner + "'.");
+            log.error("This email is already used by '" + emailOwner.getUserName() + "' with id " + emailOwner.getUserId()+ ".");
             return null;
         }
         try {
-            Long id = dao.save(new User(userName, userPassword, userEmail, isMale));
+            Long id = repository.save(new User(userName, userPassword, userEmail, isMale)).getUserId();
             log.info("Successful created user '" + userName + "' with id " + id + ".");
             return id;
-        } catch (DaoException e) {
+        } catch (DataIntegrityViolationException e) {
             return null;
         }
     }
 
     @Override
     public Long updateUser(Long userId, String userName, String userPassword, String userEmail, short userLevel) {
-        User user = dao.getById(userId);
+        User user = repository.findByUserId(userId);
         if (!userName.equals("")) {
             if (isExistentName(userName)) {
                 log.error("User with name '" + userName + "' is already exists.");
@@ -84,34 +86,34 @@ public class UserServiceImpl implements UserService {
             user.setUserPassword(userPassword);
         }
         if (!userEmail.equals("")) {
-            String emailOwner = dao.existentEmail(userEmail);
+            User emailOwner = repository.findByUserEmail(userEmail);
             if (emailOwner != null) {
-                log.error("This email is already used by '" + emailOwner + "'.");
+                log.error("This email is already used by '" + emailOwner.getUserName() + "' with id " + emailOwner.getUserId() + ".");
                 return null;
             }
             user.setUserEmail(userEmail);
         }
         user.setUserLevel(userLevel);
         try {
-            return dao.save(user);
-        } catch (DaoException e) {
+            return repository.save(user).getUserId();
+        } catch (DataIntegrityViolationException e) {
             return null;
         }
     }
 
     @Override
     public User getUser(String name) {
-        return dao.getByName(name);
+        return repository.findByUserName(name);
     }
 
     @Override
     public User getUser(Long id) {
-        return dao.getById(id);
+        return repository.findByUserId(id);
     }
 
     @Override
-    public int countUsers() {
-        return dao.count();
+    public long countUsers() {
+        return repository.count();
     }
 
     /**
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
      * (1) {@code false} if there is no user with matching name
      */
     private boolean isExistentName(String userName) {
-        return dao.getByName(userName) != null;
+        return repository.findByUserName(userName) != null;
     }
 
 }

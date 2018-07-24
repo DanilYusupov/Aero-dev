@@ -1,9 +1,6 @@
 package com.gdc.aerodev.model;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -51,6 +48,13 @@ public class ProjectContent {
     }
 
     public ProjectContent(byte[] projectLogo, String projectDescription, Date projectBirthDay) {
+        this.projectLogo = projectLogo;
+        this.projectDescription = projectDescription;
+        this.projectBirthDay = projectBirthDay;
+    }
+
+    public ProjectContent(Project project, byte[] projectLogo, String projectDescription, Date projectBirthDay) {
+        this.project = project;
         this.projectLogo = projectLogo;
         this.projectDescription = projectDescription;
         this.projectBirthDay = projectBirthDay;

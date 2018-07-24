@@ -34,7 +34,7 @@ public class ProfileController implements LoggingWeb {
         log.debug("Received user '" + user.getUserName() + "'.");
         ModelAndView mav = new ModelAndView("profile");
         mav.addObject("user", user);
-        mav.addObject("prjs", prjService.getByUserId(user.getUserId()));
+        mav.addObject("prjs", prjService.getByUserId(user));
         mav.addObject("offs", offService.getByUserId(user.getUserId()));
         return mav;
     }

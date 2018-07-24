@@ -165,6 +165,47 @@
     </div>
 </div>
 
+<!--SpaceX launch Info-->
+
+<div class="container-fluid my-5" style="background-color: #ececf8">
+    <div class="row text-center">
+        <div class="col justify-content-center">
+            <h1>The latest SpaceX launch</h1>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col justify-content-center">
+            <p>Info:</p>
+            <p th:text="'Flight number: ' + ${spaceX.get('flight_number')}">
+            </p>
+            <p>
+                Status: <span>
+                <span th:if="${spaceX.get('launch_success')}">
+                    <span class="badge badge-success">Success</span>
+                </span>
+                <span th:if="!${spaceX.get('launch_success')}">
+                    <span class="badge badge-danger">Danger</span>
+                </span>
+            </span></p>
+            <p th:text="'Mission name: ' + ${spaceX.get('mission_name')}"></p>
+            <p>
+                <a th:href="${spaceX.get('telemetry')}">Telemetry</a>
+            </p>
+            <p>
+                <a th:href="${spaceX.get('wikipedia')}">Wikipedia</a>
+            </p>
+            <p>
+                <a th:href="${spaceX.get('video_link')}">Video</a>
+            </p>
+        </div>
+        <div class="col justify-content-center">
+            <img th:src="${spaceX.get('mission_patch')}"
+                 style="object-fit: cover; max-width: 18em; max-height: 18em;"/>
+        </div>
+    </div>
+    <div class="row" style="height: 50px;"></div>
+</div>
+
 <!-- About project -->
 
 <div class="container-fluid my-5">

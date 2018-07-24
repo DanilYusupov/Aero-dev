@@ -22,13 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.springframework.data.domain.PageRequest.*;
 
 @RunWith(SpringRunner.class)
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureEmbeddedDatabase
 @FlywayTest
 @DataJpaTest
 public class UserRepositoryTest {
-//    @Autowired
-//    private TestEntityManager entityManager;
     @Autowired
     private UserRepository repository;
     /**
@@ -58,6 +56,12 @@ public class UserRepositoryTest {
         assertEquals(password, user.getUserPassword());
         assertEquals(email, user.getUserEmail());
         assertEquals(level, user.getUserLevel());
+    }
+
+    @Test
+    public void findByEmailTest(){
+        User user = repository.findByUserEmail(email);
+        assertEquals(name, user.getUserName());
     }
 
     @Test
@@ -124,6 +128,11 @@ public class UserRepositoryTest {
     public void getByFakeNameTest(){
         assertNull(repository.findByUserName(""));
         assertNull(repository.findByUserName(null));
+    }
+
+    @Test
+    public void getFakeEmail(){
+        assertNull(repository.findByUserEmail(""));
     }
 
     @Test(expected = DataIntegrityViolationException.class)

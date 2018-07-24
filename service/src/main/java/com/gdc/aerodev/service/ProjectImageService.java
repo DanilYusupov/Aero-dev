@@ -2,6 +2,7 @@ package com.gdc.aerodev.service;
 
 import com.gdc.aerodev.model.ProjectImage;
 import com.gdc.aerodev.service.logging.LoggingService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,7 +12,6 @@ import java.util.List;
  * @author Yusupov Danil
  * @see com.gdc.aerodev.model.Project
  * @see com.gdc.aerodev.model.ProjectImage
- * @see com.gdc.aerodev.dao.ProjectImageDao
  */
 public interface ProjectImageService extends LoggingService {
     /**
@@ -29,10 +29,8 @@ public interface ProjectImageService extends LoggingService {
      * Deletes image by it's id
      *
      * @param imageId id of image to be delete
-     * @return (0) {@code true} if delete complete or <br>
-     * (1) {@code false} if image isn't deleted
      */
-    boolean deleteImage(Long imageId);
+    void deleteImage(Long imageId);
 
     /**
      * Takes all images bind with one project
@@ -40,7 +38,7 @@ public interface ProjectImageService extends LoggingService {
      * @param projectId id of target project
      * @return list of images id!
      */
-    List<Long> getAll(Long projectId);
+    List<ProjectImage> getAll(Long projectId);
 
     /**
      * Gives image by it's id
