@@ -1,5 +1,6 @@
 spring:
-  flyway:
-    schemas: aero
-    sql-migration-separator: __
-    locations: classpath:/db/migration/test
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/aerodev
+    username: cruder
+    password: p@ssw0rd

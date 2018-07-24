@@ -2,6 +2,7 @@ package com.gdc.aerodev.service.test;
 
 import com.gdc.aerodev.model.User;
 import com.gdc.aerodev.service.UserService;
+import com.gdc.aerodev.service.impl.UserServiceImpl;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
 import com.opentable.db.postgres.junit.EmbeddedPostgresRules;
 import com.opentable.db.postgres.junit.PreparedDbRule;
@@ -11,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,11 +22,8 @@ import javax.annotation.Resource;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@AutoConfigureEmbeddedDatabase
-@FlywayTest
-@DataJpaTest
 public class UserServiceTest {
+
     @Autowired
     private UserService service;
 
@@ -48,8 +47,8 @@ public class UserServiceTest {
     private String userCountry = "UK";
     private String userCity = "Bournemouth";
 
-    @Rule
-    public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("user-service"));
+//    @Rule
+//    public PreparedDbRule db = EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("user-service"));
 
     //Create User tests
 
