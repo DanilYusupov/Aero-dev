@@ -5,8 +5,7 @@ import com.gdc.aerodev.service.UserService;
 import com.gdc.aerodev.service.security.Hasher;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
 
 import static com.gdc.aerodev.external.spacex.LastLaunchGetter.getData;
 
@@ -72,7 +72,11 @@ public class HomeController {
 
     private JsonObject getSpaceXJson() throws IOException {
         RestTemplate template = new RestTemplate();
-        ResponseEntity<String> response = template.exchange(spaceXUrl, HttpMethod.GET, null, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        ResponseEntity<String> response = template.exchange(spaceXUrl, HttpMethod.GET, entity, String.class);
         return new Gson().fromJson(response.getBody(), JsonObject.class);
     }
 
